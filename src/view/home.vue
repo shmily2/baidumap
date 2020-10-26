@@ -1,100 +1,6 @@
 <template>
-  <div class="polyline">
-    <!-- @click="getPoint" 
-     :mapClick="false"自带弹窗
-    -->
-    <baidu-map
-      class="map"
-      :center="{ lng: 116.404, lat: 39.915 }"
-      :zoom="13"
-      :scroll-wheel-zoom="true"
-      :mapClick="false"
-      @ready="ready"
-    >
-      <!-- //地图切换 -->
-      <bm-map-type
-        :map-types="[
-          'BMAP_NORMAL_MAP',
-          'BMAP_HYBRID_MAP',
-          'BMAP_PERSPECTIVE_MAP',
-        ]"
-        anchor="BMAP_ANCHOR_TOP_LEFT"
-      ></bm-map-type>
-      <!-- 右下角定位 -->
-      <bm-geolocation
-        anchor="BMAP_ANCHOR_BOTTOM_RIGHT"
-        :showAddressBar="true"
-        :autoLocation="true"
-      ></bm-geolocation>
-      <!-- //全景 -->
-      <bm-panorama></bm-panorama>
-      <!-- 球机 -->
-      <div v-for="(mark, ind) in markers.position" :key="'ind,' + ind">
-        <bm-marker
-          :position="mark"
-          :icon="markers.icon"
-          :dragging="markers.dragging"
-          @click="infoWindowOpen(mark, ind)"
-          @rightclick="inforight(mark, ind)"
-        >
-          <bm-info-window
-            :show="mark.windowshow"
-            @close="infoWindowClose(mark)"
-            @open="infoWindowOpen(mark, ind)"
-            >我爱北京天安门</bm-info-window
-          >
-        </bm-marker>
-      </div>
-
-      <!-- 多边形-->
-      <bm-polyline
-        :path="path"
-        :editing="false"
-        v-for="(path, inde) of polyline.paths"
-        :key="'inde,' + inde"
-      ></bm-polyline>
-      <!-- 折线 -->
-      <bm-polyline
-        v-for="(item, ind) of polylinePath"
-        :key="ind"
-        :path="item"
-        stroke-color="red"
-        :stroke-opacity="0.8"
-        :stroke-weight="4"
-        :editing="false"
-      ></bm-polyline>
-    </baidu-map>
-
-    <!-- 轨迹 -->
-    <div>
-      <bm-polyline
-        :path="polylinePath"
-        stroke-color="blue"
-        :stroke-opacity="0.5"
-        :stroke-weight="3"
-        :editing="false"
-      ></bm-polyline>
-      <bm-marker
-        :icon="startIcon"
-        :position="{ lng: startMark.lng, lat: startMark.lat }"
-      ></bm-marker>
-      <bm-marker
-        :icon="endIcon"
-        :position="{ lng: endMark.lng, lat: endMark.lat }"
-      ></bm-marker>
-      <bml-lushu
-        @stop="stop"
-        :path="trackPath"
-        :icon="icon"
-        :play="play"
-        :speed="speed"
-        :autoView="autoView"
-        :infoWindow="infoWindow"
-        :content="content"
-        :rotation="rotation"
-      >
-      </bml-lushu>
-    </div>
+  <div clas="polyline">
+    <div class="map" id="allmap"></div>
     <!-- 菜单 -->
     <div class="menubox">
       <ul class="menu">
@@ -129,26 +35,58 @@
 
 <script>
 import mock from "../mock/index";
-import qiuji from "../assets/qiuji.png";
+import { mark, removeMarker, polyline,Polygon } from "../utils/map";
+import Sdangerous from "../assets/Sdangerous.png"; //危化品车辆
+import dangBayonet from "../assets/dangBayonet.png"; //危化品卡口
+import emergency from "../assets/emergency.png"; //应急卡口
+import ordinary from "../assets/ordinary.png"; //普通卡口
+import cardProcessingCenter from "../assets/cardProcessingCenter.png"; //办卡中心
+import gunMachine from "../assets/gunMachine.png"; //枪机
+import domeCameras from "../assets/domeCameras.png"; //球机
+import parkingLot from "../assets/parkingLot.png"; //停车场
 export default {
-  name: "mapvgl",
+  name: "Bmap",
   data() {
     return {
-      polyline: {
-        editing: false,
-        paths: [],
+      map: "", //地图初始化
+      point: "", //地图中心点
+      whpcl: {
+        markers: [],
+        infoWindow: "",
       },
-      polylinePath: [],
-      paths: [], //企业围栏
-      vehicleLane: [], //危险品车道
-      markespos: [], //球机
-      markers: {
-        icon: {
-          url: qiuji,
-          size: { width: 32, height: 32 },
-        },
-        dragging: false,
-        position: [],
+      whpkk: {
+        markers: [],
+        infoWindow: "",
+      },
+      yjkk: {
+        markers: [],
+        infoWindow: "",
+      },
+      ptkk: {
+        markers: [],
+        infoWindow: "",
+      },
+      qywl: {
+        polylineMuster: [],
+      },
+      bkzx: {
+        markers: [],
+        infoWindow: "",
+      },
+      qj: {
+        markers: [],
+        infoWindow: "",
+      },
+      qy:{
+        PolygonsMuster:[],
+      },
+      qiuj: {
+        markers: [],
+        infoWindow: "",
+      },
+      tcc: {
+        markers: [],
+        infoWindow: "",
       },
       muen: [
         {
@@ -233,66 +171,253 @@ export default {
     };
   },
   mounted() {
-    //围栏
-    this.$api.dept
-      .paths()
-      .then((res) => {
-        this.paths = res.data;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    //危险品车道
-    this.$api.dept.vehicleLane().then((res) => {
-      res.data.map((item) => {
-        this.vehicleLane.push(item.PIXEL);
-      });
-    });
-    //球机
-    this.$api.dept.Cameras().then((res) => {
-      res.data.map((list) => {
-        list.windowshow = false;
-        this.markespos.push(list);
-      });
-    });
+    this.baiduMap();
   },
   methods: {
-    //地图颜色
-    ready({ BMap, map }) {
-      map.setMapStyle({ style: "midnight" });
+    baiduMap() {
+      this.map = new BMap.Map("allmap");
+      this.point = new BMap.Point(116.404, 39.915); // 创建点坐标
+      this.map.centerAndZoom(this.point, 12); // 初始化地图，设置中心点坐标和地图级别
+      this.map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
+      this.map.setMapStyle({ style: "midnight" }); //地图风格
     },
-    //点击菜单
-    operation(item, index) {
-      item.show = !item.show;
-      this.ind = index;
-      if (item.id == 0) {
-        console.log("111");
-      } else if (item.id == 5) {
-        if (item.show) {
-          this.polyline.paths = this.paths;
-        } else {
-          this.polyline.paths = [];
-        }
-      } else if (item.id == 8) {
-        if (item.show) {
-          this.markers.position = this.markespos;
-        } else {
-          this.markers.position = [];
-        }
-      } else if (item.id == 9) {
-        if (item.show) {
-          this.polylinePath = this.vehicleLane;
-          console.log(this.polylinePath);
-        } else {
-          this.polylinePath = [];
-        }
+    showInfo(e) {
+      console.log(e.point.lat);
+      console.log(e.point.lng);
+    },
+    //地图添加点击事件
+    addMapEvent() {
+      this.map.addEventListener("click", this.showInfo);
+    },
+    //移除地图点击事件
+    removeMapEvent() {
+      this.map.removeEventList("click", this.showInfo);
+    },
+    operation(list, index) {
+      list.show = !list.show;
+      console.log(list.id);
+      switch (list.id) {
+        case 0: //危化品车辆
+          this.Cameras(list.show);
+          break;
+        case 1: //危化品卡口
+          this.dangBayonet(list.show);
+          break;
+        case 2: //应急卡口
+          this.emergency(list.show);
+          break;
+        case 3: //普通卡口
+          this.ordinary(list.show);
+          break;
+        case 4: //办卡中心
+          this.cardProcessingCenter(list.show);
+          break;
+        case 5: //企业围栏
+          this.paths(list.show);
+          break;
+        case 6: //枪机
+          this.gunMachine(list.show);
+          break;
+        case 7: //区域
+         this.region(list.show);
+          break;
+        case 8: //球机
+          this.domeCameras(list.show);
+          break;
+        case 9: //危化品车道
+          console.log("危化品车道");
+          break;
+        case 10: //分级管理
+          console.log("分级管理");
+          break;
+        case 11: //园区边界
+          console.log("园区边界");
+          break;
+        case 12: //停车场
+          this.parkingLot(list.show);
+          break;
+        default:
+          console.log("zuohhou");
       }
     },
-    infoWindowClose(mark) {
-      mark.windowshow = false;
+    //危化品车辆
+    Cameras(judge) {
+      if (judge) {
+        let infoWindow = new BMap.InfoWindow("这是危化品车辆", {
+          offset: new BMap.Size(2, -2),
+        });
+        this.$api.dept.Cameras().then((res) => {
+          mark(this.map, res.data, this.whpcl.markers, infoWindow, Sdangerous);
+        });
+      } else {
+        removeMarker(this.map, this.whpcl.markers);
+      }
     },
-    infoWindowOpen(mark) {
-      mark.windowshow = true;
+    //危化品卡口
+    dangBayonet(judge) {
+      if (judge) {
+        let infoWindow = new BMap.InfoWindow("这是危化品卡口", {
+          offset: new BMap.Size(2, -5),
+        });
+        this.$api.dept.dangBayonet().then((res) => {
+          mark(this.map, res.data, this.whpkk.markers, infoWindow, dangBayonet);
+        });
+      } else {
+        removeMarker(this.map, this.whpkk.markers);
+      }
+    },
+    //应急卡口
+    emergency(judge) {
+      if (judge) {
+        let infoWindow = new BMap.InfoWindow("这是应急卡口", {
+          offset: new BMap.Size(2, -5),
+        });
+        this.$api.dept.emergency().then((res) => {
+          mark(this.map, res.data, this.yjkk.markers, infoWindow, emergency);
+        });
+      } else {
+        removeMarker(this.map, this.yjkk.markers);
+      }
+    },
+    //普通卡口
+    ordinary(judge) {
+      if (judge) {
+        let infoWindow = new BMap.InfoWindow("这是普通卡口", {
+          offset: new BMap.Size(2, -5),
+        });
+        this.$api.dept.ordinary().then((res) => {
+          mark(this.map, res.data, this.ptkk.markers, infoWindow, ordinary);
+        });
+      } else {
+        removeMarker(this.map, this.ptkk.markers);
+      }
+    },
+    //办卡中心
+    cardProcessingCenter(judge) {
+      if (judge) {
+        let infoWindow = new BMap.InfoWindow("这是办卡中心", {
+          offset: new BMap.Size(2, -5),
+        });
+        let size = new BMap.Size(32, 32);
+        this.$api.dept.cardProcessingCenter().then((res) => {
+          mark(
+            this.map,
+            res.data,
+            this.bkzx.markers,
+            infoWindow,
+            cardProcessingCenter,
+            size
+          );
+        });
+      } else {
+        removeMarker(this.map, this.bkzx.markers);
+      }
+    },
+    //企业围栏
+    paths(judge) {
+      if (judge) {
+        this.$api.dept.paths().then((res) => {
+          for (var i = 0; i < res.data.length; i++) {
+            polyline(
+              this.map,
+              res.data[i],
+              this.qywl.polylineMuster,
+              "#fff",
+              "dashed",
+              "3",
+              "0.8"
+            );
+          }
+        });
+      }else{
+        console.log(this.qywl.polylineMuster)
+         removeMarker(this.map, this.qywl.polylineMuster);
+      }
+    },
+    //枪机
+    gunMachine(judge) {
+      if (judge) {
+        let infoWindow = new BMap.InfoWindow("这是枪机", {
+          offset: new BMap.Size(2, -5),
+        });
+        let size = new BMap.Size(32, 32);
+        this.$api.dept.gunMachine().then((res) => {
+          mark(
+            this.map,
+            res.data,
+            this.qj.markers,
+            infoWindow,
+            gunMachine,
+            size
+          );
+        });
+      } else {
+        removeMarker(this.map, this.qj.markers);
+      }
+    },
+    //区域
+    region(judge){
+           if (judge) {
+        this.$api.dept.region().then((res) => {
+          for (var i = 0; i < res.data.length; i++) {
+            Polygon(
+              this.map,
+              res.data[i],
+              this.qy.PolygonsMuster,
+              "#fff",
+              "red",
+              "solid",
+              "3",
+              "0.8"
+            );
+          }
+        });
+      }else{
+         removeMarker(this.map, this.qy.PolygonsMuster,);
+      }
+      
+    },
+    //球机
+    domeCameras(judge) {
+      if (judge) {
+        let infoWindow = new BMap.InfoWindow("这是球机", {
+          offset: new BMap.Size(2, -5),
+        });
+        let size = new BMap.Size(28, 28);
+        this.$api.dept.domeCameras().then((res) => {
+          mark(
+            this.map,
+            res.data,
+            this.qiuj.markers,
+            infoWindow,
+            domeCameras,
+            size
+          );
+        });
+      } else {
+        removeMarker(this.map, this.qiuj.markers);
+      }
+    },
+    //停车场
+    parkingLot(judge) {
+      if (judge) {
+        let infoWindow = new BMap.InfoWindow("这是停车场", {
+          offset: new BMap.Size(2, -5),
+        });
+        let size = new BMap.Size(48, 48);
+        this.$api.dept.parkingLot().then((res) => {
+          mark(
+            this.map,
+            res.data,
+            this.tcc.markers,
+            infoWindow,
+            parkingLot,
+            size
+          );
+        });
+      } else {
+        removeMarker(this.map, this.tcc.markers);
+      }
     },
   },
 };
@@ -327,6 +452,7 @@ export default {
   line-height: 14px;
   font-size: 14px;
   cursor: pointer;
+  z-index: 999;
 }
 .menu > .choice {
   list-style: none;
@@ -384,10 +510,9 @@ export default {
 }
 /* 去除百度地图版权那行字 和 百度logo */
 .baidumap > .BMap_cpyCtrl {
-	    display: none !important;
-	}
+  display: none !important;
+}
 .baidumap > .anchorBL {
-	    display: none !important;
-	} 
-
+  display: none !important;
+}
 </style>
