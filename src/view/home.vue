@@ -177,9 +177,6 @@ export default {
       ],
     };
   },
-  mounted() {
-    //this.baiduMap();
-  },
   methods: {
     baiduMap(map) {
       this.map = map;
