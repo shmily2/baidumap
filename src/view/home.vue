@@ -14,25 +14,29 @@
         </li>
       </ul>
     </div>
-    <div class="posit left">
-      <ul class="side">
-        <li>常用功能</li>
-        <li>安全教育</li>
-        <li>车辆运输管理</li>
-        <li>人员入园管理</li>
-      </ul>
-    </div>
-    <div class="posit right">
-      <ul class="side">
-        <li>卡口管理系统</li>
-        <li>视屏监控系统</li>
-        <li>监控调度系统</li>
-        <li>运维管理系统</li>
-      </ul>
+    <div class="posit">
+      <div class="qyhead">
+        <h1>企业名称</h1>
+      </div>
+      <div class="operation">
+        <div class="left">
+          <ul class="side">
+            <li>安全教育</li>
+            <li>车辆运输管理</li>
+            <li>人员入园管理</li>
+          </ul>
+        </div>
+        <div class="right">
+          <ul class="side">
+            <li>卡口管理系统</li>
+            <li>视屏监控系统</li>
+            <li>运维管理系统</li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 </template>
-
 <script>
 import mock from "../mock/index";
 import { mark, removeMarker, polyline, Polygon } from "../utils/map";
@@ -179,6 +183,7 @@ export default {
   methods: {
     baiduMap(map) {
       this.map = map;
+      this.map = new BMap.Map("allmap");
       this.point = new BMap.Point(116.404, 39.915); // 创建点坐标
       this.map.centerAndZoom(this.point, 12); // 初始化地图，设置中心点坐标和地图级别
       this.map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
@@ -457,11 +462,11 @@ export default {
   width: 100%;
 }
 .menubox {
-  width: 70vw;
+  width: 60vw;
   height: 120px;
   position: absolute;
   bottom: 20px;
-  left: 15vw;
+  left: 20vw;
   background: rgba(7, 60, 236, 0.3);
   border-radius: 20px;
 }
@@ -505,21 +510,52 @@ export default {
 }
 .posit {
   position: absolute;
-  height: 90%;
-  width: 240px;
-  bottom: 5%;
+  height: 100%;
+  width: 100%;
+  bottom: 0px;
+  right: 0px;
+}
+.qyhead {
+  height: 120px;
+  line-height: 120px;
+  width: 100%;
+  /* background: rgb(15, 32, 54); */
+  background: linear-gradient(
+    to right,
+    rgba(15, 32, 54, 0.1) 0%,
+    rgba(15, 32, 54, 0.2) 10%,
+    rgba(15, 32, 54, 0.3) 20%,
+    rgba(15, 32, 54, 0.4) 30%,
+    rgba(15, 32, 54, 0.5) 60%,
+    rgba(15, 32, 54, 0.4) 70%,
+    rgba(15, 32, 54, 0.3) 80%,
+    rgba(15, 32, 54, 0.2) 90%,
+    rgba(15, 32, 54, 0.1) 100%
+  );
+  color: #fff;
+}
+.operation {
+  height: calc(100% - 120px);
+  /* width: 100%; */
+  display: flex;
+  padding:0 40px;
+  justify-content: space-between;
 }
 .side {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: calc(100% - 30px);
+  width: 300px;
   justify-content: space-around;
 }
 .side > li {
   list-style: none;
   width: 100%;
-  height: 22%;
-  border-radius: 20px;
+  height: 30%;
+  border-top-left-radius: 60px;
+  border-top-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
   color: #fff;
   line-height: 30px;
   padding-top: 10px;
