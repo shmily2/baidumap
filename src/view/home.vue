@@ -1,6 +1,5 @@
 <template>
   <div class="polyline">
-    <!-- <div class="map" id="allmap"></div> -->
     <mapview @baiduMap="baiduMap"></mapview>
     <!-- 菜单 -->
     <div class="menubox">
