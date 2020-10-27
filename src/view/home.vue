@@ -1,6 +1,7 @@
 <template>
-  <div clas="polyline">
-    <div class="map" id="allmap"></div>
+  <div class="polyline">
+    <!-- <div class="map" id="allmap"></div> -->
+    <mapview @baiduMap="baiduMap"></mapview>
     <!-- 菜单 -->
     <div class="menubox">
       <ul class="menu">
@@ -35,7 +36,7 @@
 
 <script>
 import mock from "../mock/index";
-import { mark, removeMarker, polyline,Polygon } from "../utils/map";
+import { mark, removeMarker, polyline, Polygon } from "../utils/map";
 import Sdangerous from "../assets/Sdangerous.png"; //危化品车辆
 import dangBayonet from "../assets/dangBayonet.png"; //危化品卡口
 import emergency from "../assets/emergency.png"; //应急卡口
@@ -77,8 +78,11 @@ export default {
         markers: [],
         infoWindow: "",
       },
-      qy:{
-        PolygonsMuster:[],
+      qy: {
+        PolygonsMuster: [],
+      },
+      yqbj: {
+        polylineMuster: [],
       },
       qiuj: {
         markers: [],
@@ -87,6 +91,9 @@ export default {
       tcc: {
         markers: [],
         infoWindow: "",
+      },
+      whpcd: {
+        polylineMuster: [],
       },
       muen: [
         {
@@ -171,27 +178,14 @@ export default {
     };
   },
   mounted() {
-    this.baiduMap();
+    //this.baiduMap();
   },
   methods: {
-    baiduMap() {
-      this.map = new BMap.Map("allmap");
+    baiduMap(map) {
+      this.map = map;
       this.point = new BMap.Point(116.404, 39.915); // 创建点坐标
       this.map.centerAndZoom(this.point, 12); // 初始化地图，设置中心点坐标和地图级别
       this.map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
-      this.map.setMapStyle({ style: "midnight" }); //地图风格
-    },
-    showInfo(e) {
-      console.log(e.point.lat);
-      console.log(e.point.lng);
-    },
-    //地图添加点击事件
-    addMapEvent() {
-      this.map.addEventListener("click", this.showInfo);
-    },
-    //移除地图点击事件
-    removeMapEvent() {
-      this.map.removeEventList("click", this.showInfo);
     },
     operation(list, index) {
       list.show = !list.show;
@@ -219,19 +213,19 @@ export default {
           this.gunMachine(list.show);
           break;
         case 7: //区域
-         this.region(list.show);
+          this.region(list.show);
           break;
         case 8: //球机
           this.domeCameras(list.show);
           break;
         case 9: //危化品车道
-          console.log("危化品车道");
+          this.vehicleLane(list.show);
           break;
         case 10: //分级管理
           console.log("分级管理");
           break;
         case 11: //园区边界
-          console.log("园区边界");
+          this.boundary(list.show);
           break;
         case 12: //停车场
           this.parkingLot(list.show);
@@ -329,9 +323,9 @@ export default {
             );
           }
         });
-      }else{
-        console.log(this.qywl.polylineMuster)
-         removeMarker(this.map, this.qywl.polylineMuster);
+      } else {
+        console.log(this.qywl.polylineMuster);
+        removeMarker(this.map, this.qywl.polylineMuster);
       }
     },
     //枪机
@@ -356,8 +350,8 @@ export default {
       }
     },
     //区域
-    region(judge){
-           if (judge) {
+    region(judge) {
+      if (judge) {
         this.$api.dept.region().then((res) => {
           for (var i = 0; i < res.data.length; i++) {
             Polygon(
@@ -372,10 +366,9 @@ export default {
             );
           }
         });
-      }else{
-         removeMarker(this.map, this.qy.PolygonsMuster,);
+      } else {
+        removeMarker(this.map, this.qy.PolygonsMuster);
       }
-      
     },
     //球机
     domeCameras(judge) {
@@ -396,6 +389,46 @@ export default {
         });
       } else {
         removeMarker(this.map, this.qiuj.markers);
+      }
+    },
+    //危化品车道
+    vehicleLane(judge) {
+      if (judge) {
+        this.$api.dept.vehicleLane().then((res) => {
+          for (var i = 0; i < res.data.length; i++) {
+            polyline(
+              this.map,
+              res.data[i].PIXEL,
+              this.whpcd.polylineMuster,
+              "green",
+              "solid",
+              "5",
+              "0.8"
+            );
+          }
+        });
+      } else {
+        removeMarker(this.map, this.whpcd.polylineMuster);
+      }
+    },
+    //园区边界
+    boundary(judge) {
+      if (judge) {
+        this.$api.dept.boundary().then((res) => {
+          for (var i = 0; i < res.data.length; i++) {
+            polyline(
+              this.map,
+              res.data[i],
+              this.yqbj.polylineMuster,
+              "orange",
+              "dashed",
+              "3",
+              "0.8"
+            );
+          }
+        });
+      } else {
+        removeMarker(this.map, this.yqbj.polylineMuster);
       }
     },
     //停车场
@@ -423,7 +456,7 @@ export default {
 };
 </script>
 <style scoped>
-.map {
+.polyline {
   height: 100vh;
   width: 100%;
 }
@@ -507,12 +540,5 @@ export default {
     rgba(7, 60, 236, 0.2) 90%,
     rgba(7, 60, 236, 0.1) 100%
   );
-}
-/* 去除百度地图版权那行字 和 百度logo */
-.baidumap > .BMap_cpyCtrl {
-  display: none !important;
-}
-.baidumap > .anchorBL {
-  display: none !important;
 }
 </style>

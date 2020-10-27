@@ -72,6 +72,12 @@ export const vehicleLane = () => {
 }
 //分级管理
 //园区边界
+export const boundary=()=>{
+    return axios({
+        url:"/dept/boundary",
+        method:"post"
+    })
+}
 //停车场
 export const parkingLot = () => {
     return axios({

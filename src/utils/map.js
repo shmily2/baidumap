@@ -62,23 +62,21 @@ export function Polygon(map, Polygons, PolygonsMuster, strokeColor = "red", fill
     let Poly = new BMap.Polygon(Polygon, { strokeStyle: strokeStyle, strokeColor: strokeColor, fillColor: fillColor, strokeWeight: strokeWeight, fillOpacity: fillOpacity });   //创建多边形
     //创建右键菜单
     var markerMenu = new BMap.ContextMenu();
-    markerMenu.addItem(new BMap.MenuItem('删除', removeMarker.bind(map, Poly, Poly)));
+    markerMenu.addItem(new BMap.MenuItem('删除', removeMarker.bind(map, Poly)));
     Poly.addContextMenu(markerMenu);
     map.addOverlay(Poly);   //增加多边形
     PolygonsMuster.push(Poly)
 }
 
 //删除图标 ,折线，多边形合集
-export function removeMarker(map, markers, Poly) {
+export function removeMarker(map, markers) {
+    //删除合集
     if (markers.length) {
-        console.log(map)
         for (var i = 0; i < markers.length; i++) {
             map.removeOverlay(markers[i]);
-            console.log(markers[i])
         }
     }else{
-        console.log(map)
-        map.removeOverlay(markers);
+        //单个删除
+        this.removeOverlay(map);
     }
-
 }

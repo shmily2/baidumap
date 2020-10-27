@@ -11,7 +11,6 @@ export default {
   name: "App",
 };
 </script>
-
 <style>
 * {
   margin: 0;
@@ -23,5 +22,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  width:100%;
 }
 </style>
