@@ -14,25 +14,26 @@
         </li>
       </ul>
     </div>
-    <div class="posit">
-      <div class="qyhead">
-        <h1>企业名称</h1>
+    <div class="qyhead"></div>
+    <div class="operation">
+      <div class="left">
+        <ul class="side">
+          <li @click="Security">
+            <h4>安全教育</h4>
+            <div class="echartflex">
+              <div id="Security"></div>
+            </div>
+          </li>
+          <li>车辆运输管理</li>
+          <li>人员入园管理</li>
+        </ul>
       </div>
-      <div class="operation">
-        <div class="left">
-          <ul class="side">
-            <li>安全教育</li>
-            <li>车辆运输管理</li>
-            <li>人员入园管理</li>
-          </ul>
-        </div>
-        <div class="right">
-          <ul class="side">
-            <li>卡口管理系统</li>
-            <li>视屏监控系统</li>
-            <li>运维管理系统</li>
-          </ul>
-        </div>
+      <div class="right">
+        <ul class="side">
+          <li>卡口管理系统</li>
+          <li>视屏监控系统</li>
+          <li>运维管理系统</li>
+        </ul>
       </div>
     </div>
   </div>
@@ -40,6 +41,7 @@
 <script>
 import mock from "../mock/index";
 import { mark, removeMarker, polyline, Polygon } from "../utils/map";
+import { Doughnut } from "../utils/echarts/scoll";
 import Sdangerous from "../assets/Sdangerous.png"; //危化品车辆
 import dangBayonet from "../assets/dangBayonet.png"; //危化品卡口
 import emergency from "../assets/emergency.png"; //应急卡口
@@ -180,17 +182,18 @@ export default {
       ],
     };
   },
+  mounted() {
+    this.Security();
+  },
   methods: {
     baiduMap(map) {
       this.map = map;
-      this.map = new BMap.Map("allmap");
       this.point = new BMap.Point(116.404, 39.915); // 创建点坐标
       this.map.centerAndZoom(this.point, 12); // 初始化地图，设置中心点坐标和地图级别
       this.map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
     },
     operation(list, index) {
       list.show = !list.show;
-      console.log(list.id);
       switch (list.id) {
         case 0: //危化品车辆
           this.Cameras(list.show);
@@ -453,6 +456,22 @@ export default {
         removeMarker(this.map, this.tcc.markers);
       }
     },
+    Security() {
+      let Security = this.$echarts.init(document.getElementById("Security"));
+      let data = {
+        legend: ["直接访问", "邮件营销", "联盟广告", "视频广告", "搜索引擎"],
+        information: [
+          { value: 335, name: "直接访问" },
+          { value: 310, name: "邮件营销" },
+          { value: 234, name: "联盟广告" },
+          { value: 135, name: "视频广告" },
+          { value: 1548, name: "搜索引擎" },
+        ],
+        pieEChart: Security,
+      };
+      Doughnut(data);
+      console.log(Doughnut);
+    },
   },
 };
 </script>
@@ -467,7 +486,7 @@ export default {
   position: absolute;
   bottom: 20px;
   left: 20vw;
-  background: rgba(7, 60, 236, 0.3);
+  background: rgba(22, 22, 23, 0.3);
   border-radius: 20px;
 }
 .menu {
@@ -493,7 +512,7 @@ export default {
   width: 20px;
   color: rgb(111, 111, 112);
   font-weight: 800;
-  background: rgba(5, 32, 51, 0.5);
+  background: rgba(22, 22, 51, 0.5);
   border-radius: 10px;
   height: 100px;
   margin: 5px 0;
@@ -503,24 +522,33 @@ export default {
   cursor: pointer;
 }
 .left {
+  position: absolute;
   left: 30px;
+  top: 120px;
+  height: calc(100% - 120px);
 }
 .right {
+  position: absolute;
   right: 30px;
+  top: 120px;
+  height: calc(100% - 120px);
 }
 .posit {
   position: absolute;
-  height: 100%;
   width: 100%;
   bottom: 0px;
   right: 0px;
 }
 .qyhead {
+  position: absolute;
+  top: 0;
+  left: 0;
   height: 120px;
   line-height: 120px;
   width: 100%;
-  /* background: rgb(15, 32, 54); */
-  background: linear-gradient(
+  background: url("../assets/header.png") no-repeat 100% 100%;
+  background-size: 100% 100%;
+  /* background: linear-gradient(
     to right,
     rgba(15, 32, 54, 0.1) 0%,
     rgba(15, 32, 54, 0.2) 10%,
@@ -531,15 +559,8 @@ export default {
     rgba(15, 32, 54, 0.3) 80%,
     rgba(15, 32, 54, 0.2) 90%,
     rgba(15, 32, 54, 0.1) 100%
-  );
+  ); */
   color: #fff;
-}
-.operation {
-  height: calc(100% - 120px);
-  /* width: 100%; */
-  display: flex;
-  padding:0 40px;
-  justify-content: space-between;
 }
 .side {
   display: flex;
@@ -557,20 +578,35 @@ export default {
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
   color: #fff;
-  line-height: 30px;
-  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   cursor: pointer;
   background: linear-gradient(
     to right,
-    rgba(7, 60, 236, 0.1) 0%,
-    rgba(7, 60, 236, 0.2) 10%,
-    rgba(7, 60, 236, 0.3) 20%,
-    rgba(7, 60, 236, 0.4) 30%,
-    rgba(7, 60, 236, 0.5) 60%,
-    rgba(7, 60, 236, 0.4) 70%,
-    rgba(7, 60, 236, 0.3) 80%,
-    rgba(7, 60, 236, 0.2) 90%,
-    rgba(7, 60, 236, 0.1) 100%
+    rgba(22, 22, 34, 0.1) 0%,
+    rgba(22, 22, 34, 0.2) 10%,
+    rgba(22, 22, 34, 0.3) 20%,
+    rgba(22, 22, 34, 0.4) 30%,
+    rgba(22, 22, 34, 0.5) 60%,
+    rgba(22, 22, 34, 0.4) 70%,
+    rgba(22, 22, 34, 0.3) 80%,
+    rgba(22, 22, 34, 0.2) 90%,
+    rgba(22, 22, 34, 0.1) 100%
   );
 }
+.side > li > h4 {
+  height:40px;
+  line-height: 40px;
+  padding-left:50px;
+}
+.echartflex {
+  flex: 1;
+  width: 100%;
+}
+#Security{
+  width:100%;
+  height:100%;
+}
+
 </style>
