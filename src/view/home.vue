@@ -19,19 +19,58 @@
       <div class="left">
         <ul class="side">
           <li @click="Security">
-            <h4>安全教育</h4>
+            <div class="title">
+              <span>人员入园管理</span>
+              <div class="img"></div>
+            </div>
             <div class="echartflex">
               <div id="Security"></div>
             </div>
           </li>
-          <li>车辆运输管理</li>
-          <li>人员入园管理</li>
+          <li @click="Car">
+            <div class="title">
+              <span>车辆运输管理</span>
+              <div class="img"></div>
+            </div>
+            <div class="echartflex">
+              <div id="Car"></div>
+            </div>
+          </li>
+
+          <li>安全教育</li>
         </ul>
       </div>
       <div class="right">
         <ul class="side">
           <li>卡口管理系统</li>
-          <li>视屏监控系统</li>
+          <li>
+            <div class="title">
+              <span>重点位置视频监控</span>
+              <div class="img"></div>
+            </div>
+            <div class="echartflex">
+              <ul>
+                <li v-for="(vide, index) in video" :key="index">
+                  <video
+                    controls
+                    autoplay
+                    loop
+                    style="
+                      border-radius: 5px;
+                      width: 100%;
+                      border: 1px solid #fff;
+                    "
+                  >
+                    <source
+                      src="https://linkingvision.com/download/h5stream/video/h5ssample.mp4"
+                      type="video/mp4"
+                    />
+                  </video>
+                  <h5>{{ vide.name }}</h5>
+                </li>
+              </ul>
+            </div>
+          </li>
           <li>运维管理系统</li>
         </ul>
       </div>
@@ -41,7 +80,7 @@
 <script>
 import mock from "../mock/index";
 import { mark, removeMarker, polyline, Polygon } from "../utils/map";
-import { Doughnut } from "../utils/echarts/scoll";
+import { Doughnut, Columnarvar } from "../utils/echarts";
 import Sdangerous from "../assets/Sdangerous.png"; //危化品车辆
 import dangBayonet from "../assets/dangBayonet.png"; //危化品卡口
 import emergency from "../assets/emergency.png"; //应急卡口
@@ -54,6 +93,14 @@ export default {
   name: "Bmap",
   data() {
     return {
+      video: [
+        { name: "南门出入口" },
+        { name: "北门出入口" },
+        { name: "边界点A" },
+        { name: "边界点B" },
+        { name: "重要机房点A"},
+        { name: "重要机房点B"},
+      ],
       map: "", //地图初始化
       point: "", //地图中心点
       whpcl: {
@@ -184,6 +231,7 @@ export default {
   },
   mounted() {
     this.Security();
+    this.Car();
   },
   methods: {
     baiduMap(map) {
@@ -459,33 +507,41 @@ export default {
     Security() {
       let Security = this.$echarts.init(document.getElementById("Security"));
       let data = {
-        legend: ["直接访问", "邮件营销", "联盟广告", "视频广告", "搜索引擎"],
+        legend: ["企业人员", "危化品从业人员", "危化品驾驶员"],
         information: [
-          { value: 335, name: "直接访问" },
-          { value: 310, name: "邮件营销" },
-          { value: 234, name: "联盟广告" },
-          { value: 135, name: "视频广告" },
-          { value: 1548, name: "搜索引擎" },
+          { value: 335, name: "企业人员" },
+          { value: 220, name: "危化品从业人员" },
+          { value: 160, name: "危化品驾驶员" },
         ],
         pieEChart: Security,
       };
       Doughnut(data);
-      console.log(Doughnut);
+    },
+    Car() {
+      let Car = this.$echarts.init(document.getElementById("Car"));
+      let data = {
+        data0: [7, 15, 22, 29, 64, 24, 32],
+        Xdata: ["9点", "10点", "11点", "12点", "13点", "14点", "15点"],
+        dataT: [7, 16, 24, 32, 68, 29, 34],
+        nameO: "入园",
+        nameT: "出园",
+        pieEChart: Car,
+      };
+      Columnarvar(data);
     },
   },
 };
 </script>
 <style scoped>
 .polyline {
-  height: 100vh;
   width: 100%;
 }
 .menubox {
-  width: 60vw;
+  width: calc(100% - 870px);
   height: 120px;
   position: absolute;
   bottom: 20px;
-  left: 20vw;
+  left: 435px;
   background: rgba(22, 22, 23, 0.3);
   border-radius: 20px;
 }
@@ -523,15 +579,15 @@ export default {
 }
 .left {
   position: absolute;
-  left: 30px;
+  left: 10px;
   top: 120px;
-  height: calc(100% - 120px);
+  height: calc(100% - 126px);
 }
 .right {
   position: absolute;
-  right: 30px;
+  right: 10px;
   top: 120px;
-  height: calc(100% - 120px);
+  height: calc(100% - 126px);
 }
 .posit {
   position: absolute;
@@ -548,31 +604,19 @@ export default {
   width: 100%;
   background: url("../assets/header.png") no-repeat 100% 100%;
   background-size: 100% 100%;
-  /* background: linear-gradient(
-    to right,
-    rgba(15, 32, 54, 0.1) 0%,
-    rgba(15, 32, 54, 0.2) 10%,
-    rgba(15, 32, 54, 0.3) 20%,
-    rgba(15, 32, 54, 0.4) 30%,
-    rgba(15, 32, 54, 0.5) 60%,
-    rgba(15, 32, 54, 0.4) 70%,
-    rgba(15, 32, 54, 0.3) 80%,
-    rgba(15, 32, 54, 0.2) 90%,
-    rgba(15, 32, 54, 0.1) 100%
-  ); */
   color: #fff;
 }
 .side {
   display: flex;
   flex-direction: column;
   height: calc(100% - 30px);
-  width: 300px;
+  width: 420px;
   justify-content: space-around;
 }
 .side > li {
   list-style: none;
   width: 100%;
-  height: 30%;
+  height: 32%;
   border-top-left-radius: 60px;
   border-top-right-radius: 20px;
   border-bottom-left-radius: 20px;
@@ -582,8 +626,9 @@ export default {
   flex-direction: column;
   align-items: flex-start;
   cursor: pointer;
+  z-index: 99;
   background: linear-gradient(
-    to right,
+    to bottom,
     rgba(22, 22, 34, 0.1) 0%,
     rgba(22, 22, 34, 0.2) 10%,
     rgba(22, 22, 34, 0.3) 20%,
@@ -595,18 +640,50 @@ export default {
     rgba(22, 22, 34, 0.1) 100%
   );
 }
-.side > li > h4 {
-  height:40px;
-  line-height: 40px;
-  padding-left:50px;
+.side > li > .title {
+  margin-top: 20px;
+  height: 32px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.title > .img {
+  height: 32px;
+  width: 32px;
+  background: url("../assets/WBS-out.png") no-repeat;
+  background-size: 100% 100%;
+  margin-right: 10px;
+}
+.title > .img:hover {
+  background: url("../assets/WBS.png") no-repeat;
+}
+.title > span {
+  padding-left: 40px;
+  color: rgb(28, 185, 255);
 }
 .echartflex {
-  flex: 1;
   width: 100%;
+  height: 100%;
 }
-#Security{
-  width:100%;
-  height:100%;
+.echartflex > ul {
+  width: calc(100% - 10px);
+  height: calc(100% - 10px);
+  margin: 5px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
 }
-
+.echartflex > ul > li {
+  width: 32%;
+  height: calc(50% - 5px);
+  border-radius: 5px;
+  box-sizing: border-box;
+  list-style-type: none;
+  /* border: 1px solid #fff; */
+}
+#Security,
+#Car {
+  width: 100%;
+  height: 100%;
+}
 </style>

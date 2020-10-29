@@ -39,9 +39,10 @@ export default {
 </script>
 <style>
 #allmap {
-  height: 100vh;
-  width: 100%;
-  background:red;
+  height: calc(100vh - 270px);
+  width: calc(100% - 870px);
+  margin:auto;
+  margin-top:13vh;
 }
 /* 去除百度地图版权那行字 和 百度logo */
 .baidumap > .BMap_cpyCtrl {
