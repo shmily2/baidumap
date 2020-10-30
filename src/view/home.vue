@@ -42,7 +42,15 @@
       </div>
       <div class="right">
         <ul class="side">
-          <li>卡口管理系统</li>
+          <li @click="Car">
+            <div class="title">
+              <span>卡口管理系统</span>
+              <div class="img"></div>
+            </div>
+            <div class="echartflex">
+              <div id="Bayonet"></div>
+            </div>
+          </li>
           <li>
             <div class="title">
               <span>重点位置视频监控</span>
@@ -80,7 +88,7 @@
 <script>
 import mock from "../mock/index";
 import { mark, removeMarker, polyline, Polygon } from "../utils/map";
-import { Doughnut, Columnarvar } from "../utils/echarts";
+import { Doughnut, Columnarvar,Rose } from "../utils/echarts";
 import Sdangerous from "../assets/Sdangerous.png"; //危化品车辆
 import dangBayonet from "../assets/dangBayonet.png"; //危化品卡口
 import emergency from "../assets/emergency.png"; //应急卡口
@@ -98,8 +106,8 @@ export default {
         { name: "北门出入口" },
         { name: "边界点A" },
         { name: "边界点B" },
-        { name: "重要机房点A"},
-        { name: "重要机房点B"},
+        { name: "重要机房点A" },
+        { name: "重要机房点B" },
       ],
       map: "", //地图初始化
       point: "", //地图中心点
@@ -232,6 +240,7 @@ export default {
   mounted() {
     this.Security();
     this.Car();
+    this.Bayonet()
   },
   methods: {
     baiduMap(map) {
@@ -504,6 +513,7 @@ export default {
         removeMarker(this.map, this.tcc.markers);
       }
     },
+    //人员
     Security() {
       let Security = this.$echarts.init(document.getElementById("Security"));
       let data = {
@@ -513,10 +523,11 @@ export default {
           { value: 220, name: "危化品从业人员" },
           { value: 160, name: "危化品驾驶员" },
         ],
-        pieEChart: Security,
+        EChart: Security,
       };
       Doughnut(data);
     },
+    //车辆运输
     Car() {
       let Car = this.$echarts.init(document.getElementById("Car"));
       let data = {
@@ -525,9 +536,17 @@ export default {
         dataT: [7, 16, 24, 32, 68, 29, 34],
         nameO: "入园",
         nameT: "出园",
-        pieEChart: Car,
+        EChart: Car,
       };
       Columnarvar(data);
+    },
+    //卡口管理服务
+    Bayonet() {
+      let Bayonet = this.$echarts.init(document.getElementById("Bayonet"));
+      let data = {
+        EChart: Bayonet,
+      };
+        Rose(data)
     },
   },
 };
@@ -682,6 +701,7 @@ export default {
   /* border: 1px solid #fff; */
 }
 #Security,
+#Bayonet,
 #Car {
   width: 100%;
   height: 100%;

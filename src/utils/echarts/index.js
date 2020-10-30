@@ -1,3 +1,4 @@
+//饼图
 export function Doughnut(data) {
     let option = {
         // tooltip: {
@@ -17,7 +18,6 @@ export function Doughnut(data) {
             },
             data: data.legend
         },
-
         series: [
             {
                 name: '人员入园管理',
@@ -58,9 +58,9 @@ export function Doughnut(data) {
             }
         ]
     };
-    data.pieEChart.setOption(option);
+    data.EChart.setOption(option);
 }
-
+//柱状图
 export function Columnarvar(data) {
     let option = {
         color: ["#1ffdef", "#44b2fd"],
@@ -96,7 +96,7 @@ export function Columnarvar(data) {
             }
         },
         yAxis: {
-            axisLine: {      
+            axisLine: {
                 show: false,
             },
             axisLabel: {
@@ -104,7 +104,7 @@ export function Columnarvar(data) {
                     color: '#fff'
                 }
             },
-            axisTick: {      
+            axisTick: {
                 show: false
             },
             splitLine: {
@@ -134,5 +134,113 @@ export function Columnarvar(data) {
             return idx * 5;
         }
     };
-    data.pieEChart.setOption(option);
+    data.EChart.setOption(option);
+}
+//南丁格尔玫瑰图
+export function Rose(data) {
+    let option = {
+        // backgroundColor: '#2c343c',
+        // title: {
+        //     text: 'Customized Pie',
+        //     left: 'center',
+        //     top: 20,
+        //     textStyle: {
+        //         color: '#ccc'
+        //     }
+        // },
+        tooltip: {
+            trigger: 'item',
+            formatter: '{a} <br/>{b} : {c} ({d}%)'
+        },
+        visualMap: {
+            show: false,
+            min: 150,
+            max: 700,
+            inRange: {
+                colorLightness: [0, 1]
+            }
+        },
+        series: [
+            {
+                name: '访问来源',
+                type: 'pie',
+                radius: '70%',
+                center: ['50%', '50%'],
+                data: [
+                    {
+                        value: 335, name: '直接访问', itemStyle: {
+                            color: '#33f8b3',
+
+                        },
+                    },
+                    {
+                        value: 310, name: '邮件营销', itemStyle: {
+                            color: '#47b3fe',
+
+                        },
+                    },
+                    {
+                        value: 274, name: '联盟广告', itemStyle: {
+                            color: '#fffc37',
+
+                        },
+                    },
+                    {
+                        value: 235, name: '视频广告', itemStyle: {
+                            color: 'orange',
+                        },
+                    },
+                    {
+                        value: 400, name: '搜索引擎', itemStyle: {
+                            color: '#1DE516',
+
+                        },
+                    }
+                ].sort(function (a, b) { return a.value - b.value; }),
+                roseType: 'radius',
+                label: {
+                    // color: '#fff'
+                    fontSize: 16,
+                    formatter: function (val) {   //让series 中的文字进行换行
+                        return val.data.name + "\n" + "{b|" + val.data.value +"件}"+"{c|"+ "(" + val.percent + "%" + ")" + "}";
+                    },
+                    rich: {
+                        b: {
+                            fontSize: 16,
+                            fontFamily: "微软雅黑",
+                            // color: "#fff",
+                            lineHeight: 30
+                        },
+                        c:{
+                            fontSize: 12,
+                            fontFamily: "微软雅黑",
+                            // color: "#fff",
+                            lineHeight: 30
+                        }
+                    }
+                },
+                labelLine: {
+                    lineStyle: {
+                        type: 'dashed'
+                    },
+                    smooth: 0.2,
+                    length: 10,
+                    length2: 20
+                },
+                itemStyle: {
+                    color: '#c23531',
+                    shadowBlur: 200,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                },
+
+                animationType: 'scale',
+                animationEasing: 'elasticOut',
+                animationDelay: function (idx) {
+                    return Math.random() * 200;
+                }
+            }
+
+        ]
+    };
+    data.EChart.setOption(option);
 }
