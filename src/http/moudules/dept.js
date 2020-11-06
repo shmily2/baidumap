@@ -85,3 +85,18 @@ export const parkingLot = () => {
         method: "post"
     })
 }
+//运维管理maintenance
+export const maintenance=()=>{
+    return axios({
+        url:"dept/maintenance",
+        method: "post"
+    })
+}
+//天气
+export const weather=(data)=>{
+    return axios({
+        url:"https://v0.yiketianqi.com/api",
+        method: "get",
+        data:data
+    })
+}

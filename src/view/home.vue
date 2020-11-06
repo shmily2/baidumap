@@ -14,14 +14,35 @@
         </li>
       </ul>
     </div>
-    <div class="qyhead"></div>
+    <div class="qyhead">
+      <div>
+        <!-- <img src="../assets/cheliangguanli.png" />
+        <img src="../assets/renyuanguanli.png" />
+        <img src="../assets/shipin.png" />
+        <img src="../assets/yunweizhongxin.png" />
+        <img src="../assets/anquanjiaoyu.png" />
+        <img src="../assets/kakou.png" /> -->
+      </div>
+      <div class="weather">
+        <div class="weatherleft">
+          <img :src="wea_img" />
+          <p>{{ weatherData.wea }}</p>
+          <p>{{ weatherData.tem2 }} ~ {{ weatherData.tem1 }}℃</p>
+        </div>
+        <div class="weatherleft">
+          <p>{{ weatherData.date }}</p>
+          <p>{{ weatherData.week }}</p>
+          <p>{{ hourtime }}</p>
+        </div>
+      </div>
+    </div>
     <div class="operation">
       <div class="left">
         <ul class="side">
           <li @click="Security">
             <div class="title">
               <span>人员入园管理</span>
-              <div class="img"></div>
+              <!-- <div class="img"></div> -->
             </div>
             <div class="echartflex">
               <div id="Security"></div>
@@ -30,14 +51,22 @@
           <li @click="Car">
             <div class="title">
               <span>车辆运输管理</span>
-              <div class="img"></div>
+              <!-- <div class="img"></div> -->
             </div>
             <div class="echartflex">
               <div id="Car"></div>
             </div>
           </li>
 
-          <li>安全教育</li>
+          <li @click="education">
+            <div class="title">
+              <span>安全教育</span>
+              <!-- <div class="img"></div> -->
+            </div>
+            <div class="echartflex">
+              <div id="education"></div>
+            </div>
+          </li>
         </ul>
       </div>
       <div class="right">
@@ -45,7 +74,7 @@
           <li @click="Car">
             <div class="title">
               <span>卡口管理系统</span>
-              <div class="img"></div>
+              <!-- <div class="img"></div> -->
             </div>
             <div class="echartflex">
               <div id="Bayonet"></div>
@@ -54,7 +83,7 @@
           <li>
             <div class="title">
               <span>重点位置视频监控</span>
-              <div class="img"></div>
+              <!-- <div class="img"></div> -->
             </div>
             <div class="echartflex">
               <ul>
@@ -79,7 +108,39 @@
               </ul>
             </div>
           </li>
-          <li>运维管理系统</li>
+          <li @click="maintenance">
+            <div class="title">
+              <span>运维管理系统</span>
+              <!-- <div class="img"></div> -->
+            </div>
+            <div class="maintenance">
+              <div class="headtitle">
+                <ul class="title">
+                  <li>人员</li>
+                  <li>时间</li>
+                  <li>电脑ip</li>
+                </ul>
+                <div id="review_box">
+                  <ul
+                    id="inner-container"
+                    @mouseover="move"
+                    @mouseout="out"
+                    class="trans"
+                  >
+                    <li
+                      class="text"
+                      v-for="(list, index) in maintenancepre"
+                      :key="index"
+                    >
+                      <div>{{ list.name }}</div>
+                      <div>{{ list.time }}</div>
+                      <div>{{ list.ip }}</div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </li>
         </ul>
       </div>
     </div>
@@ -87,8 +148,9 @@
 </template>
 <script>
 import mock from "../mock/index";
+import axios from "axios";
 import { mark, removeMarker, polyline, Polygon } from "../utils/map";
-import { Doughnut, Columnarvar,Rose } from "../utils/echarts";
+import { Doughnut, Columnarvar, Rose } from "../utils/echarts";
 import Sdangerous from "../assets/Sdangerous.png"; //危化品车辆
 import dangBayonet from "../assets/dangBayonet.png"; //危化品卡口
 import emergency from "../assets/emergency.png"; //应急卡口
@@ -97,10 +159,24 @@ import cardProcessingCenter from "../assets/cardProcessingCenter.png"; //办卡�
 import gunMachine from "../assets/gunMachine.png"; //枪机
 import domeCameras from "../assets/domeCameras.png"; //球机
 import parkingLot from "../assets/parkingLot.png"; //停车场
+import { datetime } from "../utils/time";
 export default {
   name: "Bmap",
   data() {
     return {
+      timer: null, // 定时器名称
+      wea_img: "",
+      hourtime: "",
+      xue: require("../assets/xue.png"),
+      lei: require("../assets/lei.png"),
+      shachen: require("../assets/shachen.png"),
+      wu: require("../assets/wu.png"),
+      bingbao: require("../assets/bingbao.png"),
+      yun: require("../assets/yun.png"),
+      yu: require("../assets/yu.png"),
+      yin: require("../assets/yin.png"),
+      qing: require("../assets/qing.png"),
+      weatherData: "",
       video: [
         { name: "南门出入口" },
         { name: "北门出入口" },
@@ -111,6 +187,7 @@ export default {
       ],
       map: "", //地图初始化
       point: "", //地图中心点
+      maintenancepre: [], //运维管理
       whpcl: {
         markers: [],
         infoWindow: "",
@@ -240,7 +317,10 @@ export default {
   mounted() {
     this.Security();
     this.Car();
-    this.Bayonet()
+    this.Bayonet();
+    this.education();
+    this.maintenance();
+    this.weather();
   },
   methods: {
     baiduMap(map) {
@@ -545,8 +625,128 @@ export default {
       let Bayonet = this.$echarts.init(document.getElementById("Bayonet"));
       let data = {
         EChart: Bayonet,
+        name: "直接访问",
+        data: [
+          {
+            value: 335,
+            name: "直接访问",
+            itemStyle: {
+              color: "#33f8b3",
+            },
+          },
+          {
+            value: 310,
+            name: "邮件营销",
+            itemStyle: {
+              color: "#47b3fe",
+            },
+          },
+          {
+            value: 274,
+            name: "联盟广告",
+            itemStyle: {
+              color: "#fffc37",
+            },
+          },
+          {
+            value: 235,
+            name: "视频广告",
+            itemStyle: {
+              color: "orange",
+            },
+          },
+          {
+            value: 400,
+            name: "搜索引擎",
+            itemStyle: {
+              color: "#1DE516",
+            },
+          },
+        ],
       };
-        Rose(data)
+      Rose(data);
+    },
+    //安全教育
+    education() {
+      let education = this.$echarts.init(document.getElementById("education"));
+      let data = {
+        EChart: education,
+        // name: "食堂工作",
+        data: [
+          {
+            value: 20,
+            name: "食堂工作",
+            itemStyle: {
+              color: "#1DE516",
+            },
+          },
+          {
+            value: 30,
+            name: "安保人员",
+            itemStyle: {
+              color: "#fffc37",
+            },
+          },
+          {
+            value: 6,
+            name: "清洁人员",
+            itemStyle: {
+              color: "#33f8b3",
+            },
+          },
+          {
+            value: 125,
+            name: "教师",
+            itemStyle: {
+              color: "#47b3fe",
+            },
+          },
+        ],
+      };
+      Rose(data);
+    },
+    //运维管理
+    maintenance() {
+      this.$api.dept.maintenance().then((res) => {
+        this.maintenancepre = res.data;
+        this.timer = setInterval(() => {
+          this.maintenancepre.push(this.maintenancepre[0]);
+          this.maintenancepre.shift();
+        }, 2000);
+      });
+    },
+    move() {
+      clearInterval(this.timer);
+      this.timer = null;
+    },
+    out() {
+      this.timer = setInterval(() => {
+        this.maintenancepre.push(this.maintenancepre[0]);
+        this.maintenancepre.shift();
+      }, 2000);
+    },
+    //天气
+    weather() {
+      axios
+        .get("https://v0.yiketianqi.com/api", {
+          params: {
+            vue: 1,
+            appid: "11149282",
+            appsecret: "jWblPH7l",
+            city: "南京",
+            version: "v61",
+            province: "江苏",
+          },
+        })
+        .then((res) => {
+          this.weatherData = res.data;
+          this.wea_img = require("../assets/" +
+            this.weatherData.wea_img +
+            ".png");
+          setInterval(() => {
+            this.hourtime = datetime();
+          }, 1000);
+        });
     },
   },
 };
@@ -619,11 +819,30 @@ export default {
   top: 0;
   left: 0;
   height: 120px;
-  line-height: 120px;
   width: 100%;
   background: url("../assets/header.png") no-repeat 100% 100%;
   background-size: 100% 100%;
   color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.weather {
+  display: flex;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 30px;
+}
+.weatherleft {
+  display: flex;
+  align-content: center;
+  margin-right: 30px;
+}
+.weatherleft > img {
+  padding-right: 10px;
+}
+.weatherleft > p {
+  padding-right: 20px;
 }
 .side {
   display: flex;
@@ -702,8 +921,50 @@ export default {
 }
 #Security,
 #Bayonet,
+#education,
 #Car {
   width: 100%;
   height: 100%;
+}
+.maintenance {
+  width: 100%;
+  height: calc(100% - 52px);
+}
+.headtitle {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.title {
+  height: 30px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.title > li {
+  list-style: none;
+  width: 33%;
+  text-align: center;
+  color: #9fa89d;
+}
+#review_box {
+  flex: 1;
+  width: 100%;
+  overflow: hidden;
+}
+#comment {
+  height: 100%;
+  width: 100%;
+}
+#inner-container > li {
+  width: 100%;
+  height: 30px;
+  display: flex;
+}
+#inner-container > li > div {
+  list-style: none;
+  width: 33%;
+  text-align: center;
 }
 </style>

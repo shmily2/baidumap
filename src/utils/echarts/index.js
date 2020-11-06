@@ -152,51 +152,13 @@ export function Rose(data) {
             trigger: 'item',
             formatter: '{a} <br/>{b} : {c} ({d}%)'
         },
-        visualMap: {
-            show: false,
-            min: 150,
-            max: 700,
-            inRange: {
-                colorLightness: [0, 1]
-            }
-        },
         series: [
             {
-                name: '访问来源',
+                name: data.name,
                 type: 'pie',
                 radius: '70%',
                 center: ['50%', '50%'],
-                data: [
-                    {
-                        value: 335, name: '直接访问', itemStyle: {
-                            color: '#33f8b3',
-
-                        },
-                    },
-                    {
-                        value: 310, name: '邮件营销', itemStyle: {
-                            color: '#47b3fe',
-
-                        },
-                    },
-                    {
-                        value: 274, name: '联盟广告', itemStyle: {
-                            color: '#fffc37',
-
-                        },
-                    },
-                    {
-                        value: 235, name: '视频广告', itemStyle: {
-                            color: 'orange',
-                        },
-                    },
-                    {
-                        value: 400, name: '搜索引擎', itemStyle: {
-                            color: '#1DE516',
-
-                        },
-                    }
-                ].sort(function (a, b) { return a.value - b.value; }),
+                data: data.data.sort(function (a, b) { return a.value - b.value; }),
                 roseType: 'radius',
                 label: {
                     // color: '#fff'
