@@ -1,147 +1,190 @@
 <template>
-  <div class="polyline">
-    <mapview @baiduMap="baiduMap"></mapview>
-    <!-- 菜单 -->
-    <div class="menubox">
-      <ul class="menu">
-        <li
-          v-for="(item, index) in muen"
-          :key="item.id"
-          :class="{ choice: item.show }"
-          @click="operation(item, index)"
-        >
-          {{ item.name }}
-        </li>
-      </ul>
-    </div>
-    <div class="qyhead">
-      <div>
-        <!-- <img src="../assets/cheliangguanli.png" />
-        <img src="../assets/renyuanguanli.png" />
-        <img src="../assets/shipin.png" />
-        <img src="../assets/yunweizhongxin.png" />
-        <img src="../assets/anquanjiaoyu.png" />
-        <img src="../assets/kakou.png" /> -->
-      </div>
-      <div class="weather">
-        <div class="weatherleft">
-          <img :src="wea_img" />
-          <p>{{ weatherData.wea }}</p>
-          <p>{{ weatherData.tem2 }} ~ {{ weatherData.tem1 }}℃</p>
-        </div>
-        <div class="weatherleft">
-          <p>{{ weatherData.date }}</p>
-          <p>{{ weatherData.week }}</p>
-          <p>{{ hourtime }}</p>
-        </div>
-      </div>
-    </div>
-    <div class="operation">
-      <div class="left">
-        <ul class="side">
-          <li @click="Security">
-            <div class="title">
-              <span>人员入园管理</span>
-              <!-- <div class="img"></div> -->
-            </div>
-            <div class="echartflex">
-              <div id="Security"></div>
-            </div>
-          </li>
-          <li @click="Car">
-            <div class="title">
-              <span>车辆运输管理</span>
-              <!-- <div class="img"></div> -->
-            </div>
-            <div class="echartflex">
-              <div id="Car"></div>
-            </div>
-          </li>
-
-          <li @click="education">
-            <div class="title">
-              <span>安全教育</span>
-              <!-- <div class="img"></div> -->
-            </div>
-            <div class="echartflex">
-              <div id="education"></div>
-            </div>
+  <div class="indexpage">
+    <div class="polyline">
+      <mapview @baiduMap="baiduMap"></mapview>
+      <!-- 菜单 -->
+      <div class="menubox">
+        <ul class="menu">
+          <li
+            v-for="(item, index) in muen"
+            :key="item.id"
+            :class="{ choice: item.show }"
+            @click="operation(item, index)"
+          >
+            {{ item.name }}
           </li>
         </ul>
       </div>
-      <div class="right">
-        <ul class="side">
-          <li @click="Car">
-            <div class="title">
-              <span>卡口管理系统</span>
-              <!-- <div class="img"></div> -->
-            </div>
-            <div class="echartflex">
-              <div id="Bayonet"></div>
-            </div>
-          </li>
-          <li>
-            <div class="title">
-              <span>重点位置视频监控</span>
-              <!-- <div class="img"></div> -->
-            </div>
-            <div class="echartflex">
-              <ul>
-                <li v-for="(vide, index) in video" :key="index">
-                  <video
-                    controls
-                    autoplay
-                    loop
-                    style="
-                      border-radius: 5px;
-                      width: 100%;
-                      border: 1px solid #fff;
-                    "
-                  >
-                    <source
-                      src="https://linkingvision.com/download/h5stream/video/h5ssample.mp4"
-                      type="video/mp4"
-                    />
-                  </video>
-                  <h5>{{ vide.name }}</h5>
-                </li>
-              </ul>
-            </div>
-          </li>
-          <li @click="maintenance">
-            <div class="title">
-              <span>运维管理系统</span>
-              <!-- <div class="img"></div> -->
-            </div>
-            <div class="maintenance">
-              <div class="headtitle">
-                <ul class="title">
-                  <li>人员</li>
-                  <li>时间</li>
-                  <li>电脑ip</li>
-                </ul>
-                <div id="review_box">
-                  <ul
-                    id="inner-container"
-                    @mouseover="move"
-                    @mouseout="out"
-                    class="trans"
-                  >
-                    <li
-                      class="text"
-                      v-for="(list, index) in maintenancepre"
-                      :key="index"
+      <div class="qyhead">
+        <div class="weatherright">
+          <router-link
+            :to="{ name: 'security' }"
+            tag="div"
+            class="but scale-img"
+          >
+            <img src="../assets/anquanjiaoyu.png" />
+            <p>安全教育</p>
+          </router-link>
+          <router-link
+            :to="{ name: 'maintenance' }"
+            tag="div"
+            class="but scale-img"
+          >
+            <img src="../assets/yunweizhongxin.png" />
+            <p>运维中心</p>
+          </router-link>
+          <router-link
+            :to="{ name: 'personnel' }"
+            tag="div"
+            class="but scale-img"
+          >
+            <img src="../assets/renyuanguanli.png" />
+            <p>人员管理</p>
+          </router-link>
+          <router-link
+            :to="{ name: 'vehicle' }"
+            tag="div"
+            class="but scale-img"
+          >
+            <img src="../assets/cheliangguanli.png" />
+            <p>车辆管理</p>
+          </router-link>
+          <router-link
+            :to="{ name: 'Bayonet' }"
+            tag="div"
+            class="but scale-img"
+          >
+            <img src="../assets/kakou.png" />
+            <p>卡口管理</p>
+          </router-link>
+          <router-link :to="{ name: 'Video' }" tag="div" class="but scale-img">
+            <img src="../assets/shipin.png" />
+            <p>视频管理</p>
+          </router-link>
+          <router-link :to="{ name: 'login' }" tag="div" class="but scale-img">
+            <img src="../assets/Logout.png" />
+            <p>退出登录</p>
+          </router-link>
+        </div>
+        <div class="weather">
+          <div class="weatherleft">
+            <img :src="wea_img" />
+            <p>{{ weatherData.wea }}</p>
+            <p>{{ weatherData.tem2 }} ~ {{ weatherData.tem1 }}℃</p>
+          </div>
+          <div class="weatherleft">
+            <p>{{ weatherData.date }}</p>
+            <p>{{ weatherData.week }}</p>
+            <p>{{ hourtime }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="operation">
+        <div class="left">
+          <ul class="side">
+            <li @click="Security">
+              <div class="title">
+                <span>人员入园管理</span>
+                <!-- <div class="img"></div> -->
+              </div>
+              <div class="echartflex">
+                <div id="Security"></div>
+              </div>
+            </li>
+            <li @click="Car">
+              <div class="title">
+                <span>车辆运输管理</span>
+                <!-- <div class="img"></div> -->
+              </div>
+              <div class="echartflex">
+                <div id="Car"></div>
+              </div>
+            </li>
+            <li @click="education">
+              <div class="title">
+                <span>安全教育</span>
+                <!-- <div class="img"></div> -->
+              </div>
+              <div class="echartflex">
+                <div id="education"></div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="right">
+          <ul class="side">
+            <li @click="Car">
+              <div class="title">
+                <span>卡口管理系统</span>
+                <!-- <div class="img"></div> -->
+              </div>
+              <div class="echartflex">
+                <div id="Bayonet"></div>
+              </div>
+            </li>
+            <li>
+              <div class="title">
+                <span>重点位置视频监控</span>
+                <!-- <div class="img"></div> -->
+              </div>
+              <div class="echartflex">
+                <ul>
+                  <li v-for="(vide, index) in video" :key="index">
+                    <video
+                      controls
+                      autoplay
+                      loop
+                      style="
+                        border-radius: 5px;
+                        width: 100%;
+                        border: 1px solid #fff;
+                      "
                     >
-                      <div>{{ list.name }}</div>
-                      <div>{{ list.time }}</div>
-                      <div>{{ list.ip }}</div>
-                    </li>
+                      <source
+                        src="https://linkingvision.com/download/h5stream/video/h5ssample.mp4"
+                        type="video/mp4"
+                      />
+                    </video>
+                    <h5>{{ vide.name }}</h5>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li @click="maintenance">
+              <div class="title">
+                <span>运维管理系统</span>
+                <!-- <div class="img"></div> -->
+              </div>
+              <div class="maintenance">
+                <div class="headtitle">
+                  <ul class="title">
+                    <li>人员</li>
+                    <li>时间</li>
+                    <li>电脑ip</li>
                   </ul>
+                  <div id="review_box">
+                    <ul
+                      id="inner-container"
+                      @mouseover="move"
+                      @mouseout="out"
+                      class="trans"
+                    >
+                      <li
+                        class="text"
+                        v-for="(list, index) in maintenancepre"
+                        :key="index"
+                      >
+                        <div>{{ list.name }}</div>
+                        <div>{{ list.time }}</div>
+                        <div>{{ list.ip }}</div>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
               </div>
-            </div>
-          </li>
-        </ul>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
@@ -652,7 +695,7 @@ export default {
             value: 235,
             name: "视频广告",
             itemStyle: {
-              color: "orange",
+              color: "#ffa500",
             },
           },
           {
@@ -674,21 +717,21 @@ export default {
         // name: "食堂工作",
         data: [
           {
-            value: 20,
+            value: 60,
             name: "食堂工作",
             itemStyle: {
               color: "#1DE516",
             },
           },
           {
-            value: 30,
+            value: 90,
             name: "安保人员",
             itemStyle: {
               color: "#fffc37",
             },
           },
           {
-            value: 6,
+            value: 50,
             name: "清洁人员",
             itemStyle: {
               color: "#33f8b3",
@@ -752,6 +795,12 @@ export default {
 };
 </script>
 <style scoped>
+.indexpage {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background: rgba(8, 48, 74, 1);
+}
 .polyline {
   width: 100%;
 }
@@ -838,11 +887,17 @@ export default {
   align-content: center;
   margin-right: 30px;
 }
+.weatherright {
+  display: flex;
+}
 .weatherleft > img {
   padding-right: 10px;
 }
 .weatherleft > p {
   padding-right: 20px;
+}
+.scale-img:hover img {
+  transform: scale3d(1.3, 1.3, 1.3);
 }
 .side {
   display: flex;
@@ -935,6 +990,14 @@ export default {
   width: 100%;
   display: flex;
   flex-direction: column;
+}
+.but {
+  cursor: pointer;
+  padding-left: 20px;
+}
+.but > p {
+  font-size: 14px;
+  width: 58px;
 }
 .title {
   height: 30px;

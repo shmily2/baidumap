@@ -156,7 +156,7 @@ export function Rose(data) {
             {
                 name: data.name,
                 type: 'pie',
-                radius: '70%',
+                radius: '60%',
                 center: ['50%', '50%'],
                 data: data.data.sort(function (a, b) { return a.value - b.value; }),
                 roseType: 'radius',
