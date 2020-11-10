@@ -18,39 +18,9 @@ export default new Router({
             meta: { keepAlive: true }
         },
         {
-            path: "/security",
-            name: "security",
-            component:()=>import("../view/security/index.vue"),
-            meta: { keepAlive: true } 
-        },
-        {
-            path: "/personnel",
-            name: "personnel",
-            component:()=>import("../view/personnel/index.vue"),
-            meta: { keepAlive: true } 
-        },
-        {
-            path: "/maintenance",
-            name: "maintenance",
-            component:()=>import("../view/maintenance/index.vue"),
-            meta: { keepAlive: true } 
-        },
-        {
-            path: "/vehicle",
-            name: "vehicle",
-            component:()=>import("../view/vehicle/index.vue"),
-            meta: { keepAlive: true } 
-        },
-        {
-            path: "/Bayonet",
-            name: "Bayonet",
-            component:()=>import("../view/Bayonet/index.vue"),
-            meta: { keepAlive: true } 
-        },
-        {
-            path: "/Video",
-            name: "Video",
-            component:()=>import("../view/Video/index.vue"),
+            path: "/mainPage",
+            name: "mainPage",
+            component:()=>import("../view/mainPage.vue"),
             meta: { keepAlive: true } 
         },
 

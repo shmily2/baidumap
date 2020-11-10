@@ -18,7 +18,7 @@
       <div class="qyhead">
         <div class="weatherright">
           <router-link
-            :to="{ name: 'security' }"
+            :to="{ name: 'mainPage' }"
             tag="div"
             class="but scale-img"
           >
@@ -26,7 +26,7 @@
             <p>安全教育</p>
           </router-link>
           <router-link
-            :to="{ name: 'maintenance' }"
+            :to="{ name: 'mainPage' }"
             tag="div"
             class="but scale-img"
           >
@@ -34,7 +34,7 @@
             <p>运维中心</p>
           </router-link>
           <router-link
-            :to="{ name: 'personnel' }"
+            :to="{ name: 'mainPage' }"
             tag="div"
             class="but scale-img"
           >
@@ -42,7 +42,7 @@
             <p>人员管理</p>
           </router-link>
           <router-link
-            :to="{ name: 'vehicle' }"
+            :to="{ name: 'mainPage' }"
             tag="div"
             class="but scale-img"
           >
@@ -50,14 +50,14 @@
             <p>车辆管理</p>
           </router-link>
           <router-link
-            :to="{ name: 'Bayonet' }"
+            :to="{ name: 'mainPage' }"
             tag="div"
             class="but scale-img"
           >
             <img src="../assets/kakou.png" />
             <p>卡口管理</p>
           </router-link>
-          <router-link :to="{ name: 'Video' }" tag="div" class="but scale-img">
+          <router-link :to="{ name: 'mainPage' }" tag="div" class="but scale-img">
             <img src="../assets/shipin.png" />
             <p>视频管理</p>
           </router-link>
