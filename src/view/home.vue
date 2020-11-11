@@ -22,44 +22,8 @@
             tag="div"
             class="but scale-img"
           >
-            <img src="../assets/anquanjiaoyu.png" />
-            <p>安全教育</p>
-          </router-link>
-          <router-link
-            :to="{ name: 'mainPage' }"
-            tag="div"
-            class="but scale-img"
-          >
-            <img src="../assets/yunweizhongxin.png" />
-            <p>运维中心</p>
-          </router-link>
-          <router-link
-            :to="{ name: 'mainPage' }"
-            tag="div"
-            class="but scale-img"
-          >
-            <img src="../assets/renyuanguanli.png" />
-            <p>人员管理</p>
-          </router-link>
-          <router-link
-            :to="{ name: 'mainPage' }"
-            tag="div"
-            class="but scale-img"
-          >
-            <img src="../assets/cheliangguanli.png" />
-            <p>车辆管理</p>
-          </router-link>
-          <router-link
-            :to="{ name: 'mainPage' }"
-            tag="div"
-            class="but scale-img"
-          >
-            <img src="../assets/kakou.png" />
-            <p>卡口管理</p>
-          </router-link>
-          <router-link :to="{ name: 'mainPage' }" tag="div" class="but scale-img">
-            <img src="../assets/shipin.png" />
-            <p>视频管理</p>
+            <span class="el-icon-right" style="font-size:36px;color:#1DE516"></span>
+            <p>进入</p>
           </router-link>
           <router-link :to="{ name: 'login' }" tag="div" class="but scale-img">
             <img src="../assets/Logout.png" />
