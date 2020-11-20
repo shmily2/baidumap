@@ -9,14 +9,14 @@ Vue.use(Router)
 export const constantRouterMap = [
     {
         path: "/",
-        name: "home",
-        component: Home,
+        name: "login",
+        component: login,
         meta: { keepAlive: true }
     },
     {
-        path: "/login",
-        name: "login",
-        component: login,
+        path: "/home",
+        name: "home",
+        component: Home,
         meta: { keepAlive: true }
     },
     {

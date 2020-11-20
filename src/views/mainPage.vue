@@ -2,12 +2,136 @@
   <div class="box">
     <cephalosome :moduleName="moduleName" :info="info"></cephalosome>
     <div class="cententbox">
-      <div class="left">
-        <navbar></navbar>
-      </div>
-      <div class="right">
-        <div class="centent">
-         <router-view></router-view>
+      <div class="bottom" :class="{ height: this.$store.getters.headfixed }">
+        <div class="left">
+          <navbar></navbar>
+        </div>
+        <div class="right">
+          <div class="centent">
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>fdsafdsa</p>
+            <p>打发的撒多</p>
+            <el-button type="primary">确定</el-button>
+            <el-drawer :visible.sync="drawer" direction="rtl" size="280px">
+              <div class="drawerView">
+                <span>{{$t('theme.theme')}}</span>
+                <themePicker></themePicker>
+              </div>
+              <div class="drawerView">
+                <span>{{$t('route.head')}}</span>
+                <el-switch
+                  v-model="value"
+                  active-color="#13ce66"
+                  inactive-color="#ff4949"
+                  @change="change"
+                ></el-switch>
+              </div>
+            </el-drawer>
+            <router-view></router-view>
+            <div
+              class="el-icon-s-tools setUp"
+              @click="drawer = true"
+              :class="{ drawer: drawer }"
+            ></div>
+          </div>
         </div>
       </div>
     </div>
@@ -18,7 +142,9 @@ export default {
   name: "mainPage",
   data() {
     return {
-      moduleName: "智慧园区管控系统",
+      value: true,
+      drawer: false,
+      color1: "#409EFF",
       info: {
         circleUrl:
           "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
@@ -26,14 +152,35 @@ export default {
       },
     };
   },
-  created() {},
-  methods: {},
+  created() {
+    window.onresize = () => {
+      return (() => {
+        if (document.body.clientWidth < 998) {
+          this.$store.dispatch("onCollapse", true);
+        }
+      })();
+    };
+  },
+  computed: {
+    moduleName() {
+      return this.$t("login.companyName");
+    },
+  },
+  methods: {
+    handleClose(done) {
+      this.$confirm("确认关闭？")
+        .then((_) => {
+          done();
+        })
+        .catch((_) => {});
+    },
+    change() {
+      this.$store.dispatch("onHeadfixed", this.value);
+    },
+  },
 };
 </script>
 <style scoped >
-.el-menu-vertical-demo:not(.el-menu--collapse) {
-  height: 100%;
-}
 .box {
   height: 100%;
   width: 100%;
@@ -41,12 +188,17 @@ export default {
   flex-direction: column;
 }
 .cententbox {
-  flex: 1;
+  height: calc(100% - 90px);
   width: 100%;
+  position: relative;
+}
+.bottom {
   display: flex;
 }
-.left {
+.height {
   height: 100%;
+}
+.left {
   background: rgb(84, 92, 100);
 }
 .right {
@@ -55,11 +207,33 @@ export default {
 }
 .centent {
   text-align: left;
+  height: 100%;
+  overflow: auto;
+  position: relative;
+}
+.setUp {
+  font-size: 30px;
+  color: rgb(36, 89, 233);
+  position: fixed;
+  right: 20px;
+  bottom: 50%;
+}
+.drawer {
+  right: 280px;
+}
+.drawerView {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+}
+.drawerView > span {
+  margin: 0 10px 0 30px;
 }
 </style>
 <style lang="scss">
 .el-menu-vertical-demo:not(.el-menu--collapse) {
-  width: 200px;
-  min-height: 400px;
+  min-width: 220px;
+  overflow: auto;
+  height: 100%;
 }
 </style>

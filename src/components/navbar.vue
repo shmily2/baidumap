@@ -1,14 +1,13 @@
 <template>
-  <div>
     <el-menu
       default-active="2"
       class="el-menu-vertical-demo"
       @open="handleOpen"
       @close="handleClose"
+      unique-opened
       background-color="#545c64"
       text-color="#fff"
       active-text-color="#ffd04b"
-      unique-opened
       router
       :collapse="this.$store.getters.collapse"
     >
@@ -66,7 +65,6 @@
         <span slot="title">视频管理</span>
       </el-menu-item>
     </el-menu>
-  </div>
 </template>
 <script>
 export default {

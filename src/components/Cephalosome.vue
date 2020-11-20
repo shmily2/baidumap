@@ -3,25 +3,27 @@
     <div class="hedleft">
       <span
         class="toogle"
-        :class="[this.$store.getters.collapse ? 'el-icon-s-fold ' : 'el-icon-s-unfold']"
+        :class="[
+          this.$store.getters.collapse ? 'el-icon-s-fold ' : 'el-icon-s-unfold',
+        ]"
         @click="tooglebut"
       ></span>
-      <span class="logname">{{moduleName}}</span>
+      <span class="logname">{{ moduleName }}</span>
     </div>
     <div>
       <div class="basic">
-        <el-popover placement="bottom" width="260" trigger="click">
+        <el-popover placement="bottom" width="260" trigger="hover">
           <div class="popovercentent">
             <el-button type="success" class="home" @click="homepage"
-              >返回首页</el-button
+              >{{$t('navbar.dashboard')}}</el-button
             >
             <el-button type="danger" class="login" @click="Logout"
-              >退出登录</el-button
+              >{{$t('navbar.logOut')}}</el-button
             >
           </div>
           <div class="basicCircle" slot="reference">
             <el-avatar size="large" :src="info.circleUrl"></el-avatar>
-            <span>{{info.name}}</span>
+            <span>{{ info.name }}</span>
           </div>
         </el-popover>
       </div>
@@ -31,7 +33,7 @@
 <script>
 export default {
   name: "Cephalosome",
-  props:["moduleName","info"],
+  props: ["moduleName", "info"],
   methods: {
     tooglebut() {
       this.$store.dispatch("onCollapse");
@@ -45,11 +47,12 @@ export default {
   },
 };
 </script>
-<style scoped>
+<style scoped lang="scss">
 header {
-  padding: 20px 0;
+  height: 80px;
   width: 100%;
   display: flex;
+  z-index: 999;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
@@ -94,11 +97,21 @@ header {
 .basicCircle > span {
   margin-left: 10px;
 }
+.basicCircle > span:first-child {
+  margin-left: 30px;
+}
 .popovercentent {
   display: flex;
   flex-direction: column;
 }
 .login {
   margin-top: 10px;
+}
+</style>
+<style lang="scss">
+.popovercentent{
+  .el-button+.el-button {
+     margin-left: 0px; 
+}
 }
 </style>

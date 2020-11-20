@@ -22,12 +22,12 @@
             tag="div"
             class="but scale-img"
           >
-            <span class="el-icon-right" style="font-size:36px;color:#1DE516"></span>
-            <p>进入</p>
+            <img src="../assets/getInto.png" />
+            <p>{{$t("navbar.getInto")}}</p>
           </router-link>
           <router-link :to="{ name: 'login' }" tag="div" class="but scale-img">
             <img src="../assets/Logout.png" />
-            <p>退出登录</p>
+            <p>{{$t("navbar.logOut")}}</p>
           </router-link>
         </div>
         <div class="weather">
