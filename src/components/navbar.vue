@@ -5,7 +5,7 @@
       @open="handleOpen"
       @close="handleClose"
       unique-opened
-      background-color="#545c64"
+      :background-color="themeColor"
       text-color="#fff"
       active-text-color="#ffd04b"
       router
@@ -67,6 +67,7 @@
     </el-menu>
 </template>
 <script>
+import {mapState} from "vuex"
 export default {
   name: "navbar",
   methods: {
@@ -77,6 +78,11 @@ export default {
       console.log(key, keyPath);
     },
   },
+  computed:{
+    ...mapState({
+      themeColor: (state) => state.app.themeColor,
+    })
+  }
 };
 </script>
 <style lange="scss">

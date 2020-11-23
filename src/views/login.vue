@@ -7,21 +7,23 @@
       label-width="80px"
       class="login-form"
     >
-      <el-popover
-        trigger="click"
-        ref="popover"
-        placement="top"
-        width="160"
-        v-model="visible"
-      >
-        <el-radio-group v-model="lang" @change="changeLanguage">
-          <el-radio-button label="zh" size="small">中文</el-radio-button>
-          <el-radio-button label="en" size="small">English</el-radio-button>
-        </el-radio-group>
-      </el-popover>
       <h2 class="login-title">
         <span>{{ $t("login.title") }}</span>
         <div v-popover:popover class="fa fa-language"></div>
+        <div class="popover">
+          <el-popover
+            trigger="click"
+            ref="popover"
+            placement="top"
+            width="160"
+            v-model="visible"
+          >
+            <el-radio-group v-model="lang" @change="changeLanguage">
+              <el-radio-button label="zh" size="small">中文</el-radio-button>
+              <el-radio-button label="en" size="small">English</el-radio-button>
+            </el-radio-group>
+          </el-popover>
+        </div>
       </h2>
       <el-form-item :label="$t('login.username')" prop="username">
         <el-input v-model="form.username"></el-input>
@@ -30,7 +32,9 @@
         <el-input v-model="form.password"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="submitForm('form')">{{$t("login.logIn")}}</el-button>
+        <el-button type="primary" @click="submitForm('form')">{{
+          $t("login.logIn")
+        }}</el-button>
       </el-form-item>
     </el-form>
   </div>

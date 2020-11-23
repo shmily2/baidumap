@@ -3,7 +3,7 @@
     <cephalosome :moduleName="moduleName" :info="info"></cephalosome>
     <div class="cententbox">
       <div class="bottom" :class="{ height: this.$store.getters.headfixed }">
-        <div class="left">
+        <div class="left" :style="{background:themeColor}">
           <navbar></navbar>
         </div>
         <div class="right">
@@ -109,14 +109,17 @@
             <p>fdsafdsa</p>
             <p>fdsafdsa</p>
             <p>打发的撒多</p>
-            <el-button type="primary">确定</el-button>
             <el-drawer :visible.sync="drawer" direction="rtl" size="280px">
               <div class="drawerView">
-                <span>{{$t('theme.theme')}}</span>
-                <themePicker></themePicker>
+                <span>{{ $t("theme.theme") }}</span>
+                <theme-picker
+                  class="theme-picker"
+                  :default="themeColor"
+                  @onThemeChange="onThemeChange"
+                ></theme-picker>
               </div>
               <div class="drawerView">
-                <span>{{$t('route.head')}}</span>
+                <span>{{ $t("route.head") }}</span>
                 <el-switch
                   v-model="value"
                   active-color="#13ce66"
@@ -124,10 +127,31 @@
                   @change="change"
                 ></el-switch>
               </div>
+              <div class="drawerView">
+                <span>{{ $t("login.lange") }}</span>
+                <div v-popover:popover class="fa fa-language" :style="{color:themeColor}"></div>
+                <el-popover
+                  trigger="click"
+                  ref="popover"
+                  placement="top"
+                  width="160"
+                  v-model="visible"
+                >
+                  <el-radio-group v-model="lang" @change="changeLanguage">
+                    <el-radio-button label="zh" size="small"
+                      >中文</el-radio-button
+                    >
+                    <el-radio-button label="en" size="small"
+                      >English</el-radio-button
+                    >
+                  </el-radio-group>
+                </el-popover>
+              </div>
             </el-drawer>
             <router-view></router-view>
             <div
               class="el-icon-s-tools setUp"
+              :style="{color:themeColor}"
               @click="drawer = true"
               :class="{ drawer: drawer }"
             ></div>
@@ -138,13 +162,15 @@
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
 export default {
   name: "mainPage",
   data() {
     return {
       value: true,
       drawer: false,
-      color1: "#409EFF",
+      visible: false,
+      lang: "",
       info: {
         circleUrl:
           "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
@@ -165,6 +191,9 @@ export default {
     moduleName() {
       return this.$t("login.companyName");
     },
+    ...mapState({
+      themeColor: (state) => state.app.themeColor,
+    }),
   },
   methods: {
     handleClose(done) {
@@ -176,6 +205,15 @@ export default {
     },
     change() {
       this.$store.dispatch("onHeadfixed", this.value);
+    },
+    // 切换主题
+    onThemeChange: function (themeColor) {
+      this.$store.commit("setThemeColor", themeColor);
+    },
+    //切换语言
+    changeLanguage(lange) {
+      this.visible = false;
+      this.$i18n.locale = lange;
     },
   },
 };
@@ -198,9 +236,9 @@ export default {
 .height {
   height: 100%;
 }
-.left {
+/* .left {
   background: rgb(84, 92, 100);
-}
+} */
 .right {
   height: 100%;
   width: 100%;
@@ -213,7 +251,6 @@ export default {
 }
 .setUp {
   font-size: 30px;
-  color: rgb(36, 89, 233);
   position: fixed;
   right: 20px;
   bottom: 50%;

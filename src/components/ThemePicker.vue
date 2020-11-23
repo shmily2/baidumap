@@ -2,7 +2,7 @@
   <el-color-picker
     class="theme-picker"
     popper-class="theme-picker-dropdown"
-    v-model="theme"
+    v-model="theme" 
     :size="size">
   </el-color-picker>
 </template>
@@ -10,14 +10,14 @@
 <script>
 
 const version = require('element-ui/package.json').version // element-ui version from node_modules
-const ORIGINAL_THEME = '#409EFF' // default color
+const ORIGINAL_THEME = '#3B3F40' // default color
+
 export default {
-  name: 'themePicker',
+  name: 'ThemePicker',
   props: {
     default: { // 初始化主题，可由外部传入
       type: String,
-      //default: '#EB815B'
-      default: ""+localStorage.getItem("tremePackers")+""
+      default: null
     },
     size: { // 初始化主题，可由外部传入
       type: String,
@@ -28,7 +28,7 @@ export default {
     return {
       chalk: '', // content of theme-chalk css
       theme: ORIGINAL_THEME,
-      showSuccess: true, // 是否弹出换肤成功消息
+      showSuccess: true // 是否弹出换肤成功消息
     }
   },
   mounted() {
@@ -43,10 +43,12 @@ export default {
       if (typeof val !== 'string') return
       const themeCluster = this.getThemeCluster(val.replace('#', ''))
       const originalCluster = this.getThemeCluster(oldVal.replace('#', ''))
+ 
       const getHandler = (variable, id) => {
         return () => {
           const originalCluster = this.getThemeCluster(ORIGINAL_THEME.replace('#', ''))
           const newStyle = this.updateStyle(this[variable], originalCluster, themeCluster)
+
           let styleTag = document.getElementById(id)
           if (!styleTag) {
             styleTag = document.createElement('style')
@@ -58,8 +60,8 @@ export default {
       }
 
       const chalkHandler = getHandler('chalk', 'chalk-style')
-
-      if (!this.chalk) {
+    
+      if (this.chalk) {
         const url = `https://unpkg.com/element-ui@${version}/lib/theme-chalk/index.css`
         this.getCSSString(url, chalkHandler, 'chalk')
       } else {
@@ -76,11 +78,9 @@ export default {
         if (typeof innerText !== 'string') return
         style.innerText = this.updateStyle(innerText, originalCluster, themeCluster)
       })
-
+      
       // 响应外部操作
       this.$emit('onThemeChange', val)
-      //存入localStorage
-      localStorage.setItem('tremePackers',val);
       if(this.showSuccess) {
         this.$message({
           message: '换肤成功',

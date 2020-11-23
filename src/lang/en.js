@@ -69,6 +69,7 @@ export default {
   },
   login: {
     title: 'Management System',
+    lange:"Language switching",
     companyName:"Smart park management and control system",
     logIn: 'Log in',
     username: 'Username',
