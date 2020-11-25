@@ -14,12 +14,12 @@
       <div class="basic">
         <el-popover placement="bottom" width="260" trigger="hover">
           <div class="popovercentent">
-            <el-button type="success" class="home" @click="homepage"
-              >{{$t('navbar.dashboard')}}</el-button
-            >
-            <el-button type="danger" class="login" @click="Logout"
-              >{{$t('navbar.logOut')}}</el-button
-            >
+            <el-button type="success" class="home" @click="homepage">{{
+              $t("navbar.dashboard")
+            }}</el-button>
+            <el-button type="danger" class="login" @click="Logout">{{
+              $t("navbar.logOut")
+            }}</el-button>
           </div>
           <div class="basicCircle" slot="reference">
             <el-avatar size="large" :src="info.circleUrl"></el-avatar>
@@ -50,6 +50,7 @@ export default {
 <style scoped lang="scss">
 header {
   height: 80px;
+  max-height: 100px;
   width: 100%;
   display: flex;
   z-index: 999;
@@ -84,6 +85,10 @@ header {
 .logname {
   font-size: 25px;
   font-weight: 700;
+  word-break: keep-all; /* 不换行 */
+  white-space: nowrap; /* 不换行 */
+  overflow: hidden; /* 内容超出宽度时隐藏超出部分的内容 */
+  text-overflow: ellipsis;
 }
 
 .basic {
@@ -109,9 +114,9 @@ header {
 }
 </style>
 <style lang="scss">
-.popovercentent{
-  .el-button+.el-button {
-     margin-left: 0px; 
-}
+.popovercentent {
+  .el-button + .el-button {
+    margin-left: 0px;
+  }
 }
 </style>

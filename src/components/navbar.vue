@@ -1,10 +1,11 @@
 <template>
+ <!-- unique-opened -->
     <el-menu
       default-active="2"
       class="el-menu-vertical-demo"
       @open="handleOpen"
       @close="handleClose"
-      unique-opened
+     
       :background-color="themeColor"
       text-color="#fff"
       active-text-color="#ffd04b"
