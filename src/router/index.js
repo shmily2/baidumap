@@ -2,7 +2,7 @@ import Vue from "vue"
 import Router from "vue-router"
 import Home from "../views/home.vue"
 import login from "../views/login.vue"
-import mainPage from "../views/mainPage.vue"
+import mainPage from "../views/mainPage"
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css'// progress bar style
 Vue.use(Router)

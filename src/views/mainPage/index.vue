@@ -114,7 +114,7 @@
               <p>fdsafdsa</p>
               <p>fdsafdsa</p>
               <p>fdsafdsa</p>
-              <p>打发的撒多</p>
+              <p>打发硅油的撒多</p>
               <el-drawer :visible.sync="drawer" direction="rtl" size="280px">
                 <div class="drawerView">
                   <span>{{ $t("theme.theme") }}</span>
