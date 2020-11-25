@@ -8,12 +8,14 @@
 }
 
 .iconfont {
+  color:#fff !important;
   font-family: "iconfont" !important;
   font-size: 20px;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   padding:0 5px;
+
 }
 
 .el-icon-anquanjiaoyu:before {

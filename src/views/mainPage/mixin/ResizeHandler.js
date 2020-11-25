@@ -5,11 +5,11 @@ const RATIO = 3
 export default {
     watch: {
         $router(router) {
-            if (this.device === 'mobile' && this.sidebar.opened) {
-                store.dispatch('closeSideBar', { withoutAnimation: false })
-            }else{
-                console.log(router)
-            }
+            // if (this.device === 'mobile' && this.sidebar.opened) {
+            //     store.dispatch('closeSideBar', { withoutAnimation: false })
+            // }else{
+            //     console.log(router)
+            // }
         }
     },
     beforeMount() {
@@ -18,8 +18,8 @@ export default {
     mounted() {
         const isMobile = this.isMobile()
         if (isMobile) {
-            store.dispatch('toggleDevice', 'mobile')
-            store.dispatch('closeSideBar', { withoutAnimation: true })
+            // store.dispatch('toggleDevice', 'mobile')
+            // store.dispatch('closeSideBar', { withoutAnimation: true })
         }
     },
     methods: {
@@ -28,13 +28,13 @@ export default {
             return rect.width - RATIO < WIDTH
         },
         resizeHandler() {
-            if (!document.hidden) {
-                const isMobile = this.isMobile()
-                store.dispatch('toggleDevice', isMobile ? 'mobile' : 'desktop')
-                if (isMobile) {
-                    store.dispatch('closeSideBar', { withoutAnimation: true })
-                }
-            }
+            // if (!document.hidden) {
+            //     const isMobile = this.isMobile()
+            //     store.dispatch('toggleDevice', isMobile ? 'mobile' : 'desktop')
+            //     if (isMobile) {
+            //         store.dispatch('closeSideBar', { withoutAnimation: true })
+            //     }
+            // }
         }
     }
 }

@@ -3,8 +3,7 @@
     <cephalosome :moduleName="moduleName" :info="info"></cephalosome>
     <div class="cententbox">
       <div
-        class="bg"
-        v-if="device === 'mobile' && sidebar.opened"
+        class="bg"  
         @click="handleClickOutside"
       ></div>
       <div class="bottom" :class="{ height: this.$store.getters.headfixed }">
@@ -203,14 +202,7 @@ export default {
       // fixedHeader: (state) => state.settings.fixedHeader,
       device: (state) => state.app.device,
     }),
-    classObj() {
-      return {
-        hideSidebar: !this.sidebar.opened,
-        openSidebar: this.sidebar.opened,
-        withoutAnimation: this.sidebar.withoutAnimation,
-        mobile: this.device === "mobile",
-      };
-    },
+
   },
   methods: {
     handleClose(done) {
@@ -233,7 +225,7 @@ export default {
       this.$i18n.locale = lange;
     },
     handleClickOutside() {
-      this.$store.dispatch("closeSideBar", { withoutAnimation: false });
+      // this.$store.dispatch("closeSideBar", { withoutAnimation: false });
     },
   },
 };
