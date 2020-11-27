@@ -79,6 +79,9 @@ export default {
       console.log(key, keyPath);
     },
   },
+  mounted(){
+    console.log(this.$store.getters.collapse)
+  },
   computed:{
     ...mapState({
       themeColor: (state) => state.app.themeColor,

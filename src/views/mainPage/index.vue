@@ -3,15 +3,29 @@
     <cephalosome :moduleName="moduleName" :info="info"></cephalosome>
     <div class="cententbox">
       <div
-        class="bg"  
+        :class="{
+          bg:
+            this.$store.getters.endState == 'mobile' &&
+            this.$store.getters.barbackground,
+        }"
         @click="handleClickOutside"
       ></div>
       <div class="bottom" :class="{ height: this.$store.getters.headfixed }">
-        <div class="left" :style="{ background: themeColor }">
-          <navbar></navbar>
+        <div
+          class="left"
+          :style="{ background: themeColor }"
+          :class="{
+            mobile:
+              this.$store.getters.endState == 'mobile' &&
+              this.$store.getters.barbackground == false,
+          }"
+        >
+          <el-scrollbar style="height: 100%">
+            <navbar></navbar>
+          </el-scrollbar>
         </div>
         <div class="right">
-          <el-scrollbar wrap-class="right">
+          <el-scrollbar style="height: 100%">
             <div class="centent">
               <p>fdsafdsa</p>
               <p>fdsafdsa</p>
@@ -189,6 +203,9 @@ export default {
       },
     };
   },
+  mounted() {
+    console.log(this.$store.getters.endState);
+  },
   mixins: [ResizeMixin],
   computed: {
     moduleName() {
@@ -197,12 +214,12 @@ export default {
     ...mapState({
       themeColor: (state) => state.app.themeColor,
       sidebar: (state) => state.app.sidebar,
+      endState: (state) => state.app.endState,
       // showSettings: (state) => state.settings.showSettings,
       // needTagsView: (state) => state.settings.tagsView,
       // fixedHeader: (state) => state.settings.fixedHeader,
       device: (state) => state.app.device,
     }),
-
   },
   methods: {
     handleClose(done) {
@@ -222,10 +239,12 @@ export default {
     //切换语言
     changeLanguage(lange) {
       this.visible = false;
-      this.$i18n.locale = lange;
+      localStorage.setItem("locale", lange);
+      this.$i18n.locale = localStorage.getItem("locale");
     },
     handleClickOutside() {
-      // this.$store.dispatch("closeSideBar", { withoutAnimation: false });
+      this.$store.dispatch("onbarcbackground", false);
+      this.$store.dispatch("onCollapse");
     },
   },
 };
@@ -241,7 +260,6 @@ export default {
   height: calc(100% - 90px);
   width: 100%;
   position: relative;
-  overflow: hidden;
 }
 .bottom {
   display: flex;
@@ -250,7 +268,6 @@ export default {
   height: 100%;
 }
 .left {
-  height: 100%;
   position: relative;
   z-index: 1000;
 }
@@ -269,6 +286,7 @@ export default {
   position: fixed;
   right: 20px;
   bottom: 50%;
+  z-index: 1200;
 }
 .drawer {
   right: 280px;
@@ -296,5 +314,8 @@ export default {
   height: 100%;
   position: absolute;
   z-index: 999;
+}
+.mobile {
+  width: 0;
 }
 </style>

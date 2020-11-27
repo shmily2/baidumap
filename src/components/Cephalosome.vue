@@ -36,7 +36,7 @@ export default {
   props: ["moduleName", "info"],
   methods: {
     tooglebut() {
-      this.$store.dispatch("onCollapse");
+       this.$store.dispatch("onCollapse");
     },
     homepage() {
       this.$router.push({ name: "home" });

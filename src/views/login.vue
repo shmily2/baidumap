@@ -98,7 +98,8 @@ export default {
     },
     changeLanguage(lange) {
       this.visible = false;
-      this.$i18n.locale = lange;
+      localStorage.setItem('locale',lange)
+      this.$i18n.locale =  localStorage.getItem('locale');
     },
   },
 };

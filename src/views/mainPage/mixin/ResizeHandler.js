@@ -1,40 +1,38 @@
 import store from '@/store'
 const { body } = document;
-const WIDTH = 1024
 const RATIO = 3
 export default {
     watch: {
-        $router(router) {
-            // if (this.device === 'mobile' && this.sidebar.opened) {
-            //     store.dispatch('closeSideBar', { withoutAnimation: false })
-            // }else{
-            //     console.log(router)
-            // }
-        }
+        $route(to, from) {
+            console.log(to.path);
+            console.log(from.path);
+        },
+        // 深度观察监听
+        deep: true
+    },
+    mounted() {
+        this.resizeHandler()
     },
     beforeMount() {
         window.addEventListener('resize', this.resizeHandler)
-    },
-    mounted() {
-        const isMobile = this.isMobile()
-        if (isMobile) {
-            // store.dispatch('toggleDevice', 'mobile')
-            // store.dispatch('closeSideBar', { withoutAnimation: true })
-        }
+
     },
     methods: {
         isMobile() {
             const rect = body.getBoundingClientRect()
-            return rect.width - RATIO < WIDTH
+            return rect.width - RATIO
         },
         resizeHandler() {
-            // if (!document.hidden) {
-            //     const isMobile = this.isMobile()
-            //     store.dispatch('toggleDevice', isMobile ? 'mobile' : 'desktop')
-            //     if (isMobile) {
-            //         store.dispatch('closeSideBar', { withoutAnimation: true })
-            //     }
-            // }
+            const isMobile = this.isMobile()
+            if (isMobile > 1200) {
+                store.dispatch('onendState', 'pc')
+            } else if (isMobile > 600 && isMobile < 1200) {
+                store.dispatch('onendState', 'flat')
+                store.dispatch('onCollapse', true)
+            } else {
+                store.dispatch('onendState', 'mobile')
+                store.dispatch('onCollapse', true)
+            }
         }
     }
 }
