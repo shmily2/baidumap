@@ -5,7 +5,7 @@ import BaiduMap from 'vue-baidu-map'
 import ElementUI from 'element-ui';
 import echarts from 'echarts';
 import 'element-ui/lib/theme-chalk/index.css';
-import i18n from './lang' // Internationalization
+import i18n from './lang' ;
 import api from "./http/api";
 import store from './store'
 import "./assets/font-awesome-4.7.0/font-awesome-4.7.0/css/font-awesome.min.css"

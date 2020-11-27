@@ -51,6 +51,9 @@ export default {
       },
     };
   },
+  created(){
+    this.lang=this.$i18n.locale;
+  },
   computed: {
     rules() {
       return {

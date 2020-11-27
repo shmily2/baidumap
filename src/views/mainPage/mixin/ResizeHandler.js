@@ -3,12 +3,12 @@ const { body } = document;
 const RATIO = 3
 export default {
     watch: {
-        $route(to, from) {
-            console.log(to.path);
-            console.log(from.path);
-        },
-        // 深度观察监听
-        deep: true
+        // $route(to, from) {
+        //     console.log(to.path);
+        //     console.log(from.path);
+        // },
+        // // 深度观察监听
+        // deep: true
     },
     mounted() {
         this.resizeHandler()

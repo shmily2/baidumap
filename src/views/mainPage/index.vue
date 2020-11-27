@@ -215,11 +215,11 @@ export default {
       themeColor: (state) => state.app.themeColor,
       sidebar: (state) => state.app.sidebar,
       endState: (state) => state.app.endState,
-      // showSettings: (state) => state.settings.showSettings,
-      // needTagsView: (state) => state.settings.tagsView,
-      // fixedHeader: (state) => state.settings.fixedHeader,
       device: (state) => state.app.device,
     }),
+  },
+  created() {
+    this.lang = this.$i18n.locale;
   },
   methods: {
     handleClose(done) {
@@ -236,9 +236,11 @@ export default {
     onThemeChange: function (themeColor) {
       this.$store.commit("setThemeColor", themeColor);
     },
+
     //切换语言
     changeLanguage(lange) {
       this.visible = false;
+
       localStorage.setItem("locale", lange);
       this.$i18n.locale = localStorage.getItem("locale");
     },
