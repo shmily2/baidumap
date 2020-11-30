@@ -43,10 +43,10 @@ export default {
         },
         TOGGLE_BARBACKGROUND(state,val){
             state.barbackground=val;
+        },
+        menuRouteLoaded(state, menuRouteLoaded){  // 改变菜单和路由的加载状态
+            state.menuRouteLoaded = menuRouteLoaded;
         }
-        // TOGLE_CHANGELANG(state,val){
-        //     state.changeLang =val
-        // }
     },
     actions: {
         onCollapse({ commit }, collstate) {
@@ -61,6 +61,7 @@ export default {
         onbarcbackground({commit},val){
             commit('TOGGLE_BARBACKGROUND',val)
         }
+        
         // onchangeLange({commit},val){
         //     console.log(val)
         //     commit('TOGLE_CHANGELANG',val)

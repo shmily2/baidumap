@@ -40,6 +40,7 @@
   </div>
 </template>
     <script>
+import Cookies from "js-cookie";
 export default {
   data() {
     return {
@@ -51,8 +52,8 @@ export default {
       },
     };
   },
-  created(){
-    this.lang=this.$i18n.locale;
+  created() {
+    this.lang = this.$i18n.locale;
   },
   computed: {
     rules() {
@@ -93,6 +94,8 @@ export default {
         if (valid) {
           // 通过的逻辑
           this.$router.push({ name: "home" });
+          sessionStorage.setItem("user", this.form.username);
+          Cookies.set("token", "admin");
         } else {
           console.log("验证失败");
           return false;
@@ -101,8 +104,8 @@ export default {
     },
     changeLanguage(lange) {
       this.visible = false;
-      localStorage.setItem('locale',lange)
-      this.$i18n.locale =  localStorage.getItem('locale');
+      localStorage.setItem("locale", lange);
+      this.$i18n.locale = localStorage.getItem("locale");
     },
   },
 };
