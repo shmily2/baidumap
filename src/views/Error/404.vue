@@ -1,5 +1,5 @@
 <template>
-  <div class="site-wrapper site-page--not-found">
+  <div class="site-wrapper site-page--not-found"> 
     <div class="site-content__wrapper">
       <div class="site-content">
         <h2 class="not-found-title">404</h2>
@@ -15,11 +15,10 @@
   export default {
   }
 </script>
-
 <style lang="scss">
   .site-wrapper.site-page--not-found {
     position: absolute;
-    top: 60px;
+     top: 80px;
     right: 0;
     bottom: 0;
     left: 0;
