@@ -21,9 +21,17 @@ const router = new Router({
     routes: [
         {
             path: "/",
-            name: "login",
-            component: login,
+            name: "mainPage",
+            component: mainPage,
+            redirect: "/404",
             meta: { keepAlive: true },
+            children: [
+                {
+                    path: "/404",
+                    name: " NotFound",
+                    component: NotFound,
+                }
+            ],
         },
         {
             path: "/login",
@@ -37,20 +45,7 @@ const router = new Router({
             component: Home,
             meta: { keepAlive: true }
         },
-        {
-            path: "/mainPage",
-            name: "mainPage",
-            component: mainPage,
-            redirect: "/mainPage/404",
-            meta: { keepAlive: true },
-            children:[
-                {
-                    path: "/mainPage/404",
-                    name: " NotFound",
-                    component:  NotFound,
-                }
-            ],
-        },
+
         {
             path: '/404',
             name: 'notFound',
@@ -176,12 +171,12 @@ function addDynamicRoutes(menuList = [], routes = []) {
             {
                 path: "/mainPage",
                 name: "mainPage",
-                redirect:"/mainPage/"+ menuList[i].url,
+                redirect: "/mainPage/" + menuList[i].url,
                 component: mainPage,
                 meta: { keepAlive: true },
                 children: [
                     {
-                        path:menuList[i].url,
+                        path: menuList[i].url,
                         component: null,
                         name: menuList[i].name,
                         meta: {
