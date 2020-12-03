@@ -38,7 +38,7 @@
               @tab-remove="removeTab"
             >
               <el-tab-pane
-                v-for="(item, index) in editableTabs"
+                v-for="item  in editableTabs"
                 :key="item.name"
                 :label="item.title"
                 :name="item.name"
