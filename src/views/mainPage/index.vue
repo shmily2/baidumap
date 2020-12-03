@@ -25,6 +25,29 @@
           </el-scrollbar>
         </div>
         <div class="right">
+          <div class="tab">
+            <div style="margin-bottom: 20px">
+              <el-button size="small" @click="addTab(editableTabsValue)">
+                add tab
+              </el-button>
+            </div>
+            <el-tabs
+              v-model="editableTabsValue"
+              type="card"
+              closable
+              @tab-remove="removeTab"
+            >
+              <el-tab-pane
+                v-for="(item, index) in editableTabs"
+                :key="item.name"
+                :label="item.title"
+                :name="item.name"
+              >
+                {{ item.content }}
+              </el-tab-pane>
+            </el-tabs>
+          </div>
+          <!-- <div class="scroll"> -->
           <el-scrollbar style="height: 100%">
             <div class="centent">
               <router-view></router-view>
@@ -79,6 +102,7 @@
               ></div>
             </div>
           </el-scrollbar>
+          <!-- </div> -->
         </div>
       </div>
     </div>
@@ -91,6 +115,22 @@ export default {
   name: "mainPage",
   data() {
     return {
+      //tab
+      editableTabsValue: '2',
+        editableTabs: [{
+          title: 'Tab 1',
+          name: '1',
+          content: 'Tab 1 content'
+        }, {
+          title: 'Tab 2',
+          name: '2',
+          content: 'Tab 2 content'
+        }],
+        tabIndex: 2,
+
+
+
+
       value: true,
       drawer: false,
       visible: false,
@@ -121,6 +161,35 @@ export default {
     this.lang = this.$i18n.locale;
   },
   methods: {
+    //tab
+    addTab(targetName) {
+        let newTabName = ++this.tabIndex + '';
+        this.editableTabs.push({
+          title: 'New Tab',
+          name: newTabName,
+          content: 'New Tab content'
+        });
+        this.editableTabsValue = newTabName;
+      },
+      removeTab(targetName) {
+        let tabs = this.editableTabs;
+        let activeName = this.editableTabsValue;
+        if (activeName === targetName) {
+          tabs.forEach((tab, index) => {
+            if (tab.name === targetName) {
+              let nextTab = tabs[index + 1] || tabs[index - 1];
+              if (nextTab) {
+                activeName = nextTab.name;
+              }
+            }
+          });
+        }
+        
+        this.editableTabsValue = activeName;
+        this.editableTabs = tabs.filter(tab => tab.name !== targetName);
+      },
+
+
     handleClose(done) {
       this.$confirm("确认关闭？")
         .then((_) => {
@@ -175,12 +244,20 @@ export default {
 .right {
   height: 100%;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.tab {
+  height: 120px;
+}
+.scroll {
+  width: 100%;
+  flex: 1;
 }
 .centent {
   text-align: left;
   height: 100%;
   overflow: auto;
-  position: relative;
 }
 .setUp {
   font-size: 30px;

@@ -13,7 +13,11 @@ export function getIFramePath (url) {
   if(/^iframe:.*/.test(url)) {
     iframeUrl = url.replace('iframe:', '')
   } else if(/^http[s]?:\/\/.*/.test(url)) {
-    iframeUrl = url.replace('http://', '')
+    if(url.indexOf("http://") != -1 ){
+      iframeUrl ="/"+ url.replace('http://', '')
+    }else if(url.indexOf("https://") != -1){
+      iframeUrl ="/"+ url.replace('https://', '')
+    }
     if(iframeUrl.indexOf(":") != -1) {
       iframeUrl = iframeUrl.substring(iframeUrl.lastIndexOf(":") + 1)
     }

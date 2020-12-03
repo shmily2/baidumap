@@ -7,6 +7,7 @@ export default {
     },
     mutations: {
         setIFrameUrl(state, iframeUrl){  // 设置iframeUrl
+            console.log(iframeUrl)
             state.iframeUrl = iframeUrl
         },
         addIFrameUrl(state, iframeUrl){  // iframeUrls

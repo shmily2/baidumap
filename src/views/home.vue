@@ -23,12 +23,12 @@
             class="but scale-img"
           >
             <img src="../assets/getInto.png" />
-            <p>{{$t("navbar.getInto")}}</p>
+            <p>{{ $t("navbar.getInto") }}</p>
           </router-link>
-          <router-link :to="{ name: 'login' }" tag="div" class="but scale-img">
+          <div @click="logout" class="but scale-img">
             <img src="../assets/Logout.png" />
-            <p>{{$t("navbar.logOut")}}</p>
-          </router-link>
+            <p>{{ $t("navbar.logOut") }}</p>
+          </div>
         </div>
         <div class="weather">
           <div class="weatherleft">
@@ -167,6 +167,7 @@ import gunMachine from "../assets/gunMachine.png"; //枪机
 import domeCameras from "../assets/domeCameras.png"; //球机
 import parkingLot from "../assets/parkingLot.png"; //停车场
 import { datetime } from "../utils/time";
+import Cookies from "js-cookie"
 export default {
   name: "Bmap",
   data() {
@@ -754,6 +755,10 @@ export default {
             this.hourtime = datetime();
           }, 1000);
         });
+    },
+    logout() {
+      Cookies.remove("token");
+      this.$router.push({ name: "login" });
     },
   },
 };

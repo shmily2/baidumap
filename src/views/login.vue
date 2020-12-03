@@ -93,9 +93,9 @@ export default {
         // console.log(valid) 验证通过为true，有一个不通过就是false
         if (valid) {
           // 通过的逻辑
-          this.$router.push({ name: "home" });
           sessionStorage.setItem("user", this.form.username);
           Cookies.set("token", "admin");
+          this.$router.push({ name: "home" });
         } else {
           console.log("验证失败");
           return false;

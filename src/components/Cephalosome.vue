@@ -31,6 +31,7 @@
   </header>
 </template>
 <script>
+import Cookies from "js-cookie"
 export default {
   name: "Cephalosome",
   props: ["moduleName", "info"],
@@ -42,6 +43,7 @@ export default {
       this.$router.push({ name: "home" });
     },
     Logout() {
+      Cookies.remove("token")
       this.$router.push({ name: "login" });
     },
   },

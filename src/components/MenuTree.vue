@@ -24,13 +24,14 @@ export default {
   },
   methods: {
     handleRoute (menu) {
+      console.log(menu)
       // 如果是嵌套页面，转换成iframe的path
       let path = getIFramePath(menu.url)
       if(!path) {
         path = menu.url
       }
-      // 通过菜单URL跳转至指定路由
-      this.$router.push("/" + path)
+        // 通过菜单URL跳转至指定路由
+        this.$router.push(path)
     }
   }
 }
