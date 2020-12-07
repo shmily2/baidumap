@@ -116,7 +116,7 @@ export default {
   width: 300px;
   position: absolute;
   top: 22%;
-  right: 10%;
+  right: 3%;
   background-color: rgba(255, 255, 255, 0.8); /* 透明背景色 */
   box-shadow: 10px 10px 10px 5px #888888;
   padding: 30px;

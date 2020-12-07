@@ -1,8 +1,8 @@
 import axios from '../axios'
 //菜单
-export const findMenuTree = (params) => {
+export const findNavTree = (params) => {
     return axios({
-        url: 'menu/findMenuTree',
+        url: 'menu/findNavTree',
         method:"get",
         params
     })

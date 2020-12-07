@@ -1,10 +1,9 @@
 <template>
   <div class="iframe-container">
-    <iframe :src="src" scrolling="auto" frameborder="0" class="frame" :onload="onloaded()">
+    <iframe :src="src" scrolling="auto" frameborder="0" class="frame" @load="onloaded()">
     </iframe>
   </div>
 </template>
-
 <script>
 export default {
   data() {
@@ -36,6 +35,7 @@ export default {
     }
   },
   mounted() {
+    console.log(111)
     this.resetSrc(this.$store.state.iframe.iframeUrl);
   },
   watch: {

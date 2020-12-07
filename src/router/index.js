@@ -92,7 +92,7 @@ function addDynamicMenuAndRoutes(userName, to, from) {
         return
     }
     console.log(api)
-    api.menu.findMenuTree({ 'userName': userName })
+    api.menu.findNavTree ({ 'userName': userName })
         .then(res => {
             // 添加动态路由
             let dynamicRoutes = addDynamicRoutes(res.data)
