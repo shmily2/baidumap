@@ -3,8 +3,10 @@ export function findNavTree() {
     const navTreeData = {
       "code": 200,
       "msg": null,
-      "data": [{
+      "data": [
+        {
         "id": 1,
+        "tabshow":true,
         "createBy": null,
         "createTime": null,
         "lastUpdateBy": null,
@@ -21,13 +23,14 @@ export function findNavTree() {
         "level": 0,
         "children": [{
           "id": 2,
+          "tabshow":true,
           "createBy": null,
           "createTime": null,
           "lastUpdateBy": null,
           "lastUpdateTime": null,
           "parentId": 1,
           "name": "用户管理",
-          "url": "https://www.cnblogs.com/xifengxiaoma/",
+          "url": "https://www.cnblogs.com/xifengxiaoma",
           "perms": null,
           "type": 1,
           "icon": "el-icon-service",
@@ -39,6 +42,7 @@ export function findNavTree() {
         }, {
           "id": 3,
           "createBy": null,
+          "tabshow":true,
           "createTime": null,
           "lastUpdateBy": null,
           "lastUpdateTime": null,
@@ -56,6 +60,7 @@ export function findNavTree() {
         }, {
           "id": 4,
           "createBy": null,
+          "tabshow":true,
           "createTime": null,
           "lastUpdateBy": null,
           "lastUpdateTime": null,
@@ -72,6 +77,7 @@ export function findNavTree() {
           "children": []
         }, {
           "id": 5,
+          "tabshow":true,
           "createBy": null,
           "createTime": null,
           "lastUpdateBy": null,
@@ -89,6 +95,7 @@ export function findNavTree() {
           "children": []
         }, {
           "id": 7,
+          "tabshow":true,
           "createBy": null,
           "createTime": null,
           "lastUpdateBy": null,
@@ -106,6 +113,7 @@ export function findNavTree() {
           "children": []
         }, {
           "id": 8,
+          "tabshow":true,
           "createBy": null,
           "createTime": null,
           "lastUpdateBy": "admin",
@@ -124,6 +132,7 @@ export function findNavTree() {
         }]
       }, {
         "id": 43,
+        "tabshow":true,
         "createBy": "admin",
         "createTime": "2018-12-27T02:57:29.000+0000",
         "lastUpdateBy": "admin",
@@ -140,6 +149,7 @@ export function findNavTree() {
         "level": 0,
         "children": [{
           "id": 6,
+          "tabshow":true,
           "createBy": null,
           "createTime": null,
           "lastUpdateBy": "admin",
@@ -157,6 +167,7 @@ export function findNavTree() {
           "children": []
         }, {
           "id": 38,
+          "tabshow":true,
           "createBy": "admin",
           "createTime": "2018-11-02T12:02:15.000+0000",
           "lastUpdateBy": "admin",
@@ -175,6 +186,7 @@ export function findNavTree() {
         }]
       }, {
         "id": 44,
+        "tabshow":true,
         "createBy": "admin",
         "createTime": "2018-12-27T03:05:48.000+0000",
         "lastUpdateBy": "admin",
@@ -190,6 +202,7 @@ export function findNavTree() {
         "parentName": null,
         "level": 0,
         "children": [{
+          "tabshow":true,
           "id": 41,
           "createBy": "admin",
           "createTime": "2018-11-03T03:06:48.000+0000",
@@ -209,6 +222,7 @@ export function findNavTree() {
         }]
       }, {
         "id": 35,
+        "tabshow":true,
         "createBy": null,
         "createTime": null,
         "lastUpdateBy": "admin",
@@ -224,25 +238,29 @@ export function findNavTree() {
         "parentName": null,
         "level": 0,
         "children": []
-      }, {
-        "id": 42,
-        "createBy": "admin",
-        "createTime": "2018-11-15T06:39:30.000+0000",
-        "lastUpdateBy": "admin",
-        "lastUpdateTime": "2018-11-15T06:56:18.000+0000",
-        "parentId": 0,
-        "name": "代码生成",
-        "url": "/generator/generator",
-        "perms": "",
-        "type": 1,
-        "icon": "el-icon-star-on",
-        "orderNum": 5,
-        "delFlag": 0,
-        "parentName": null,
-        "level": 0,
-        "children": []
-      }, {
+      },
+      {
+          "id": 42,
+          "tabshow":true,
+          "createBy": "admin",
+          "createTime": "2018-11-15T06:39:30.000+0000",
+          "lastUpdateBy": "admin",
+          "lastUpdateTime": "2018-11-15T06:56:18.000+0000",
+          "parentId": 0,
+          "name": "代码生成",
+          "url": "/generator/generator",
+          "perms": "",
+          "type": 1,
+          "icon": "el-icon-star-on",
+          "orderNum": 5,
+          "delFlag": 0,
+          "parentName": null,
+          "level": 0,
+          "children": []
+        },
+       {
         "id": 28,
+        "tabshow":true,
         "createBy": null,
         "createTime": null,
         "lastUpdateBy": "admin",
@@ -266,6 +284,7 @@ export function findNavTree() {
           "parentId": 28,
           "name": "国际化",
           "url": "/demo/i18n",
+          "tabshow":true,
           "perms": null,
           "type": 1,
           "icon": "el-icon-edit",
@@ -276,6 +295,7 @@ export function findNavTree() {
           "children": []
         }, {
           "id": 30,
+          "tabshow":true,
           "createBy": null,
           "createTime": null,
           "lastUpdateBy": null,
@@ -290,7 +310,21 @@ export function findNavTree() {
           "delFlag": 0,
           "parentName": "使用案例",
           "level": 1,
-          "children": []
+          "children": [
+            {
+              "id": 31,
+              "tabshow":false,
+              "parentId": 30,
+              "name": "详情",
+              "url": "/demo/details",
+              "perms": null,
+              "type": 1,
+              "icon": "el-icon-picture",
+              "orderNum": 2,
+              "delFlag": 0,
+              "parentName": "换皮肤",
+            }
+          ]
         }]
       }]
     }

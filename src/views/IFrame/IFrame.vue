@@ -35,13 +35,13 @@ export default {
     }
   },
   mounted() {
-    console.log(111)
     this.resetSrc(this.$store.state.iframe.iframeUrl);
   },
   watch: {
     $route: {
       handler: function(val, oldVal) {
         // 如果是跳转到嵌套页面，切换iframe的url
+        console.log(this.$store.state.iframe.iframeUrl)
         this.resetSrc(this.$store.state.iframe.iframeUrl);
       }
     }
@@ -49,7 +49,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .iframe-container {
   position: absolute;
   top: 0px;

@@ -27,17 +27,47 @@
         <div class="right">
           <div class="tab">
             <el-tabs
-              v-model="editableTabsValue"
+              class="tabs"
+              :class="
+                $store.state.app.collapse
+                  ? 'position-collapse-left'
+                  : 'position-left'
+              "
+              v-model="mainTabsActiveName"
+              :closable="true"
               type="card"
-              closable
-              @tab-remove="removeTab"
+              @tab-click="selectedTabHandle"
+              @tab-remove="removeTabHandle"
             >
+              <el-dropdown class="tabs-tools" :show-timeout="0" trigger="hover">
+                <div style="font-size: 20px; width: 50px">
+                  <i class="el-icon-arrow-down"></i>
+                </div>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item @click.native="tabsCloseCurrentHandle"
+                    >关闭当前标签</el-dropdown-item
+                  >
+                  <el-dropdown-item @click.native="tabsCloseOtherHandle"
+                    >关闭其它标签</el-dropdown-item
+                  >
+                  <el-dropdown-item @click.native="tabsCloseAllHandle"
+                    >关闭全部标签</el-dropdown-item
+                  >
+                  <el-dropdown-item @click.native="tabsRefreshCurrentHandle"
+                    >刷新当前标签</el-dropdown-item
+                  >
+                </el-dropdown-menu>
+              </el-dropdown>
               <el-tab-pane
-                v-for="item in editableTabs"
+                v-for="item in mainTabs"
                 :key="item.name"
                 :label="item.title"
                 :name="item.name"
-              ></el-tab-pane>
+              >
+                <span slot="label"
+                  ><i :class="item.icon"></i> {{ item.title }}
+                </span>
+              </el-tab-pane>
             </el-tabs>
           </div>
           <!-- <div class="scroll"> -->
@@ -108,62 +138,6 @@ export default {
   name: "mainPage",
   data() {
     return {
-      //tab
-      editableTabsValue: "2",
-      editableTabs: [
-        {
-          title: "Tab 1",
-          name: "1",
-          content: "Tab 1 content",
-        },
-        {
-          title: "Tab 2",
-          name: "2",
-          content: "Tab 2 content",
-        },
-        {
-          title: "Tab 3",
-          name: "3",
-          content: "Tab 3 content",
-        },
-        {
-          title: "Tab 4",
-          name: "4",
-          content: "Tab 4 content",
-        },
-        {
-          title: "Tab 5",
-          name: "5",
-          content: "Tab 5 content",
-        },
-        {
-          title: "Tab6 ",
-          name: "6",
-          content: "Tab 6 content",
-        },
-        {
-          title: "Tab7 ",
-          name: "7",
-          content: "Tab 7 content",
-        },
-        {
-          title: "Tab 8",
-          name: "8",
-          content: "Tab 8 content",
-        },
-        {
-          title: "Tab 9",
-          name: "9",
-          content: "Tab 9 content",
-        },
-        {
-          title: "Tab 10",
-          name: "10",
-          content: "Tab 10 content",
-        },
-      ],
-      tabIndex: 2,
-
       value: true,
       drawer: false,
       visible: false,
@@ -189,46 +163,28 @@ export default {
       endState: (state) => state.app.endState,
       device: (state) => state.app.device,
     }),
+    mainTabs: {
+      get() {
+        return this.$store.state.tab.mainTabs;
+      },
+      set(val) {
+        this.$store.commit("updateMainTabs", val);
+      },
+    },
+    mainTabsActiveName: {
+      get() {
+        return this.$store.state.tab.mainTabsActiveName;
+      },
+      set(val) {
+        this.$store.commit("updateMainTabsActiveName", val);
+      },
+    },
   },
   created() {
     this.lang = this.$i18n.locale;
   },
   methods: {
-    //tab
-    addTab(targetName) {
-      let newTabName = ++this.tabIndex + "";
-      this.editableTabs.push({
-        title: "New Tab",
-        name: newTabName,
-        content: "New Tab content",
-      });
-      this.editableTabsValue = newTabName;
-    },
-    removeTab(targetName) {
-      let tabs = this.editableTabs;
-      let activeName = this.editableTabsValue;
-      if (activeName === targetName) {
-        tabs.forEach((tab, index) => {
-          if (tab.name === targetName) {
-            let nextTab = tabs[index + 1] || tabs[index - 1];
-            if (nextTab) {
-              activeName = nextTab.name;
-            }
-          }
-        });
-      }
-
-      this.editableTabsValue = activeName;
-      this.editableTabs = tabs.filter((tab) => tab.name !== targetName);
-    },
-
-    handleClose(done) {
-      this.$confirm("确认关闭？")
-        .then((_) => {
-          done();
-        })
-        .catch((_) => {});
-    },
+    //头部固定
     change() {
       this.$store.dispatch("onHeadfixed", this.value);
     },
@@ -248,10 +204,60 @@ export default {
       this.$store.dispatch("onbarcbackground", false);
       this.$store.dispatch("onCollapse");
     },
+
+    // tabs, 选中tab
+    selectedTabHandle(tab) {
+      tab = this.mainTabs.filter((item) => item.name === tab.name);
+      if (tab.length >= 1) {
+        this.$router.push({ name: tab[0].name });
+        console.log(tab[0].name)
+      }
+    },
+    // tabs, 删除tab
+    removeTabHandle(tabName) {
+      this.mainTabs = this.mainTabs.filter((item) => item.name !== tabName);
+      if (this.mainTabs.length >= 1) {
+        // 当前选中tab被删除
+        if (tabName === this.mainTabsActiveName) {
+          this.$router.push(
+            { name: this.mainTabs[this.mainTabs.length - 1].name },
+            () => {
+              this.mainTabsActiveName = this.$route.name;
+            }
+          );
+        }
+      } else {
+        this.$router.push("/");
+      }
+    },
+    // tabs, 关闭当前
+    tabsCloseCurrentHandle() {
+      this.removeTabHandle(this.mainTabsActiveName);
+    },
+    // tabs, 关闭其它
+    tabsCloseOtherHandle() {
+      this.mainTabs = this.mainTabs.filter(
+        (item) => item.name === this.mainTabsActiveName
+      );
+    },
+    // tabs, 关闭全部
+    tabsCloseAllHandle() {
+      this.mainTabs = [];
+      this.$router.push("/");
+    },
+    // tabs, 刷新当前
+    tabsRefreshCurrentHandle() {
+      var tempTabName = this.mainTabsActiveName;
+      console.log(tempTabName)
+      this.removeTabHandle(tempTabName);
+      this.$nextTick(() => {
+        this.$router.push({ name: tempTabName });
+      });
+    },
   },
 };
 </script>
-<style scoped >
+<style scoped>
 .box {
   height: 100%;
   width: 100%;
@@ -328,5 +334,22 @@ export default {
 }
 .mobile {
   width: 0;
+}
+.tabs {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.tabs-tools {
+  width: 50px;
+  height: 40px;
+  box-sizing: border-box;
+  line-height: 40px;
+  border: 1px solid #e4e7ed;
+}
+.el-tabs__header {
+  margin: 0px !important;
+  flex: 1;
+  overflow: hidden;
 }
 </style>

@@ -1,8 +1,8 @@
 <template>
   <div class="indexpage">
     <div class="polyline">
-      <mapview @baiduMap="baiduMap"></mapview>
-      <!-- 菜单 -->
+      <!-- <mvp></mvp> -->
+      <mapview @baiduMap="baiduMap"></mapview> 
       <div class="menubox">
         <ul class="menu">
           <li
@@ -47,7 +47,7 @@
         <div class="left">
           <ul class="side">
             <li @click="Security">
-              <div class="title">
+              <div class="titlename">
                 <span>人员入园管理</span>
                 <!-- <div class="img"></div> -->
               </div>
@@ -56,7 +56,7 @@
               </div>
             </li>
             <li @click="Car">
-              <div class="title">
+              <div class="titlename">
                 <span>车辆运输管理</span>
                 <!-- <div class="img"></div> -->
               </div>
@@ -65,7 +65,7 @@
               </div>
             </li>
             <li @click="education">
-              <div class="title">
+              <div class="titlename">
                 <span>安全教育</span>
                 <!-- <div class="img"></div> -->
               </div>
@@ -77,19 +77,17 @@
         </div>
         <div class="right">
           <ul class="side">
-            <li @click="Car">
-              <div class="title">
+           <li @click="Car">
+              <div class="titlename">
                 <span>卡口管理系统</span>
-                <!-- <div class="img"></div> -->
               </div>
               <div class="echartflex">
                 <div id="Bayonet"></div>
               </div>
-            </li>
-            <li>
-              <div class="title">
+            </li> 
+          <li>
+              <div class="titlename">
                 <span>重点位置视频监控</span>
-                <!-- <div class="img"></div> -->
               </div>
               <div class="echartflex">
                 <ul>
@@ -113,15 +111,14 @@
                   </li>
                 </ul>
               </div>
-            </li>
-            <li @click="maintenance">
-              <div class="title">
+             </li>
+         <li @click="maintenance">
+              <div class="titlename">
                 <span>运维管理系统</span>
-                <!-- <div class="img"></div> -->
               </div>
               <div class="maintenance">
                 <div class="headtitle">
-                  <ul class="title">
+                  <ul class="titlename">
                     <li>人员</li>
                     <li>时间</li>
                     <li>电脑ip</li>
@@ -716,6 +713,7 @@ export default {
     //运维管理
     maintenance() {
       this.$api.dept.maintenance().then((res) => {
+        console.log(res.data)
         this.maintenancepre = res.data;
         this.timer = setInterval(() => {
           this.maintenancepre.push(this.maintenancepre[0]);
@@ -902,27 +900,28 @@ export default {
     rgba(22, 22, 34, 0.1) 100%
   );
 }
-.side > li > .title {
+ .side > li > .titlename {
   margin-top: 20px;
   height: 32px;
+  font-size: 20px;
   width: 100%;
   display: flex;
   justify-content: space-between;
 }
-.title > .img {
+.titlename > .img {
   height: 32px;
   width: 32px;
   background: url("../assets/WBS-out.png") no-repeat;
   background-size: 100% 100%;
   margin-right: 10px;
 }
-.title > .img:hover {
+.titlename > .img:hover {
   background: url("../assets/WBS.png") no-repeat;
 }
-.title > span {
+.titlename > span {
   padding-left: 40px;
   color: rgb(28, 185, 255);
-}
+} 
 .echartflex {
   width: 100%;
   height: 100%;
@@ -968,18 +967,18 @@ export default {
   font-size: 14px;
   width: 58px;
 }
-.title {
+ .titlename {
   height: 30px;
   width: 100%;
   display: flex;
   justify-content: center;
-}
-.title > li {
+} 
+ .titlename > li {
   list-style: none;
   width: 33%;
   text-align: center;
   color: #9fa89d;
-}
+} 
 #review_box {
   flex: 1;
   width: 100%;

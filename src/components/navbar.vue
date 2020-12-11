@@ -1,9 +1,12 @@
 <template>
   <!-- unique-opened -->
   <el-menu
+    ref="navmenu"
     class="el-menu-vertical-demo"
+    :unique-opened="true"
     @open="handleOpen"
     @close="handleClose"
+    @select="handleselect"
     :background-color="themeColor"
     text-color="#fff"
     active-text-color="#ffd04b"
@@ -17,9 +20,12 @@
 import { mapState } from "vuex";
 export default {
   name: "navbar",
-  mounted() {
-    console.log(this.$store.getters.collapse);
+  data() {
+    return {
+      menuitems: "",
+    };
   },
+  mounted() {},
   computed: {
     ...mapState({
       appName: (state) => state.app.appName,
@@ -28,9 +34,11 @@ export default {
       navTree: (state) => state.menu.navTree,
     }),
     mainTabs: {
+      //读取属性时
       get() {
         return this.$store.state.tab.mainTabs;
       },
+      //改变属性时
       set(val) {
         this.$store.commit("updateMainTabs", val);
       },
@@ -62,23 +70,47 @@ export default {
     },
     // 路由操作处理
     handleRoute(route) {
-      // tab标签页选中, 如果不存在则先添加
-      console.log("shuaxin")
-      var tab = this.mainTabs.filter((item) => item.name === route.name)[0];
-      if (!tab) {
-        tab = {
-          name: route.name,
-          title: route.name,
-          icon: route.meta.icon,
-        };
-        this.mainTabs = this.mainTabs.concat(tab);
+      let tab = "";
+      if (route.meta.tabshow) {
+        // tab标签页选中, 如果不存在则先添加
+        tab = this.mainTabs.filter((item) => item.name === route.name)[0];
+        if (!tab) {
+          tab = {
+            name: route.name,
+            title: route.name,
+            icon: route.meta.icon,
+          };
+          this.mainTabs = this.mainTabs.concat(tab);
+        }
+      } else {
+        tab = this.mainTabs.filter((item) => item.name === route.meta.parentName)[0];
+        console.log
+        if (!tab) {
+          tab = {
+            name: route.meta.parentName,
+            title: route.meta.parentName,
+            icon: route.meta.icon,
+          };
+          this.mainTabs = this.mainTabs.concat(tab);
+        } else {
+          this.mainTabs.map((item,index)=>{
+            if(item.name===route.meta.parentName){
+                item.name=route.meta.parentName
+            }
+          })
+          console.log(this.mainTabs)
+          console.log("替换")
+        }
       }
+
       this.mainTabsActiveName = tab.name;
       // 切换标签页时同步更新高亮菜单
-      if (this.$refs.navmenu != null) {
-        this.$refs.navmenu.activeIndex = "" + route.meta.index;
-        this.$refs.navmenu.initOpenedMenu();
-      }
+      this.$nextTick(() => {
+        if (this.$refs.navmenu != null) {
+          this.$refs.navmenu.activeIndex = "" + route.meta.index;
+          this.$refs.navmenu.initOpenedMenu();
+        }
+      });
     },
   },
 };

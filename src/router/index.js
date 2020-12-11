@@ -25,12 +25,22 @@ const router = new Router({
             name: "mainPage",
             component: mainPage,
             redirect: "/401",
-            meta: { keepAlive: true },
+            meta: {
+                keepAlive: true,
+                tabshow: true,
+                parentName: null,
+            },
+
             children: [
                 {
                     path: "/401",
                     name: "401",
-                    component: login,
+                    component: NotFound,
+                    meta: {
+                        tabshow: true,
+                        parentName: "mainPage",
+                    }
+
                 }
             ],
         },
@@ -38,19 +48,34 @@ const router = new Router({
             path: "/login",
             name: "login",
             component: login,
-            meta: { keepAlive: true },
+            meta: {
+                keepAlive: true,
+                tabshow: true,
+                parentName: null,
+            },
         },
         {
             path: "/home",
             name: "home",
             component: Home,
-            meta: { keepAlive: true }
+            tabshow: true,
+            parentName: null,
+            meta: {
+                keepAlive: true,
+                tabshow: true,
+                parentName: null,
+            }
         },
 
         {
             path: '/404',
             name: 'notFound',
-            component: NotFound
+            component: NotFound,
+            meta:{
+                 tabshow: true,
+                 parentName: null,
+            }
+           
         }
     ]
 })
@@ -91,20 +116,18 @@ function addDynamicMenuAndRoutes(userName, to, from) {
         console.log('动态菜单和路由已经存在.')
         return
     }
-    console.log(api)
-    api.menu.findNavTree ({ 'userName': userName })
+    api.menu.findNavTree({ 'userName': userName })
         .then(res => {
             // 添加动态路由
             let dynamicRoutes = addDynamicRoutes(res.data)
             // 处理静态组件绑定路由
             handleStaticComponent(router, dynamicRoutes)
             //新增路由    
-            console.log(router.options.routes)
             router.addRoutes(router.options.routes)
             // 保存加载状态
             store.commit('menuRouteLoaded', true)
             // 保存菜单树
-            store.commit('setNavTree', res.data)
+            menus(res.data);
         }).then(res => {
             api.user.findPermissions({ 'name': userName }).then(res => {
                 // 保存用户权限标识集合
@@ -114,8 +137,21 @@ function addDynamicMenuAndRoutes(userName, to, from) {
         .catch(function (res) {
         })
 }
-
-
+function menus(arr) {
+    let menusitem = arr
+    for (let i = 0; i < menusitem.length; i++) {
+        if (menusitem[i].children && menusitem[i].children.length > 0) {
+            menus(menusitem[i].children);
+        } else {
+            if (menusitem[i].tabshow == false) {
+                menusitem.splice(i, 1);
+            } else {
+                console.log("需要显示的菜单项");
+            }
+        }
+    }
+    store.commit('setNavTree', menusitem)
+}
 /**
  * 处理路由到本地直接指定页面组件的情况
  * 比如'代码生成'是要求直接绑定到'Generator'页面组件
@@ -152,7 +188,47 @@ function handleIFrameUrl(path) {
         }
     }
 }
+function isPath(List) {
+    console.log(List)
+    if (List.url && /\S/.test(List.url)) {
+        let route = {
+            path: List.url,
+            component: null,
+            name: List.name,
+            meta: {
+                icon: List.icon,
+                index: List.id,
+                tabshow: List.tabshow,
+                parentName: List.parentName,
+            }
+        }
+        //判断是否为iframe
+        let path = getIFramePath(List.url)
+        if (path) {
+            //如果是嵌套页面, 通过iframe展示
+            route['path'] = path
+            route['component'] = resolve => require([`@/views/IFrame/IFrame`], resolve)
+            // 存储嵌套页面路由路径和访问URL
+            let url = getIFrameUrl(List.url)
+            let iFrameUrl = { 'path': path, 'url': url }
+            store.commit('addIFrameUrl', iFrameUrl)
+        } else {
+            try {
+                // 根据菜单URL动态加载vue组件，这里要求vue组件须按照url路径存储
+                // 如url="sys/user"，则组件路径应是"@/views/sys/user.vue",否则组件加载不到
+                let array = List.url.split('/')
+                let url = ''
+                for (let i = 0; i < array.length; i++) {
+                    url += array[i].substring(0, 1) + array[i].substring(1) + '/'
+                }
+                url = url.substring(0, url.length - 1)
 
+                route['component'] = resolve => require([`@/views` + `${url}`], resolve)
+            } catch (e) { }
+        }
+        routes.push(route)
+    }
+}
 /**
 * 添加动态(菜单)路由
 * @param {*} menuList 菜单列表
@@ -163,6 +239,47 @@ function addDynamicRoutes(menuList = [], routes = []) {
     for (var i = 0; i < menuList.length; i++) {
         if (menuList[i].children && menuList[i].children.length >= 1) {
             temp = temp.concat(menuList[i].children)
+            let istabshow = menuList[i].children.every((item) => item.tabshow == false);
+            if (istabshow) {
+                //isPath(menuList[i])
+                if (menuList[i].url && /\S/.test(menuList[i].url)) {
+                    let route = {
+                        path: menuList[i].url,
+                        component: null,
+                        name: menuList[i].name,
+                        meta: {
+                            icon: menuList[i].icon,
+                            index: menuList[i].id,
+                            tabshow: menuList[i].tabshow,
+                            parentName: menuList[i].parentName,
+                        }
+                    }
+                    //判断是否为iframe
+                    let path = getIFramePath(menuList[i].url)
+                    if (path) {
+                        //如果是嵌套页面, 通过iframe展示
+                        route['path'] = path
+                        route['component'] = resolve => require([`@/views/IFrame/IFrame`], resolve)
+                        // 存储嵌套页面路由路径和访问URL
+                        let url = getIFrameUrl(menuList[i].url)
+                        let iFrameUrl = { 'path': path, 'url': url }
+                        store.commit('addIFrameUrl', iFrameUrl)
+                    } else {
+                        try {
+                            // 根据菜单URL动态加载vue组件，这里要求vue组件须按照url路径存储
+                            // 如url="sys/user"，则组件路径应是"@/views/sys/user.vue",否则组件加载不到
+                            let array = menuList[i].url.split('/')
+                            let url = ''
+                            for (let i = 0; i < array.length; i++) {
+                                url += array[i].substring(0, 1) + array[i].substring(1) + '/'
+                            }
+                            url = url.substring(0, url.length - 1)
+                            route['component'] = resolve => require([`@/views` + `${url}`], resolve)
+                        } catch (e) { }
+                    }
+                    routes.push(route)
+                }
+            }
         } else {
             if (menuList[i].url && /\S/.test(menuList[i].url)) {
                 let route = {
@@ -171,12 +288,13 @@ function addDynamicRoutes(menuList = [], routes = []) {
                     name: menuList[i].name,
                     meta: {
                         icon: menuList[i].icon,
-                        index: menuList[i].id
+                        index: menuList[i].id,
+                        tabshow: menuList[i].tabshow,
+                        parentName: menuList[i].parentName,
                     }
                 }
                 //判断是否为iframe
                 let path = getIFramePath(menuList[i].url)
-                console.log(path)
                 if (path) {
                     //如果是嵌套页面, 通过iframe展示
                     route['path'] = path
@@ -190,7 +308,6 @@ function addDynamicRoutes(menuList = [], routes = []) {
                         // 根据菜单URL动态加载vue组件，这里要求vue组件须按照url路径存储
                         // 如url="sys/user"，则组件路径应是"@/views/sys/user.vue",否则组件加载不到
                         let array = menuList[i].url.split('/')
-                        console.log(array)
                         let url = ''
                         for (let i = 0; i < array.length; i++) {
                             url += array[i].substring(0, 1) + array[i].substring(1) + '/'
