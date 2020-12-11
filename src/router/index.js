@@ -71,15 +71,18 @@ const router = new Router({
             path: '/404',
             name: 'notFound',
             component: NotFound,
-            meta:{
-                 tabshow: true,
-                 parentName: null,
+            meta: {
+                tabshow: true,
+                parentName: null,
             }
-           
+
         }
     ]
 })
-
+router.$addRoutes = (params) => {
+    router.matcher = new Router({ mode: 'history' }).matcher;
+    router.addRoutes(params)
+}
 router.beforeEach((to, from, next) => {
     // 登录界面登录成功之后，会把用户信息保存在会话
     // 存在时间为会话生命周期，页面关闭即失效。
@@ -122,8 +125,9 @@ function addDynamicMenuAndRoutes(userName, to, from) {
             let dynamicRoutes = addDynamicRoutes(res.data)
             // 处理静态组件绑定路由
             handleStaticComponent(router, dynamicRoutes)
-            //新增路由    
-            router.addRoutes(router.options.routes)
+            //新增路由   
+            router.$addRoutes(router.options.routes);
+            // router.addRoutes(router.options.routes)
             // 保存加载状态
             store.commit('menuRouteLoaded', true)
             // 保存菜单树
@@ -334,7 +338,7 @@ router.afterEach(() => {
 
 router.selfaddRoutes = function (params) {
     router.matcher = new Router().matcher;
-    router.addRoutes(params)
+    router.$addRoutes(params)
 }
 console.log(router)
 export default router

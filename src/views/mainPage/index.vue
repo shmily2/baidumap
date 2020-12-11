@@ -2,23 +2,20 @@
   <div class="box">
     <cephalosome :moduleName="moduleName" :info="info"></cephalosome>
     <div class="cententbox">
-      <!-- <div
+      <!-- 移动端菜单打开右侧遮罩 -->
+     <div
         :class="{
           bg:
             this.$store.getters.endState == 'mobile' &&
             this.$store.getters.barbackground,
         }"
         @click="handleClickOutside"
-      ></div> -->
+      ></div> 
       <div class="bottom" :class="{ height: this.$store.getters.headfixed }">
         <div
           class="left"
           :style="{ background: themeColor }"
-          :class="{
-            mobile:
-              this.$store.getters.endState == 'mobile' &&
-              this.$store.getters.barbackground == false,
-          }"
+          :class="{mobile: this.$store.getters.endState == 'mobile' &&  this.$store.getters.barbackground == false}"
         >
           <el-scrollbar style="height: 100%">
             <navbar></navbar>

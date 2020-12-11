@@ -24,12 +24,13 @@ export default {
         },
         resizeHandler() {
             const isMobile = this.isMobile()
+            console.log(isMobile)
             if (isMobile > 1200) {
                 store.dispatch('onendState', 'pc')
             } else if (isMobile > 600 && isMobile < 1200) {
                 store.dispatch('onendState', 'flat')
                 store.dispatch('onCollapse', true)
-            } else {
+            } else if(isMobile<600) {
                 store.dispatch('onendState', 'mobile')
                 store.dispatch('onCollapse', true)
             }
