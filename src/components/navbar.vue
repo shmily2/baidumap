@@ -48,6 +48,7 @@ export default {
         return this.$store.state.tab.mainTabsActiveName;
       },
       set(val) {
+        console.log(val)
         this.$store.commit("updateMainTabsActiveName", val);
       },
     },
@@ -102,7 +103,6 @@ export default {
           console.log("替换")
         }
       }
-
       this.mainTabsActiveName = tab.name;
       // 切换标签页时同步更新高亮菜单
       this.$nextTick(() => {

@@ -173,10 +173,12 @@ export default {
     },
     mainTabsActiveName: {
       get() {
+        console.log(this.$store.state.tab.mainTabsActiveName)
         return this.$store.state.tab.mainTabsActiveName;
       },
       set(val) {
-        this.$store.commit("updateMainTabsActiveName", val);
+        console.log(val)
+        // this.$store.commit("updateMainTabsActiveName", val);
       },
     },
   },
