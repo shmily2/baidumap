@@ -5,7 +5,7 @@
   >
     <template slot="title">
       <i :class="menu.icon"></i>
-      <span slot="title">{{ menu.name }}</span>
+      <span slot="title">{{ menu.title }}</span>
     </template>
     <MenuTree
       v-for="item in menu.children"
@@ -15,7 +15,7 @@
   </el-submenu>
   <el-menu-item v-else :index="'' + menu.id" @click="handleRoute(menu)">
     <i :class="menu.icon"></i>
-    <span slot="title">{{ menu.name }}</span>
+    <span slot="title">{{ menu.title }}</span>
   </el-menu-item>
 </template>
 <script>

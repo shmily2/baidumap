@@ -329,7 +329,7 @@ export function findNavTree() {
           "level": 1,
           "children": [
             {
-              "id": 31,
+              "id": 30,
               "tabshow":false,
               "parentId": 30,
               "name": "详情",
@@ -341,6 +341,7 @@ export function findNavTree() {
               "orderNum": 2,
               "delFlag": 0,
               "parentName": "换皮肤",
+              "parentTitle":"换皮肤"
             }
           ]
         }]

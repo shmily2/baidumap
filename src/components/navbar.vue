@@ -48,7 +48,6 @@ export default {
         return this.$store.state.tab.mainTabsActiveName;
       },
       set(val) {
-        console.log(val)
         this.$store.commit("updateMainTabsActiveName", val);
       },
     },
@@ -74,40 +73,45 @@ export default {
       let tab = "";
       if (route.meta.tabshow) {
         // tab标签页选中, 如果不存在则先添加
-        tab = this.mainTabs.filter((item) => item.name === route.name)[0];
+        tab = this.mainTabs.filter((item) => item.title === route.meta.title)[0];
+        console.log(tab)
         if (!tab) {
           tab = {
             name: route.name,
-            title: route.name,
-            icon: route.meta.icon,
-          };
-          this.mainTabs = this.mainTabs.concat(tab);
-        }
-      } else {
-        tab = this.mainTabs.filter((item) => item.name === route.meta.parentName)[0];
-        console.log
-        if (!tab) {
-          tab = {
-            name: route.meta.parentName,
-            title: route.meta.parentName,
+            title: route.meta.title,
             icon: route.meta.icon,
           };
           this.mainTabs = this.mainTabs.concat(tab);
         } else {
-          this.mainTabs.map((item,index)=>{
-            if(item.name===route.meta.parentName){
-                item.name=route.meta.parentName
+          this.mainTabs.map((item, index) => {
+            if (item.title === route.meta.title) {
+                 item.name = route.name;
             }
-          })
-          console.log(this.mainTabs)
-          console.log("替换")
+          });
+        }
+      } else {
+        tab = this.mainTabs.filter( (item) => item.title === route.meta.parentTitle )[0];
+        if (!tab) {
+          tab = {
+            name: route.name,
+            title: route.meta.parentTitle,
+            icon: route.meta.icon,
+          };
+          this.mainTabs = this.mainTabs.concat(tab);
+        } else {
+          this.mainTabs.map((item, index) => {
+            if (item.title === route.meta.parentTitle) {
+              item.name = route.name;
+            }
+          });
         }
       }
-      this.mainTabsActiveName = tab.name;
+      this.mainTabsActiveName = tab.title;
       // 切换标签页时同步更新高亮菜单
       this.$nextTick(() => {
         if (this.$refs.navmenu != null) {
-          this.$refs.navmenu.activeIndex = "" + route.meta.index;
+          this.$refs.navmenu.activeIndex = "" + route.meta.index; //菜单高亮
+          this.$store.commit("updateMainTabsActiveName", route.name); //tab高亮
           this.$refs.navmenu.initOpenedMenu();
         }
       });

@@ -57,7 +57,7 @@
               </el-dropdown>
               <el-tab-pane
                 v-for="item in mainTabs"
-                :key="item.name"
+                :key="item.title"
                 :label="item.title"
                 :name="item.name"
               >
@@ -174,8 +174,7 @@ export default {
         return this.$store.state.tab.mainTabsActiveName;
       },
       set(val) {
-        console.log(val)
-        // this.$store.commit("updateMainTabsActiveName", val);
+         this.$store.commit("updateMainTabsActiveName", val);
       },
     },
   },
@@ -206,10 +205,11 @@ export default {
 
     // tabs, 选中tab
     selectedTabHandle(tab) {
-      tab = this.mainTabs.filter((item) => item.name === tab.name);
+         console.log(this.mainTabs)
+          console.log("替换")
+      tab = this.mainTabs.filter((item) => item.title === tab.label);
       if (tab.length >= 1) {
         this.$router.push({ name: tab[0].name });
-        console.log(tab[0].name)
       }
     },
     // tabs, 删除tab
@@ -247,7 +247,6 @@ export default {
     // tabs, 刷新当前
     tabsRefreshCurrentHandle() {
       var tempTabName = this.mainTabsActiveName;
-      console.log(tempTabName)
       this.removeTabHandle(tempTabName);
       this.$nextTick(() => {
         this.$router.push({ name: tempTabName });

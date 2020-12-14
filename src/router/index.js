@@ -29,6 +29,7 @@ const router = new Router({
                 keepAlive: true,
                 tabshow: true,
                 parentName: null,
+                title:"主页面",
             },
 
             children: [
@@ -38,6 +39,7 @@ const router = new Router({
                     component: NotFound,
                     meta: {
                         tabshow: true,
+                        title:"error",
                         parentName: "mainPage",
                     }
 
@@ -51,6 +53,7 @@ const router = new Router({
             meta: {
                 keepAlive: true,
                 tabshow: true,
+                title:"登录",
                 parentName: null,
             },
         },
@@ -63,6 +66,7 @@ const router = new Router({
             meta: {
                 keepAlive: true,
                 tabshow: true,
+                title:"首页",
                 parentName: null,
             }
         },
@@ -73,6 +77,7 @@ const router = new Router({
             component: NotFound,
             meta: {
                 tabshow: true,
+                title:"notFound",
                 parentName: null,
             }
 
@@ -203,7 +208,8 @@ function isPath(List) {
                 icon: List.icon,
                 index: List.id,
                 tabshow: List.tabshow,
-                parentName: List.parentName,
+                parentTitle: List.parentTitle   ,
+                title:List.title,
             }
         }
         //判断是否为iframe
@@ -255,7 +261,8 @@ function addDynamicRoutes(menuList = [], routes = []) {
                             icon: menuList[i].icon,
                             index: menuList[i].id,
                             tabshow: menuList[i].tabshow,
-                            parentName: menuList[i].parentName,
+                            parentTitle: menuList[i].parentTitle,
+                            title:menuList[i].title,
                         }
                     }
                     //判断是否为iframe
@@ -294,7 +301,8 @@ function addDynamicRoutes(menuList = [], routes = []) {
                         icon: menuList[i].icon,
                         index: menuList[i].id,
                         tabshow: menuList[i].tabshow,
-                        parentName: menuList[i].parentName,
+                        parentTitle: menuList[i].parentTitle,
+                        title:menuList[i].title,
                     }
                 }
                 //判断是否为iframe
