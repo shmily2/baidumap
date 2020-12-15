@@ -74,7 +74,6 @@ export default {
       if (route.meta.tabshow) {
         // tab标签页选中, 如果不存在则先添加
         tab = this.mainTabs.filter((item) => item.title === route.meta.title)[0];
-        console.log(tab)
         if (!tab) {
           tab = {
             name: route.name,

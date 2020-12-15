@@ -1,6 +1,7 @@
 <template>
   <el-submenu
     v-if="menu.children && menu.children.length >= 1"
+    :popper-append-to-body="false"
     :index="'' + menu.id"
   >
     <template slot="title">
@@ -33,7 +34,6 @@ export default {
       console.log(menu)
       // 如果是嵌套页面，转换成iframe的path
       let path = getIFramePath(menu.url);
-      
       if (!path) {
         path = menu.url;
       } 

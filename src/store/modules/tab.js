@@ -10,7 +10,6 @@ export default {
       state.mainTabs = tabs
     },
     updateMainTabsActiveName (state, name) {
-      console.log(name)
       state.mainTabsActiveName = name
     }
   },

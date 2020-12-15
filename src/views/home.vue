@@ -17,14 +17,13 @@
       </div>
       <div class="qyhead">
         <div class="weatherright">
-          <router-link
-            :to="{ name: 'mainPage' }"
-            tag="div"
+          <div
+           @click="routerlink"
             class="but scale-img"
           >
             <img src="../assets/getInto.png" />
             <p>{{ $t("navbar.getInto") }}</p>
-          </router-link>
+          </div>
           <div @click="logout" class="but scale-img">
             <img src="../assets/Logout.png" />
             <p>{{ $t("navbar.logOut") }}</p>
@@ -333,6 +332,11 @@ export default {
       this.point = new BMap.Point(116.404, 39.915); // 创建点坐标
       this.map.centerAndZoom(this.point, 12); // 初始化地图，设置中心点坐标和地图级别
       this.map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
+    },
+    routerlink(){
+      this.$router.push({
+         name:"mainPage"
+      })
     },
     operation(list, index) {
       list.show = !list.show;
@@ -766,7 +770,7 @@ export default {
   position: absolute;
   height: 100%;
   width: 100%;
-  background: rgba(8, 48, 74, 1);
+  background: #0a2c44;
 }
 .polyline {
   width: 100%;

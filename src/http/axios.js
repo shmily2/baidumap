@@ -1,12 +1,35 @@
 import axios from 'axios';
 import config from './config';
- import { Loading } from 'element-ui';
+import { Loading } from 'element-ui';
 import Cookies from "js-cookie";
 import router from '@/router'
 
+
+
 // 使用vuex做全局loading时使用
 // import store from '@/store' 
-var  loadingInstance = '';
+let loading;
+//内存中正在请求的数量
+let loadingNum = 0;
+function startLoading() {
+  if (loadingNum == 0) {
+    loading = Loading.service({
+      lock: true,
+      text: '拼命加载中...',
+      background: 'rgba(0,0,0,0.8)',
+    })
+  }
+  //请求数量加1
+  loadingNum++;
+}
+function endLoading() {
+  //请求数量减1
+  loadingNum--
+  if (loadingNum <= 0) {
+    loading.close()
+  }
+}
+
 export default function $axios(options) {
   return new Promise((resolve, reject) => {
     const instance = axios.create({
@@ -21,13 +44,12 @@ export default function $axios(options) {
       config => {
         let token = Cookies.get('token')
         // 1. 请求开始的时候可以结合 vuex 开启全屏 loading 动画
-        loadingInstance = Loading.service({ fullscreen: true })
+        startLoading()
         // console.log(store.state.loading)
         // console.log('准备发送请求...')
         // 2. 带上token
         if (token) {
           config.headers.token = token
-          // loadingInstance
         } else {
           // 重定向到登录页面
           router.push('/login')
@@ -74,9 +96,8 @@ export default function $axios(options) {
     // response 拦截器
     instance.interceptors.response.use(
       response => {
-        loadingInstance.close()
+        endLoading()
         let data;
-        // ;
         // IE9时response.data是undefined，因此需要使用response.request.responseText(Stringify后的字符串)
         if (response.data == undefined) {
           data = JSON.parse(response.request.responseText)
@@ -106,7 +127,7 @@ export default function $axios(options) {
         return data
       },
       err => {
-        loadingInstance.close()
+        endLoading()
         if (err && err.response) {
           switch (err.response.status) {
             case 400:

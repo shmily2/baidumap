@@ -10,7 +10,7 @@
 <script>
 
 const version = require('element-ui/package.json').version // element-ui version from node_modules
-const ORIGINAL_THEME = '#3B3F40' // default color
+const ORIGINAL_THEME = '#409EFF' // default color
 
 export default {
   name: 'ThemePicker',
@@ -43,7 +43,7 @@ export default {
       if (typeof val !== 'string') return
       const themeCluster = this.getThemeCluster(val.replace('#', ''))
       const originalCluster = this.getThemeCluster(oldVal.replace('#', ''))
- 
+      console.log(themeCluster, originalCluster)
       const getHandler = (variable, id) => {
         return () => {
           const originalCluster = this.getThemeCluster(ORIGINAL_THEME.replace('#', ''))
@@ -60,8 +60,8 @@ export default {
       }
 
       const chalkHandler = getHandler('chalk', 'chalk-style')
-    
-      if (this.chalk) {
+
+      if (!this.chalk) {
         const url = `https://unpkg.com/element-ui@${version}/lib/theme-chalk/index.css`
         this.getCSSString(url, chalkHandler, 'chalk')
       } else {

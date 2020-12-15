@@ -20,7 +20,6 @@ export function findNavTree() {
         "icon": "el-icon-setting",
         "orderNum": 0,
         "delFlag": 0,
-        "parentName": null,
         "level": 0,
         "children": [{
           "id": 2,
@@ -38,7 +37,6 @@ export function findNavTree() {
           "icon": "el-icon-service",
           "orderNum": 1,
           "delFlag": 0,
-          "parentName": "系统管理",
           "level": 1,
           "children": []
         }, {
@@ -57,7 +55,6 @@ export function findNavTree() {
           "icon": "el-icon-news",
           "orderNum": 2,
           "delFlag": 0,
-          "parentName": "系统管理",
           "level": 1,
           "children": []
         }, {
@@ -76,7 +73,6 @@ export function findNavTree() {
           "icon": "el-icon-view",
           "orderNum": 4,
           "delFlag": 0,
-          "parentName": "系统管理",
           "level": 1,
           "children": []
         }, {
@@ -95,7 +91,6 @@ export function findNavTree() {
           "icon": "el-icon-menu",
           "orderNum": 5,
           "delFlag": 0,
-          "parentName": "系统管理",
           "level": 1,
           "children": []
         }, {
@@ -114,7 +109,6 @@ export function findNavTree() {
           "icon": "el-icon-edit-outline",
           "orderNum": 7,
           "delFlag": 0,
-          "parentName": "系统管理",
           "level": 1,
           "children": []
         }, {
@@ -133,7 +127,6 @@ export function findNavTree() {
           "icon": "el-icon-info",
           "orderNum": 8,
           "delFlag": 0,
-          "parentName": "系统管理",
           "level": 1,
           "children": []
         }]
@@ -153,7 +146,6 @@ export function findNavTree() {
         "icon": "el-icon-menu",
         "orderNum": 1,
         "delFlag": 0,
-        "parentName": null,
         "level": 0,
         "children": [{
           "id": 6,
@@ -171,7 +163,6 @@ export function findNavTree() {
           "icon": "el-icon-warning",
           "orderNum": 0,
           "delFlag": 0,
-          "parentName": "系统监控",
           "level": 1,
           "children": []
         }, {
@@ -190,7 +181,6 @@ export function findNavTree() {
           "icon": "el-icon-edit-outline",
           "orderNum": 1,
           "delFlag": 0,
-          "parentName": "系统监控",
           "level": 1,
           "children": []
         }]
@@ -210,7 +200,6 @@ export function findNavTree() {
         "icon": "el-icon-service",
         "orderNum": 2,
         "delFlag": 0,
-        "parentName": null,
         "level": 0,
         "children": [{
           "tabshow":true,
@@ -228,7 +217,6 @@ export function findNavTree() {
           "icon": " el-icon-view",
           "orderNum": 0,
           "delFlag": 0,
-          "parentName": "服务治理",
           "level": 1,
           "children": []
         }]
@@ -248,7 +236,6 @@ export function findNavTree() {
         "icon": "el-icon-document",
         "orderNum": 3,
         "delFlag": 0,
-        "parentName": null,
         "level": 0,
         "children": []
       },
@@ -268,7 +255,6 @@ export function findNavTree() {
           "icon": "el-icon-star-on",
           "orderNum": 5,
           "delFlag": 0,
-          "parentName": null,
           "level": 0,
           "children": []
         },
@@ -288,7 +274,6 @@ export function findNavTree() {
         "icon": "el-icon-picture-outline",
         "orderNum": 6,
         "delFlag": 0,
-        "parentName": null,
         "level": 0,
         "children": [{
           "id": 29,
@@ -306,7 +291,6 @@ export function findNavTree() {
           "icon": "el-icon-edit",
           "orderNum": 1,
           "delFlag": 0,
-          "parentName": "使用案例",
           "level": 1,
           "children": []
         }, {
@@ -325,7 +309,6 @@ export function findNavTree() {
           "icon": "el-icon-picture",
           "orderNum": 2,
           "delFlag": 0,
-          "parentName": "使用案例",
           "level": 1,
           "children": [
             {
@@ -340,7 +323,20 @@ export function findNavTree() {
               "icon": "el-icon-picture",
               "orderNum": 2,
               "delFlag": 0,
-              "parentName": "换皮肤",
+              "parentTitle":"换皮肤"
+            },
+            {
+              "id": 30,
+              "tabshow":false,
+              "parentId": 30,
+              "name": "编辑",
+              "title": "编辑",
+              "url": "/demo/edit",
+              "perms": null,
+              "type": 1,
+              "icon": "el-icon-picture",
+              "orderNum": 2,
+              "delFlag": 0,
               "parentTitle":"换皮肤"
             }
           ]

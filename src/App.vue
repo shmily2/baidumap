@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" v-cloak>
     <keep-alive>
       <router-view v-if="$route.meta.keepAlive"></router-view>
     </keep-alive>
@@ -25,5 +25,8 @@ export default {
   width: 100%;
   height:100%;
   position: absolute;
+}
+[v-cloak] {
+    display: none;
 }
 </style>

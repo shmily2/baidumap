@@ -154,9 +154,8 @@ function menus(arr) {
         } else {
             if (menusitem[i].tabshow == false) {
                 menusitem.splice(i, 1);
-            } else {
-                console.log("需要显示的菜单项");
-            }
+                i--
+            } 
         }
     }
     store.commit('setNavTree', menusitem)
@@ -336,7 +335,6 @@ function addDynamicRoutes(menuList = [], routes = []) {
         addDynamicRoutes(temp, routes)
     } else {
         console.log('动态路由加载...')
-        console.log('动态路由加载完成.')
     }
     return routes
 }

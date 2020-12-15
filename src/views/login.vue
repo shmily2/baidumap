@@ -95,8 +95,8 @@ export default {
           // 通过的逻辑
           sessionStorage.setItem("user", this.form.username);
           Cookies.set("token", "admin");
-          this.$store.commit('menuRouteLoaded', false) // 要求重新加载导航菜单
-           this.$router.push({ name: "home" });
+       
+          this.$router.push({ name: "home" });
         } else {
           console.log("验证失败");
           return false;

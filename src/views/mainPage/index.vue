@@ -170,7 +170,6 @@ export default {
     },
     mainTabsActiveName: {
       get() {
-        console.log(this.$store.state.tab.mainTabsActiveName)
         return this.$store.state.tab.mainTabsActiveName;
       },
       set(val) {

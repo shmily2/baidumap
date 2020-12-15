@@ -36330,8 +36330,8 @@
 --------------------------*/
 /* Break-point
 --------------------------*/
-.el-loading-parent--relative {
-  position: relative !important; }
+ .el-loading-parent--relative {
+  position: relative !important; } 
 
 .el-loading-parent--hidden {
   overflow: hidden !important; }
