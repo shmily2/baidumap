@@ -14,7 +14,7 @@
       <div class="bottom" :class="{ height: this.$store.getters.headfixed }">
         <div
           class="left"
-          :style="{ background: themeColor }"
+          style="background: #3b3f40 "
           :class="{mobile: this.$store.getters.endState == 'mobile' &&  this.$store.getters.barbackground == false}"
         >
           <el-scrollbar style="height: 100%">
@@ -189,11 +189,9 @@ export default {
     onThemeChange: function (themeColor) {
       this.$store.commit("setThemeColor", themeColor);
     },
-
     //切换语言
     changeLanguage(lange) {
       this.visible = false;
-
       localStorage.setItem("locale", lange);
       this.$i18n.locale = localStorage.getItem("locale");
     },

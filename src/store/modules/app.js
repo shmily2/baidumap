@@ -1,8 +1,8 @@
 export default {
     state: {
         appName: "Kitty Platform",  // 应用名称
-        themeColor: "#3B3F40",  // 主题颜色
-        oldThemeColor: "#3B3F40",   // 上一次主题颜色
+        themeColor: "#409EFF",  // 主题颜色
+        oldThemeColor: "#409EFF",   // 上一次主题颜色
         collapse:false,  // 导航栏收缩状态
         headfixed: true,//头部固定
         // changeLang:"zh",//语言

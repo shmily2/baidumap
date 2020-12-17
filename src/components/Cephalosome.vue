@@ -1,5 +1,8 @@
 <template>
-  <header id="cephalosome">
+  <header
+    id="cephalosome"
+    :style="{background:themeColor}"
+  >
     <div class="hedleft">
       <span
         class="toogle"
@@ -31,19 +34,25 @@
   </header>
 </template>
 <script>
-import Cookies from "js-cookie"
+import Cookies from "js-cookie";
+import { mapState } from "vuex";
 export default {
   name: "Cephalosome",
   props: ["moduleName", "info"],
+  computed: {
+    ...mapState({
+      themeColor: (state) => state.app.themeColor,
+    }),
+  },
   methods: {
     tooglebut() {
-       this.$store.dispatch("onCollapse");
+      this.$store.dispatch("onCollapse");
     },
     homepage() {
       this.$router.push({ name: "home" });
     },
     Logout() {
-      Cookies.remove("token")
+      Cookies.remove("token");
       this.$router.push({ name: "login" });
     },
   },
@@ -59,28 +68,28 @@ header {
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  background: linear-gradient(
-    to right,
-    rgba(29, 229, 22, 0.1) 0%,
-    rgba(29, 229, 22, 0.2) 10%,
-    rgba(29, 229, 22, 0.3) 20%,
-    rgba(29, 229, 22, 0.4) 30%,
-    rgba(29, 229, 22, 0.5) 60%,
-    rgba(29, 229, 22, 0.4) 70%,
-    rgba(29, 229, 22, 0.3) 80%,
-    rgba(29, 229, 22, 0.2) 90%,
-    rgba(29, 229, 22, 0.1) 100%
-  );
+  // background: linear-gradient(
+  //   to right,
+  //   rgba(29, 229, 22, 0.1) 0%,
+  //   rgba(29, 229, 22, 0.2) 10%,
+  //   rgba(29, 229, 22, 0.3) 20%,
+  //   rgba(29, 229, 22, 0.4) 30%,
+  //   rgba(29, 229, 22, 0.5) 60%,
+  //   rgba(29, 229, 22, 0.4) 70%,
+  //   rgba(29, 229, 22, 0.3) 80%,
+  //   rgba(29, 229, 22, 0.2) 90%,
+  //   rgba(29, 229, 22, 0.1) 100%
+  // );
 }
 .hedleft {
   padding-left: 30px;
-  color: #505da5;
+  color: #fff;
   display: flex;
   align-items: center;
 }
 .toogle {
   font-size: 30px;
-  color: #505da5;
+  color: #fff;
   padding-right: 10px;
   cursor: pointer;
 }
@@ -103,6 +112,7 @@ header {
 }
 .basicCircle > span {
   margin-left: 10px;
+  color:#fff;
 }
 .basicCircle > span:first-child {
   margin-left: 30px;

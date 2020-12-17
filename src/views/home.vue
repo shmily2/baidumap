@@ -94,6 +94,7 @@
                     <video
                       controls
                       autoplay
+                      muted
                       loop
                       style="
                         border-radius: 5px;

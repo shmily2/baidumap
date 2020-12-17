@@ -360,6 +360,7 @@
   /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
   font-weight: normal;
   font-display: "auto";
+  color:#fff;
   font-style: normal; }
 
 [class^="el-icon-"], [class*=" el-icon-"] {
@@ -373,6 +374,7 @@
   line-height: 1;
   vertical-align: baseline;
   display: inline-block;
+ 
   /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }

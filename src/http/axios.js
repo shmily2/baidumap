@@ -3,7 +3,7 @@ import config from './config';
 import { Loading } from 'element-ui';
 import Cookies from "js-cookie";
 import router from '@/router'
-
+import qs from "qs"
 
 
 // 使用vuex做全局loading时使用
@@ -57,12 +57,14 @@ export default function $axios(options) {
         console.log()
         // 3. 根据请求方法，序列化传来的参数，根据后端需求是否序列化
         if (config.method === 'post') {
+          // console.log(config.data.__proto__)
+          // console.log(FormData.prototype)
           // if (config.data.__proto__ === FormData.prototype
           //   || config.url.endsWith('path')
           //   || config.url.endsWith('mark')
           //   || config.url.endsWith('patchs')
           // ) {
-          //   console.log("formdata")
+          //     console.log("formdata")
           // } else {
           //   config.data = qs.stringify(config.data)
           // }

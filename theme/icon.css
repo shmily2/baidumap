@@ -124,6 +124,7 @@
   /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
   font-weight: normal;
   font-display: "auto";
+  color:#fff;
   font-style: normal; }
 
 [class^="el-icon-"], [class*=" el-icon-"] {
@@ -133,6 +134,7 @@
   font-style: normal;
   font-weight: normal;
   font-variant: normal;
+  color:#fff;
   text-transform: none;
   line-height: 1;
   vertical-align: baseline;
@@ -140,7 +142,6 @@
   /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
-
 .el-icon-ice-cream-round:before {
   content: "\e6a0"; }
 

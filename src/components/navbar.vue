@@ -7,9 +7,9 @@
     @open="handleOpen"
     @close="handleClose"
     @select="handleselect"
-    :background-color="themeColor"
+    background-color="#3b3f40"
     text-color="#fff"
-    active-text-color="#ffd04b"
+    :active-text-color="themeColor"
     :collapse="this.$store.getters.collapse"
   >
     <!-- 导航菜单树组件，动态加载菜单 -->
@@ -118,5 +118,17 @@ export default {
   },
 };
 </script>
-<style lange="scss">
+<style>
+.el-submenu__title>i[class^=el-icon-]{
+  color:#fff;
+}
+.el-menu-item >i[class^=el-icon-]{
+  color:#fff;
+}
+.is-active>i[class^=el-icon-]{
+  color: inherit;
+}
+.el-menu{
+  text-align: left!important;
+}
 </style>
