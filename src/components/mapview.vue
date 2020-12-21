@@ -42,7 +42,7 @@ export default {
   height: calc(100vh - 270px);
   width: calc(100% - 870px);
   margin:auto;
-  margin-top:13vh;
+  margin-top:125px;
 }
 /* 去除百度地图版权那行字 和 百度logo */
 .baidumap > .BMap_cpyCtrl {

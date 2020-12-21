@@ -185,27 +185,7 @@ export function findNavTree() {
           "delFlag": 0,
           "level": 1,
           "children": []
-        },
-        // {
-        //   "id": 206,
-        //   "tabshow": true,
-        //   "createBy": null,
-        //   "createTime": null,
-        //   "lastUpdateBy": null,
-        //   "lastUpdateTime": null,
-        //   "parentId": 201,
-        //   "name": "vehicleLocation",
-        //   "title": "车辆位置",
-        //   "url": "/Car/vehicleLocation",
-        //   "perms": null,
-        //   "type": 1,
-        //   "icon": "el-icon-edit-outline",
-        //   "orderNum": 7,
-        //   "delFlag": 0,
-        //   "level": 1,
-        //   "children": []
-        // }
-      
+        },    
       ]
       },
       {
@@ -216,7 +196,7 @@ export function findNavTree() {
         "lastUpdateBy": null,
         "lastUpdateTime": null,
         "parentId": 0,
-        "name": "系统管理",
+        "name": "xtgl",
         "title": "系统管理",
         "url": null,
         "perms": null,
@@ -233,7 +213,7 @@ export function findNavTree() {
           "lastUpdateBy": null,
           "lastUpdateTime": null,
           "parentId": 1,
-          "name": "用户管理",
+          "name": "yhgl",
           "title": "用户管理",
           "url": "https://www.cnblogs.com/xifengxiaoma",
           "perms": null,
@@ -251,9 +231,9 @@ export function findNavTree() {
           "lastUpdateBy": null,
           "lastUpdateTime": null,
           "parentId": 1,
-          "name": "机构管理",
+          "name": "jggl",
           "title": "机构管理",
-          "url": "https://gitee.com/liuge1988/kitty-ui",
+          "url": "https://www.biquge0.cc/book/37429/23510353_2.html",
           "perms": null,
           "type": 1,
           "icon": "el-icon-news",

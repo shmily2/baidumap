@@ -347,4 +347,7 @@ export default {
   flex: 1;
   overflow: hidden;
 }
+.el-scrollbar__view{
+  height:100%
+}
 </style>

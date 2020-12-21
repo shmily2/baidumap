@@ -2,7 +2,8 @@
   <div class="indexpage">
     <div class="polyline">
       <!-- <mvp></mvp> -->
-      <mapview @baiduMap="baiduMap"></mapview> 
+      <!-- <mapview @baiduMap="baiduMap"></mapview>  -->
+      <cesiumContainer></cesiumContainer> 
       <div class="menubox">
         <ul class="menu">
           <li

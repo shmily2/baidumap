@@ -3,12 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "dev": "vue-cli-service serve"
   },
   "dependencies": {
     "axios": "^0.20.0",
+    "cesium": "^1.76.0",
     "core-js": "^3.6.5",
     "echarts": "^4.9.0",
     "element-ui": "^2.13.2",
