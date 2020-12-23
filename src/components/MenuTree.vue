@@ -1,0 +1,51 @@
+<template>
+  <el-submenu
+    v-if="menu.children && menu.children.length >= 1"
+    :popper-append-to-body="false"
+    :index="'' + menu.id"
+  >
+    <template slot="title">
+      <i :class="menu.icon"></i>
+      <span slot="title">{{ menu.title }}</span>
+    </template>
+    <MenuTree
+      v-for="item in menu.children"
+      :key="item.id"
+      :menu="item"
+    ></MenuTree>
+  </el-submenu>
+  <el-menu-item v-else :index="'' + menu.id" @click="handleRoute(menu)">
+    <i :class="menu.icon"></i>
+    <span slot="title">{{ menu.title }}</span>
+  </el-menu-item>
+</template>
+<script>
+import { getIFrameUrl, getIFramePath } from "@/utils/iframe";
+export default {
+  name: "MenuTree",
+  props: {
+    menu: {
+      type: Object,
+      required: true,
+    },
+  },
+  methods: {
+    handleRoute(menu) {
+      console.log(menu)
+      // 如果是嵌套页面，转换成iframe的path
+      let path = getIFramePath(menu.url);
+      if (!path) {
+        path = menu.url;
+      } 
+      // 通过菜单URL跳转至指定路由
+      this.$router.push(path);
+    },
+  },
+};
+</script>
+
+<style scoped lang="scss">
+.el-submenu .el-menu-item{
+  padding:0px 0px 0px 40px !important;
+}
+</style>
