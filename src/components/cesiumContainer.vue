@@ -17,7 +17,7 @@ export default {
     var lat = 29.544684360197113;
     var height = 10.0;
     // // 创建viewer实例
-    this.viewer = new Cesium.Viewer("cesiumContainer", {
+    let viewer = new Cesium.Viewer("cesiumContainer", {
       // 需要进行可视化的数据源的集合
       animation: false, // 是否显示动画控件
       shouldAnimate: true,
@@ -35,9 +35,9 @@ export default {
       fullscreenElement: document.body // 全屏时渲染的HTML元素 暂时没发现用处
     });
     // 去除版权信息
-    this.viewer._cesiumWidget._creditContainer.style.display = "none";
+    viewer._cesiumWidget._creditContainer.style.display = "none";
     // 天地图矢量底图
-    this.viewer.imageryLayers.addImageryProvider(
+    viewer.imageryLayers.addImageryProvider(
       new Cesium.WebMapTileServiceImageryProvider({
         url:
           "http://t0.tianditu.com/vec_w/wmts?service=wmts&request=GetTile&version=1.0.0&LAYER=vec&tileMatrixSet=w&TileMatrix={TileMatrix}&TileRow={TileRow}&TileCol={TileCol}&style=default&format=tiles&tk=4d133cc2c1d12cea409bb954d40f02c9",
@@ -48,7 +48,7 @@ export default {
       })
     );
     // 天地图矢量标注图层
-    this.viewer.imageryLayers.addImageryProvider(
+    viewer.imageryLayers.addImageryProvider(
       new Cesium.WebMapTileServiceImageryProvider({
         url:
           "http://t6.tianditu.com/cia_w/wmts?service=wmts&request=GetTile&version=1.0.0&LAYER=cia&tileMatrixSet=w&TileMatrix={TileMatrix}&TileRow={TileRow}&TileCol={TileCol}&style=default&format=tiles&tk=4d133cc2c1d12cea409bb954d40f02c9",
@@ -62,7 +62,7 @@ export default {
     // 将经纬度转换为世界坐标
     var target = Cesium.Cartesian3.fromDegrees(initialLon, lat, height);
     var offset = new Cesium.Cartesian3(-70.06, -68.64, 6.0908);
-    this.viewer.scene.camera.lookAt(target, offset);
+    viewer.scene.camera.lookAt(target, offset);
   }
 };
 </script>
