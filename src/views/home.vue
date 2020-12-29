@@ -3,7 +3,7 @@
     <div class="polyline">
       <!-- <mvp></mvp> -->
       <!-- <mapview @baiduMap="baiduMap"></mapview>  -->
-      <cesiumContainer></cesiumContainer> 
+      <cesiumContainer></cesiumContainer>
       <div class="menubox">
         <ul class="menu">
           <li
@@ -18,10 +18,7 @@
       </div>
       <div class="qyhead">
         <div class="weatherright">
-          <div
-           @click="routerlink"
-            class="but scale-img"
-          >
+          <div @click="routerlink" class="but scale-img">
             <img src="../assets/getInto.png" />
             <p>{{ $t("navbar.getInto") }}</p>
           </div>
@@ -77,15 +74,15 @@
         </div>
         <div class="right">
           <ul class="side">
-           <li @click="Car">
+            <li @click="Car">
               <div class="titlename">
                 <span>卡口管理系统</span>
               </div>
               <div class="echartflex">
                 <div id="Bayonet"></div>
               </div>
-            </li> 
-          <li>
+            </li>
+            <li>
               <div class="titlename">
                 <span>重点位置视频监控</span>
               </div>
@@ -112,8 +109,8 @@
                   </li>
                 </ul>
               </div>
-             </li>
-         <li @click="maintenance">
+            </li>
+            <li @click="maintenance">
               <div class="titlename">
                 <span>运维管理系统</span>
               </div>
@@ -152,7 +149,6 @@
   </div>
 </template>
 <script>
-import mock from "../mock/index";
 import axios from "axios";
 import { mark, removeMarker, polyline, Polygon } from "../utils/map";
 import { Doughnut, Columnarvar, Rose } from "../utils/echarts";
@@ -165,7 +161,7 @@ import gunMachine from "../assets/gunMachine.png"; //枪机
 import domeCameras from "../assets/domeCameras.png"; //球机
 import parkingLot from "../assets/parkingLot.png"; //停车场
 import { datetime } from "../utils/time";
-import Cookies from "js-cookie"
+import Cookies from "js-cookie";
 export default {
   name: "Bmap",
   data() {
@@ -189,135 +185,135 @@ export default {
         { name: "边界点A" },
         { name: "边界点B" },
         { name: "重要机房点A" },
-        { name: "重要机房点B" },
+        { name: "重要机房点B" }
       ],
       map: "", //地图初始化
       point: "", //地图中心点
       maintenancepre: [], //运维管理
       whpcl: {
         markers: [],
-        infoWindow: "",
+        infoWindow: ""
       },
       whpkk: {
         markers: [],
-        infoWindow: "",
+        infoWindow: ""
       },
       yjkk: {
         markers: [],
-        infoWindow: "",
+        infoWindow: ""
       },
       ptkk: {
         markers: [],
-        infoWindow: "",
+        infoWindow: ""
       },
       qywl: {
-        polylineMuster: [],
+        polylineMuster: []
       },
       bkzx: {
         markers: [],
-        infoWindow: "",
+        infoWindow: ""
       },
       qj: {
         markers: [],
-        infoWindow: "",
+        infoWindow: ""
       },
       qy: {
-        PolygonsMuster: [],
+        PolygonsMuster: []
       },
       yqbj: {
-        polylineMuster: [],
+        polylineMuster: []
       },
       qiuj: {
         markers: [],
-        infoWindow: "",
+        infoWindow: ""
       },
       tcc: {
         markers: [],
-        infoWindow: "",
+        infoWindow: ""
       },
       whpcd: {
-        polylineMuster: [],
+        polylineMuster: []
       },
       muen: [
         {
           name: "危化品车辆",
           id: 0,
           icon: "",
-          show: false,
+          show: false
         },
         {
           name: "危化品卡口",
           id: 1,
           icon: "",
-          show: false,
+          show: false
         },
         {
           name: "应急卡口",
           id: 2,
           icon: "",
-          show: false,
+          show: false
         },
         {
           name: "普通卡口",
           id: 3,
           icon: "",
-          show: false,
+          show: false
         },
         {
           name: "办卡中心",
           id: 4,
           icon: "",
-          show: false,
+          show: false
         },
         {
           name: "企业围墙",
           id: 5,
           icon: "",
-          show: false,
+          show: false
         },
         {
           name: "枪机",
           id: 6,
           icon: "",
-          show: false,
+          show: false
         },
         {
           name: "区域",
           icon: "",
           id: 7,
-          show: false,
+          show: false
         },
         {
           name: "球机",
           id: 8,
           icon: "",
-          show: false,
+          show: false
         },
         {
           name: "危化品车道",
           id: 9,
           icon: "",
-          show: false,
+          show: false
         },
         {
           name: "分级管理",
           id: 10,
           icon: "",
-          show: false,
+          show: false
         },
         {
           name: "园区边界",
           id: 11,
           icon: "",
-          show: false,
+          show: false
         },
         {
           name: "停车场",
           id: 12,
           icon: "",
-          show: false,
-        },
-      ],
+          show: false
+        }
+      ]
     };
   },
   mounted() {
@@ -335,10 +331,10 @@ export default {
       this.map.centerAndZoom(this.point, 12); // 初始化地图，设置中心点坐标和地图级别
       this.map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
     },
-    routerlink(){
+    routerlink() {
       this.$router.push({
-         name:"mainPage"
-      })
+        name: "mainPage"
+      });
     },
     operation(list, index) {
       list.show = !list.show;
@@ -390,9 +386,9 @@ export default {
     Cameras(judge) {
       if (judge) {
         let infoWindow = new BMap.InfoWindow("这是危化品车辆", {
-          offset: new BMap.Size(2, -2),
+          offset: new BMap.Size(2, -2)
         });
-        this.$api.dept.Cameras().then((res) => {
+        this.$api.dept.Cameras().then(res => {
           mark(this.map, res.data, this.whpcl.markers, infoWindow, Sdangerous);
         });
       } else {
@@ -403,9 +399,9 @@ export default {
     dangBayonet(judge) {
       if (judge) {
         let infoWindow = new BMap.InfoWindow("这是危化品卡口", {
-          offset: new BMap.Size(2, -5),
+          offset: new BMap.Size(2, -5)
         });
-        this.$api.dept.dangBayonet().then((res) => {
+        this.$api.dept.dangBayonet().then(res => {
           mark(this.map, res.data, this.whpkk.markers, infoWindow, dangBayonet);
         });
       } else {
@@ -416,9 +412,9 @@ export default {
     emergency(judge) {
       if (judge) {
         let infoWindow = new BMap.InfoWindow("这是应急卡口", {
-          offset: new BMap.Size(2, -5),
+          offset: new BMap.Size(2, -5)
         });
-        this.$api.dept.emergency().then((res) => {
+        this.$api.dept.emergency().then(res => {
           mark(this.map, res.data, this.yjkk.markers, infoWindow, emergency);
         });
       } else {
@@ -429,9 +425,9 @@ export default {
     ordinary(judge) {
       if (judge) {
         let infoWindow = new BMap.InfoWindow("这是普通卡口", {
-          offset: new BMap.Size(2, -5),
+          offset: new BMap.Size(2, -5)
         });
-        this.$api.dept.ordinary().then((res) => {
+        this.$api.dept.ordinary().then(res => {
           mark(this.map, res.data, this.ptkk.markers, infoWindow, ordinary);
         });
       } else {
@@ -442,10 +438,10 @@ export default {
     cardProcessingCenter(judge) {
       if (judge) {
         let infoWindow = new BMap.InfoWindow("这是办卡中心", {
-          offset: new BMap.Size(2, -5),
+          offset: new BMap.Size(2, -5)
         });
         let size = new BMap.Size(32, 32);
-        this.$api.dept.cardProcessingCenter().then((res) => {
+        this.$api.dept.cardProcessingCenter().then(res => {
           mark(
             this.map,
             res.data,
@@ -462,7 +458,7 @@ export default {
     //企业围栏
     paths(judge) {
       if (judge) {
-        this.$api.dept.paths().then((res) => {
+        this.$api.dept.paths().then(res => {
           for (var i = 0; i < res.data.length; i++) {
             polyline(
               this.map,
@@ -484,10 +480,10 @@ export default {
     gunMachine(judge) {
       if (judge) {
         let infoWindow = new BMap.InfoWindow("这是枪机", {
-          offset: new BMap.Size(2, -5),
+          offset: new BMap.Size(2, -5)
         });
         let size = new BMap.Size(32, 32);
-        this.$api.dept.gunMachine().then((res) => {
+        this.$api.dept.gunMachine().then(res => {
           mark(
             this.map,
             res.data,
@@ -504,7 +500,7 @@ export default {
     //区域
     region(judge) {
       if (judge) {
-        this.$api.dept.region().then((res) => {
+        this.$api.dept.region().then(res => {
           for (var i = 0; i < res.data.length; i++) {
             Polygon(
               this.map,
@@ -526,10 +522,10 @@ export default {
     domeCameras(judge) {
       if (judge) {
         let infoWindow = new BMap.InfoWindow("这是球机", {
-          offset: new BMap.Size(2, -5),
+          offset: new BMap.Size(2, -5)
         });
         let size = new BMap.Size(28, 28);
-        this.$api.dept.domeCameras().then((res) => {
+        this.$api.dept.domeCameras().then(res => {
           mark(
             this.map,
             res.data,
@@ -546,7 +542,7 @@ export default {
     //危化品车道
     vehicleLane(judge) {
       if (judge) {
-        this.$api.dept.vehicleLane().then((res) => {
+        this.$api.dept.vehicleLane().then(res => {
           for (var i = 0; i < res.data.length; i++) {
             polyline(
               this.map,
@@ -566,7 +562,7 @@ export default {
     //园区边界
     boundary(judge) {
       if (judge) {
-        this.$api.dept.boundary().then((res) => {
+        this.$api.dept.boundary().then(res => {
           for (var i = 0; i < res.data.length; i++) {
             polyline(
               this.map,
@@ -587,10 +583,10 @@ export default {
     parkingLot(judge) {
       if (judge) {
         let infoWindow = new BMap.InfoWindow("这是停车场", {
-          offset: new BMap.Size(2, -5),
+          offset: new BMap.Size(2, -5)
         });
         let size = new BMap.Size(48, 48);
-        this.$api.dept.parkingLot().then((res) => {
+        this.$api.dept.parkingLot().then(res => {
           mark(
             this.map,
             res.data,
@@ -612,9 +608,9 @@ export default {
         information: [
           { value: 335, name: "企业人员" },
           { value: 220, name: "危化品从业人员" },
-          { value: 160, name: "危化品驾驶员" },
+          { value: 160, name: "危化品驾驶员" }
         ],
-        EChart: Security,
+        EChart: Security
       };
       Doughnut(data);
     },
@@ -627,7 +623,7 @@ export default {
         dataT: [7, 16, 24, 32, 68, 29, 34],
         nameO: "入园",
         nameT: "出园",
-        EChart: Car,
+        EChart: Car
       };
       Columnarvar(data);
     },
@@ -642,38 +638,38 @@ export default {
             value: 335,
             name: "直接访问",
             itemStyle: {
-              color: "#33f8b3",
-            },
+              color: "#33f8b3"
+            }
           },
           {
             value: 310,
             name: "邮件营销",
             itemStyle: {
-              color: "#47b3fe",
-            },
+              color: "#47b3fe"
+            }
           },
           {
             value: 274,
             name: "联盟广告",
             itemStyle: {
-              color: "#fffc37",
-            },
+              color: "#fffc37"
+            }
           },
           {
             value: 235,
             name: "视频广告",
             itemStyle: {
-              color: "#ffa500",
-            },
+              color: "#ffa500"
+            }
           },
           {
             value: 400,
             name: "搜索引擎",
             itemStyle: {
-              color: "#1DE516",
-            },
-          },
-        ],
+              color: "#1DE516"
+            }
+          }
+        ]
       };
       Rose(data);
     },
@@ -688,44 +684,50 @@ export default {
             value: 60,
             name: "食堂工作",
             itemStyle: {
-              color: "#1DE516",
-            },
+              color: "#1DE516"
+            }
           },
           {
             value: 90,
             name: "安保人员",
             itemStyle: {
-              color: "#fffc37",
-            },
+              color: "#fffc37"
+            }
           },
           {
             value: 50,
             name: "清洁人员",
             itemStyle: {
-              color: "#33f8b3",
-            },
+              color: "#33f8b3"
+            }
           },
           {
             value: 125,
             name: "教师",
             itemStyle: {
-              color: "#47b3fe",
-            },
-          },
-        ],
+              color: "#47b3fe"
+            }
+          }
+        ]
       };
       Rose(data);
     },
     //运维管理
     maintenance() {
-      this.$api.dept.maintenance().then((res) => {
-        console.log(res.data)
-        this.maintenancepre = res.data;
-        this.timer = setInterval(() => {
-          this.maintenancepre.push(this.maintenancepre[0]);
-          this.maintenancepre.shift();
-        }, 2000);
-      });
+      this.maintenancepre = [
+        { ip: "192.168.0.122", name: "赵威皓", time: "2018-12-08 19:50" },
+        { ip: "192.168.0.45", name: "赵冬梅", time: "2018-11-20 19:50" },
+        { ip: "192.168.0.02", name: "赵吾行", time: "2018-10-15 19:50" },
+        { ip: "192.168.0.82", name: "彭京", time: "2019-02-08 19:50" },
+        { ip: "192.168.0.81", name: "赵吾光", time: "2019-02-08 19:50" },
+        { ip: "192.168.0.132", name: "彭致睿", time: "2018-12-08 19:50" },
+        { ip: "192.168.0.40", name: "陶炳宇", time: "2018-11-20 19:50" },
+        { ip: "192.168.0.08", name: "陶媛", time: "2018-10-15 19:50" }
+      ];
+      this.timer = setInterval(() => {
+        this.maintenancepre.push(this.maintenancepre[0]);
+        this.maintenancepre.shift();
+      }, 2000);
     },
     move() {
       clearInterval(this.timer);
@@ -747,10 +749,10 @@ export default {
             appsecret: "jWblPH7l",
             city: "南京",
             version: "v61",
-            province: "江苏",
-          },
+            province: "江苏"
+          }
         })
-        .then((res) => {
+        .then(res => {
           this.weatherData = res.data;
           this.wea_img = require("../assets/" +
             this.weatherData.wea_img +
@@ -763,8 +765,8 @@ export default {
     logout() {
       Cookies.remove("token");
       this.$router.push({ name: "login" });
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>
@@ -906,7 +908,7 @@ export default {
     rgba(22, 22, 34, 0.1) 100%
   );
 }
- .side > li > .titlename {
+.side > li > .titlename {
   margin-top: 20px;
   height: 32px;
   font-size: 20px;
@@ -927,7 +929,7 @@ export default {
 .titlename > span {
   padding-left: 40px;
   color: rgb(28, 185, 255);
-} 
+}
 .echartflex {
   width: 100%;
   height: 100%;
@@ -973,18 +975,18 @@ export default {
   font-size: 14px;
   width: 58px;
 }
- .titlename {
+.titlename {
   height: 30px;
   width: 100%;
   display: flex;
   justify-content: center;
-} 
- .titlename > li {
+}
+.titlename > li {
   list-style: none;
   width: 33%;
   text-align: center;
   color: #9fa89d;
-} 
+}
 #review_box {
   flex: 1;
   width: 100%;

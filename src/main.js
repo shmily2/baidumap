@@ -6,10 +6,10 @@ import echarts from 'echarts';
 import 'element-ui/lib/theme-chalk/index.css';
 import i18n from './lang';
 import api from "./http/api";
-
 import store from './store'
 import "./assets/font-awesome-4.7.0/font-awesome-4.7.0/css/font-awesome.min.css"
 import "../plugin"
+// import './lib'
 import "../font/iconfont.css"
 //百度地图
 import BaiduMap from 'vue-baidu-map'
@@ -23,6 +23,7 @@ Vue.use(ElementUI, {
 Vue.config.productionTip = false
 Vue.prototype.$api = api
 Vue.prototype.$echarts = echarts
+
 new Vue({
   router,
   store,

@@ -8,6 +8,7 @@
     "dev": "vue-cli-service serve"
   },
   "dependencies": {
+    "@types/three": "^0.103.2",
     "axios": "^0.20.0",
     "cesium": "^1.76.0",
     "core-js": "^3.6.5",
