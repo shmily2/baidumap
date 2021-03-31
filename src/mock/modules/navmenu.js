@@ -327,7 +327,8 @@ export function findNavTree() {
               "icon": "el-icon-picture",
               "orderNum": 2,
               "delFlag": 0,
-              "parentTitle": "换皮肤"
+              "parentTitle": "换皮肤",
+              "parentName": "换皮肤"
             },
             {
               "id": 30,
@@ -341,7 +342,8 @@ export function findNavTree() {
               "icon": "el-icon-picture",
               "orderNum": 2,
               "delFlag": 0,
-              "parentTitle": "换皮肤"
+              "parentTitle": "换皮肤",
+              "parentName": "换皮肤"
             }
           ]
         }]

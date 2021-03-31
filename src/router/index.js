@@ -196,48 +196,6 @@ function handleIFrameUrl(path) {
         }
     }
 }
-function isPath(List) {
-    console.log(List)
-    if (List.url && /\S/.test(List.url)) {
-        let route = {
-            path: List.url,
-            component: null,
-            name: List.name,
-            meta: {
-                icon: List.icon,
-                index: List.id,
-                tabshow: List.tabshow,
-                parentTitle: List.parentTitle   ,
-                title:List.title,
-            }
-        }
-        //判断是否为iframe
-        let path = getIFramePath(List.url)
-        if (path) {
-            //如果是嵌套页面, 通过iframe展示
-            route['path'] = path
-            route['component'] = resolve => require([`@/views/IFrame/IFrame`], resolve)
-            // 存储嵌套页面路由路径和访问URL
-            let url = getIFrameUrl(List.url)
-            let iFrameUrl = { 'path': path, 'url': url }
-            store.commit('addIFrameUrl', iFrameUrl)
-        } else {
-            try {
-                // 根据菜单URL动态加载vue组件，这里要求vue组件须按照url路径存储
-                // 如url="sys/user"，则组件路径应是"@/views/sys/user.vue",否则组件加载不到
-                let array = List.url.split('/')
-                let url = ''
-                for (let i = 0; i < array.length; i++) {
-                    url += array[i].substring(0, 1) + array[i].substring(1) + '/'
-                }
-                url = url.substring(0, url.length - 1)
-
-                route['component'] = resolve => require([`@/views` + `${url}`], resolve)
-            } catch (e) { }
-        }
-        routes.push(route)
-    }
-}
 /**
 * 添加动态(菜单)路由
 * @param {*} menuList 菜单列表
@@ -261,6 +219,7 @@ function addDynamicRoutes(menuList = [], routes = []) {
                             index: menuList[i].id,
                             tabshow: menuList[i].tabshow,
                             parentTitle: menuList[i].parentTitle,
+                            parentName:menuList[i].parentName,
                             title:menuList[i].title,
                         }
                     }
@@ -301,6 +260,7 @@ function addDynamicRoutes(menuList = [], routes = []) {
                         index: menuList[i].id,
                         tabshow: menuList[i].tabshow,
                         parentTitle: menuList[i].parentTitle,
+                        parentName:menuList[i].parentName,
                         title:menuList[i].title,
                     }
                 }
@@ -341,7 +301,6 @@ function addDynamicRoutes(menuList = [], routes = []) {
 router.afterEach(() => {
     NProgress.done()
 })
-
 router.selfaddRoutes = function (params) {
     router.matcher = new Router().matcher;
     router.$addRoutes(params)

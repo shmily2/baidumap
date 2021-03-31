@@ -2,8 +2,8 @@
   <div class="indexpage">
     <div class="polyline">
       <!-- <mvp></mvp> -->
-      <!-- <mapview @baiduMap="baiduMap"></mapview>  -->
-      <cesiumContainer></cesiumContainer>
+      <mapview @baiduMap="baiduMap"></mapview>
+      <!-- <cesiumContainer></cesiumContainer> -->
       <div class="menubox">
         <ul class="menu">
           <li
@@ -150,6 +150,7 @@
 </template>
 <script>
 import axios from "axios";
+import "../mock/index"
 import { mark, removeMarker, polyline, Polygon } from "../utils/map";
 import { Doughnut, Columnarvar, Rose } from "../utils/echarts";
 import Sdangerous from "../assets/Sdangerous.png"; //危化品车辆
@@ -163,7 +164,7 @@ import parkingLot from "../assets/parkingLot.png"; //停车场
 import { datetime } from "../utils/time";
 import Cookies from "js-cookie";
 export default {
-  name: "Bmap",
+  name: "bmap",
   data() {
     return {
       timer: null, // 定时器名称

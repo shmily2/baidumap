@@ -202,8 +202,6 @@ export default {
 
     // tabs, 选中tab
     selectedTabHandle(tab) {
-         console.log(this.mainTabs)
-          console.log("替换")
       tab = this.mainTabs.filter((item) => item.title === tab.label);
       if (tab.length >= 1) {
         this.$router.push({ name: tab[0].name });
