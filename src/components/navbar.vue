@@ -100,7 +100,7 @@ export default {
         } else {
           this.mainTabs.map((item, index) => {
             if (item.title === route.meta.parentTitle) {
-               item.name = route.meta.parentName;
+               route.name = route.meta.parentName;
             }
           });
         }

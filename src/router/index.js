@@ -125,9 +125,10 @@ function addDynamicMenuAndRoutes(userName, to, from) {
         return
     }
     api.menu.findNavTree({ 'userName': userName })
-        .then(res => {
+        .then(res => {  
+           let dataList =  denudates(res.data)
             // 添加动态路由
-            let dynamicRoutes = addDynamicRoutes(res.data)
+            let dynamicRoutes = addDynamicRoutes(dataList)
             // 处理静态组件绑定路由
             handleStaticComponent(router, dynamicRoutes)
             //新增路由   
@@ -136,29 +137,43 @@ function addDynamicMenuAndRoutes(userName, to, from) {
             // 保存加载状态
             store.commit('menuRouteLoaded', true)
             // 保存菜单树
-            menus(res.data);
+            menus(dataList);
         }).then(res => {
             api.user.findPermissions({ 'name': userName }).then(res => {
                 // 保存用户权限标识集合
-                store.commit('setPerms', res.data)
+                store.commit('setPerms', dataList)
             })
         })
         .catch(function (res) {
         })
 }
 function menus(arr) {
-    let menusitem = arr
-    for (let i = 0; i < menusitem.length; i++) {
-        if (menusitem[i].children && menusitem[i].children.length > 0) {
-            menus(menusitem[i].children);
+    let menuitem = arr
+    for (let i = 0; i < menuitem.length; i++) {
+        if (menuitem[i].children && menuitem[i].children.length > 0) {
+            menus(menuitem[i].children);
         } else {
-            if (menusitem[i].tabshow == false) {
-                menusitem.splice(i, 1);
+            if (menuitem[i].tabshow == false) {
+                menuitem.splice(i, 1);
                 i--
             } 
         }
     }
-    store.commit('setNavTree', menusitem)
+    store.commit('setNavTree', menuitem)
+}
+//后台数据处理
+function denudates(arr) {
+    let menusList = arr
+    for (let i = 0; i < menusList.length; i++) {
+        if (menusList[i].children && menusList[i].children.length > 0) {
+            denudates(menusList[i].children);
+        } else {
+            if (menusList[i].tabshow == false) {
+                menusList[i].id=menusList[i].parentId
+            } 
+        }
+    }
+    return menusList
 }
 /**
  * 处理路由到本地直接指定页面组件的情况
@@ -210,6 +225,7 @@ function addDynamicRoutes(menuList = [], routes = []) {
             if (istabshow) {
                 //isPath(menuList[i])
                 if (menuList[i].url && /\S/.test(menuList[i].url)) {
+                    console.log(menuList[i])
                     let route = {
                         path: menuList[i].url,
                         component: null,
@@ -251,6 +267,7 @@ function addDynamicRoutes(menuList = [], routes = []) {
             }
         } else {
             if (menuList[i].url && /\S/.test(menuList[i].url)) {
+                console.log(menuList[i])
                 let route = {
                     path: menuList[i].url,
                     component: null,
@@ -298,6 +315,7 @@ function addDynamicRoutes(menuList = [], routes = []) {
     }
     return routes
 }
+
 router.afterEach(() => {
     NProgress.done()
 })
@@ -305,5 +323,4 @@ router.selfaddRoutes = function (params) {
     router.matcher = new Router().matcher;
     router.$addRoutes(params)
 }
-console.log(router)
 export default router

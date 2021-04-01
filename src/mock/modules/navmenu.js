@@ -222,7 +222,26 @@ export function findNavTree() {
           "orderNum": 1,
           "delFlag": 0,
           "level": 1,
-          "children": []
+          "children": [
+            {
+            "id": 55,
+            "tabshow": true,
+            "createBy": null,
+            "createTime": null,
+            "lastUpdateBy": null,
+            "lastUpdateTime": null,
+            "parentId": 2,
+            "name": "yhqxgl",
+            "title": "用户权限管理",
+            "url": "https://news.xuetian.cn/topic/yizao/jianzhang",
+            "perms": null,
+            "type": 1,
+            "icon": "el-icon-thumb",
+            "orderNum": 1,
+            "delFlag": 0,
+            "level": 1,
+            }
+          ]
         }, {
           "id": 3,
           "createBy": null,
@@ -316,7 +335,7 @@ export function findNavTree() {
           "level": 1,
           "children": [
             {
-              "id": 30,
+              "id": 52,
               "tabshow": false,
               "parentId": 30,
               "name": "详情",
@@ -328,10 +347,11 @@ export function findNavTree() {
               "orderNum": 2,
               "delFlag": 0,
               "parentTitle": "换皮肤",
-              "parentName": "换皮肤"
+              "parentName": "换皮肤",
+              "parentId":30
             },
             {
-              "id": 30,
+              "id": 53,
               "tabshow": false,
               "parentId": 30,
               "name": "编辑",
@@ -343,7 +363,8 @@ export function findNavTree() {
               "orderNum": 2,
               "delFlag": 0,
               "parentTitle": "换皮肤",
-              "parentName": "换皮肤"
+              "parentName": "换皮肤",
+              "parentId":30
             }
           ]
         }]
