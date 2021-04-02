@@ -1,15 +1,14 @@
 <template>
-  <!-- unique-opened -->
+  <!-- unique-opened 是否只保持一个子菜单的展开 -->
   <el-menu
     ref="navmenu"
-    class="el-menu-vertical-demo"
-    :unique-opened="true"
-    @open="handleOpen"
-    @close="handleClose"
+    :unique-opened="false"
+    :collapse-transition="true"
     @select="handleselect"
     background-color="#3b3f40"
     text-color="#fff"
     :active-text-color="themeColor"
+    :class="collapse?'menu-bar-collapse-width':'menu-bar-width'"
     :collapse="this.$store.getters.collapse"
   >
     <!-- 导航菜单树组件，动态加载菜单 -->
@@ -130,5 +129,16 @@ export default {
 }
 .el-menu{
   text-align: left!important;
+}
+.mobile {
+  width: 0;
+}
+.menu-bar-collapse-width {
+    width: 64px;
+    border: none;
+  }
+.menu-bar-width {
+  width: 200px;
+  overflow-y: auto;
 }
 </style>

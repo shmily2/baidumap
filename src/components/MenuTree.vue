@@ -1,7 +1,7 @@
 <template>
   <el-submenu
     v-if="menu.children && menu.children.length >= 1"
-    :popper-append-to-body="false"
+    :popper-append-to-body="true"
     :index="'' + menu.id"
   >
     <template slot="title">
@@ -45,7 +45,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.el-submenu .el-menu-item{
+/* .el-submenu .el-menu-item{
   padding:0px 0px 0px 40px !important;
-}
+} */
 </style>

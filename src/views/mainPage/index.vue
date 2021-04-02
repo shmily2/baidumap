@@ -3,24 +3,28 @@
     <cephalosome :moduleName="moduleName" :info="info"></cephalosome>
     <div class="cententbox">
       <!-- 移动端菜单打开右侧遮罩 -->
-     <div
+      <div
         :class="{
           bg:
             this.$store.getters.endState == 'mobile' &&
-            this.$store.getters.barbackground,
+            this.$store.getters.barbackground
         }"
         @click="handleClickOutside"
-      ></div> 
+      ></div>
       <div class="bottom" :class="{ height: this.$store.getters.headfixed }">
         <div
           class="left"
           style="background: #3b3f40 "
-          :class="{mobile: this.$store.getters.endState == 'mobile' &&  this.$store.getters.barbackground == false}"
+          :class="{
+            mobile:
+              this.$store.getters.endState == 'mobile' &&
+              this.$store.getters.barbackground == false
+          }"
         >
-          <el-scrollbar style="height: 100%">
-            <navbar></navbar>
-          </el-scrollbar>
-        </div>
+            <el-scrollbar style="height: 100%">
+              <navbar></navbar>
+            </el-scrollbar>
+          </div>
         <div class="right">
           <div class="tab">
             <el-tabs
@@ -67,7 +71,6 @@
               </el-tab-pane>
             </el-tabs>
           </div>
-          <!-- <div class="scroll"> -->
           <el-scrollbar style="height: 100%">
             <div class="centent">
               <router-view></router-view>
@@ -138,12 +141,13 @@ export default {
       value: true,
       drawer: false,
       visible: false,
+      isCollapse:true,
       lang: "",
       info: {
         circleUrl:
           "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
-        name: "士大夫",
-      },
+        name: "士大夫"
+      }
     };
   },
   mounted() {
@@ -155,10 +159,10 @@ export default {
       return this.$t("login.companyName");
     },
     ...mapState({
-      themeColor: (state) => state.app.themeColor,
-      sidebar: (state) => state.app.sidebar,
-      endState: (state) => state.app.endState,
-      device: (state) => state.app.device,
+      themeColor: state => state.app.themeColor,
+      sidebar: state => state.app.sidebar,
+      endState: state => state.app.endState,
+      device: state => state.app.device
     }),
     mainTabs: {
       get() {
@@ -166,16 +170,16 @@ export default {
       },
       set(val) {
         this.$store.commit("updateMainTabs", val);
-      },
+      }
     },
     mainTabsActiveName: {
       get() {
         return this.$store.state.tab.mainTabsActiveName;
       },
       set(val) {
-         this.$store.commit("updateMainTabsActiveName", val);
-      },
-    },
+        this.$store.commit("updateMainTabsActiveName", val);
+      }
+    }
   },
   created() {
     this.lang = this.$i18n.locale;
@@ -186,7 +190,7 @@ export default {
       this.$store.dispatch("onHeadfixed", this.value);
     },
     // 切换主题
-    onThemeChange: function (themeColor) {
+    onThemeChange: function(themeColor) {
       this.$store.commit("setThemeColor", themeColor);
     },
     //切换语言
@@ -202,14 +206,14 @@ export default {
 
     // tabs, 选中tab
     selectedTabHandle(tab) {
-      tab = this.mainTabs.filter((item) => item.title === tab.label);
+      tab = this.mainTabs.filter(item => item.title === tab.label);
       if (tab.length >= 1) {
         this.$router.push({ name: tab[0].name });
       }
     },
     // tabs, 删除tab
     removeTabHandle(tabName) {
-      this.mainTabs = this.mainTabs.filter((item) => item.name !== tabName);
+      this.mainTabs = this.mainTabs.filter(item => item.name !== tabName);
       if (this.mainTabs.length >= 1) {
         // 当前选中tab被删除
         if (tabName === this.mainTabsActiveName) {
@@ -231,7 +235,7 @@ export default {
     // tabs, 关闭其它
     tabsCloseOtherHandle() {
       this.mainTabs = this.mainTabs.filter(
-        (item) => item.name === this.mainTabsActiveName
+        item => item.name === this.mainTabsActiveName
       );
     },
     // tabs, 关闭全部
@@ -246,8 +250,8 @@ export default {
       this.$nextTick(() => {
         this.$router.push({ name: tempTabName });
       });
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>
@@ -344,8 +348,5 @@ export default {
   margin: 0px !important;
   flex: 1;
   overflow: hidden;
-}
-.el-scrollbar__view{
-  height:100%
 }
 </style>

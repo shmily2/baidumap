@@ -44,16 +44,7 @@ export function polyline(map, Polylines, polylineMuster, strokeColor = "blue", s
     polylineMuster.push(line)
 }
 
-
-
-
-// strokeColor:"red",      //边线颜色。  
-//             fillColor:"red",        //填充颜色。当参数为空时，圆形将没有填充效果。  
-//             strokeWeight: 3,        //边线的宽度，以像素为单位。  
-//             fillOpacity: 0.3,       //填充的透明度，取值范围0 - 1。  
-//             strokeStyle: 'solid'    //边线的样式，solid或dashed。  
-//   }, 
-//新增多边形
+//新增多边形模块
 export function Polygon(map, Polygons, PolygonsMuster, strokeColor = "red", fillColor = "red", strokeStyle = "solid", strokeWeight = "2", fillOpacity = "0.5") {
     let Polygon = [];
     Polygons.map(item => {
@@ -80,3 +71,6 @@ export function removeMarker(map, markers) {
         this.removeOverlay(map);
     }
 }
+
+//路数
+

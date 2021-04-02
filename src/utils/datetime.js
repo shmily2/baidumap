@@ -22,11 +22,11 @@ export function formatWithSeperator (datetime, dateSeprator, timeSeprator) {
   if (datetime != null) {
     const dateMat = new Date(datetime);
     const year = dateMat.getFullYear();
-    const month = dateMat.getMonth() + 1;
-    const day = dateMat.getDate();
-    const hh = dateMat.getHours();
-    const mm = dateMat.getMinutes();
-    const ss = dateMat.getSeconds();
+    const month = dateMat.getMonth() + 1 > 9 ? dateMat.getMonth()+1:"0"+(dateMat.getDate()+1);;
+    const day = dateMat.getDate()>9?dateMat.getDate():"0"+dateMat.getDate();
+    const hh = dateMat.getHours()>9?dateMat.getHours():"0"+dateMat.getHours();
+    const mm = dateMat.getMinutes()>9?dateMat.getMinutes():"0"+dateMat.getMinutes();;
+    const ss = dateMat.getSeconds()>9?dateMat.getSeconds():"0"+dateMat.getSeconds();;
     const timeFormat = year + dateSeprator + month + dateSeprator + day + " " + hh + timeSeprator + mm + timeSeprator + ss;
     return timeFormat;
   }
