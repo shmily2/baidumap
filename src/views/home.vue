@@ -2,7 +2,7 @@
   <div class="indexpage">
     <div class="polyline">
       <!-- <mvp></mvp> -->
-      <mapview @baiduMap="baiduMap"></mapview>
+      <mapview @baiduMap="baiduMap" class="homemap"></mapview>
       <!-- <cesiumContainer></cesiumContainer> -->
       <div class="menubox">
         <ul class="menu">
@@ -150,7 +150,7 @@
 </template>
 <script>
 import axios from "axios";
-import "../mock/index"
+import "../mock/index";
 import { mark, removeMarker, polyline, Polygon } from "../utils/map";
 import { Doughnut, Columnarvar, Rose } from "../utils/echarts";
 import Sdangerous from "../assets/Sdangerous.png"; //危化品车辆
@@ -329,6 +329,7 @@ export default {
     baiduMap(map) {
       this.map = map;
       this.point = new BMap.Point(116.404, 39.915); // 创建点坐标
+      this.map.setMapStyle({ style: "midnight" }); //地图风格
       this.map.centerAndZoom(this.point, 12); // 初始化地图，设置中心点坐标和地图级别
       this.map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
     },
@@ -770,7 +771,7 @@ export default {
   }
 };
 </script>
-<style scoped>
+<style scoped lang="scss">
 .indexpage {
   position: absolute;
   height: 100%;
@@ -779,6 +780,12 @@ export default {
 }
 .polyline {
   width: 100%;
+}
+.homemap {
+  height: calc(100vh - 270px);
+  width: calc(100% - 870px);
+  margin:auto;
+  margin-top: 125px;
 }
 .menubox {
   width: calc(100% - 870px);
