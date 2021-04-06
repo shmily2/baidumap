@@ -38,32 +38,37 @@ export default {
       this.point = new BMap.Point(116.404, 39.915); // 创建点坐标
       this.map.centerAndZoom(this.point, 12); // 初始化地图，设置中心点坐标和地图级别
       this.map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
+
+      let Polygons = [];
+      this.points.map(item => {
+        Polygons.push(new BMap.Point(item.lng, item.lat));
+      });
+
+      this.point = new BMap.Point(116.363944, 39.90384); // 创建点坐标
+      this.map.centerAndZoom(this.point, 13); // 初始化地图，设置中心点坐标和地图级别
+      let shart = [new BMap.Point(116.363944, 39.90384)];
+      let end = [new BMap.Point(116.360495, 39.871951)];
+         let infoWindow = new BMap.InfoWindow("这是危化品卡口", {
+          offset: new BMap.Size(2, -5)
+        });
+      mark(this.map, shart, this.location,infoWindow,shartpic, new BMap.Size(32, 32)); //起点
+      mark(this.map, end, this.location,infoWindow, endpic, new BMap.Size(32, 32)); //终点
+      polyline(this.map, this.points, this.polylineMuster, "red", "solid", "3", "0.8"); //线路
+      this.lushu = new BMapLib.LuShu(this.map, Polygons, {
+        defaultContent: "", //"从天安门到百度大厦"
+        autoView: true, //是否开启自动视野调整，如果开启那么路书在运动过程中会根据视野自动调整
+        icon: new BMap.Icon(
+          "http://developer.baidu.com/map/jsdemo/img/car.png",
+          new BMap.Size(52, 26)
+        ),
+        speed: 5000,
+        enableRotation: true, //是否设置marker随着道路的走向进行旋转
+        landmarkPois: []
+      });
+      this.lushu.start();
     }
     // baiduMap(map) {
-    //   let Polygons = [];
-    //   this.points.map(item => {
-    //       Polygons.push(new BMapGL.Point(item.lng, item.lat))
-    //   })
 
-    //   this.point = new BMapGL.Point(116.363944, 39.90384); // 创建点坐标
-    //   this.map.centerAndZoom(this.point, 13); // 初始化地图，设置中心点坐标和地图级别
-    //   let shart = [new BMapGL.Point(116.363944, 39.90384)];
-    //   let end = [new BMapGL.Point(116.360495, 39.871951)];
-    //   mark(this.map, shart, this.location, shartpic, new BMapGL.Size(32, 32)); //起点
-    //   mark(this.map, end, this.location, endpic, new BMapGL.Size(32, 32)); //终点
-    //   polyline(this.map, this.points,this.polylineMuster,"red","solid", "3", "0.8"); //线路
-    //   this.lushu = new BMapGLLib.LuShu(this.map, Polygons, {
-    //     defaultContent: "", //"从天安门到百度大厦"
-    //     autoView: true, //是否开启自动视野调整，如果开启那么路书在运动过程中会根据视野自动调整
-    //     icon: new BMapGL.Icon(
-    //       "http://developer.baidu.com/map/jsdemo/img/car.png",
-    //       new BMapGL.Size(52, 26)
-    //     ),
-    //     speed: 5000,
-    //     enableRotation: true, //是否设置marker随着道路的走向进行旋转
-    //     landmarkPois: []
-    //   });
-    //   this.lushu.start()
     //   this.map.removeOverlay(this.marker);
     //   // this.map.clearOverlays()
     //   console.log(this.map)
