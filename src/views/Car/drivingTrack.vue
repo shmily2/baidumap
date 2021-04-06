@@ -48,11 +48,8 @@ export default {
       this.map.centerAndZoom(this.point, 13); // 初始化地图，设置中心点坐标和地图级别
       let shart = [new BMap.Point(116.363944, 39.90384)];
       let end = [new BMap.Point(116.360495, 39.871951)];
-         let infoWindow = new BMap.InfoWindow("这是危化品卡口", {
-          offset: new BMap.Size(2, -5)
-        });
-      mark(this.map, shart, this.location,infoWindow,shartpic, new BMap.Size(32, 32)); //起点
-      mark(this.map, end, this.location,infoWindow, endpic, new BMap.Size(32, 32)); //终点
+      mark(this.map, shart, this.location,'',shartpic, new BMap.Size(32, 32)); //起点
+      mark(this.map, end, this.location,'', endpic, new BMap.Size(32, 32)); //终点
       polyline(this.map, this.points, this.polylineMuster, "red", "solid", "3", "0.8"); //线路
       this.lushu = new BMapLib.LuShu(this.map, Polygons, {
         defaultContent: "", //"从天安门到百度大厦"
