@@ -230,8 +230,10 @@ var BMapLib = (window.BMapLib = BMapLib || {});
     },
     _clearMark: function(f) {
       this.stop();
+      console.log(this._marker)
       this._map.removeOverlay(this._marker);
       clearTimeout(this._timeoutFlag);
+      console.log(this._overlay)
       this._overlay && this._map.removeOverlay(this._overlay);
     },
     _addInfoWin: function() {

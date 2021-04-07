@@ -73,4 +73,15 @@ export function removeMarker(map, markers) {
 }
 
 //路数
+export function trajectory(lushu,map,Polygons,icon,speed,defaultContent){
+        lushu= new BMapLib.LuShu(map, Polygons, {
+                defaultContent:defaultContent,//"从天安门到百度大厦"
+                autoView: true, //是否开启自动视野调整，如果开启那么路书在运动过程中会根据视野自动调整
+                icon: icon,
+                speed: speed,
+                enableRotation: true, //是否设置marker随着道路的走向进行旋转
+                landmarkPois: []
+             });
+    return  lushu
+}
 
