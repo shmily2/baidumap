@@ -51,18 +51,17 @@ export default {
       mark(this.map, shart, this.location,'',shartpic, new BMap.Size(32, 32)); //起点
       mark(this.map, end, this.location,'', endpic, new BMap.Size(32, 32)); //终点
       polyline(this.map, this.points, this.polylineMuster, "red", "solid", "3", "0.8"); //线路
-      this.lushu = new BMapLib.LuShu(this.map, Polygons, {
+      this.lushu= new BMapLib.LuShu(this.map, Polygons, {
         defaultContent: "", //"从天安门到百度大厦"
         autoView: true, //是否开启自动视野调整，如果开启那么路书在运动过程中会根据视野自动调整
-        icon: new BMap.Icon(
-          "http://developer.baidu.com/map/jsdemo/img/car.png",
-          new BMap.Size(52, 26)
-        ),
+        icon: new BMap.Icon("http://developer.baidu.com/map/jsdemo/img/car.png", new BMap.Size(52, 26)),
         speed: 5000,
         enableRotation: true, //是否设置marker随着道路的走向进行旋转
         landmarkPois: []
       });
+      // this.lushu.showInfoWindow()
       this.lushu.start();
+           // this.lushu.clear(this.lushu)//清除
     }
     // baiduMap(map) {
 

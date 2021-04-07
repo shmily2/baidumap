@@ -13,6 +13,7 @@ import "../plugin"
 import "../font/iconfont.css"
 //百度地图
 import BaiduMap from 'vue-baidu-map'
+import "../src/utils/map/lushu_min"
 Vue.use(BaiduMap, {
   // ak 是在百度地图开发者平台申请的密钥 详见 http://lbsyun.baidu.com/apiconsole/key */
   ak: 'Ynu1SkO1atIh778Mp9y98gMfXUrmF3i1'
