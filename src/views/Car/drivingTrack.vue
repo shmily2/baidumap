@@ -38,39 +38,18 @@ export default {
       this.point = new BMap.Point(116.404, 39.915); // 创建点坐标
       this.map.centerAndZoom(this.point, 13); // 初始化地图，设置中心点坐标和地图级别
       this.map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
-
-      let Polygons = [];
-      this.points.map(item => {
-        Polygons.push(new BMap.Point(item.lng, item.lat));
-      });
       this.point = new BMap.Point(116.363944, 39.90384); // 创建点坐标
       this.map.centerAndZoom(this.point, 13); // 初始化地图，设置中心点坐标和地图级别
-      let shart = [new BMap.Point(116.363944, 39.90384)];
-      let end = [new BMap.Point(116.360495, 39.871951)];
+
+      //轨迹
+      let shart = [new BMap.Point(116.363944, 39.90384)];//开始坐标
+      let end = [new BMap.Point(116.360495, 39.871951)];//结束坐标
       let speed = map.getDistance(shart[0], end[0]); //距离
-      mark(this.map, shart, this.location, "", shartpic, new BMap.Size(32, 32)); //起点
-      mark(this.map, end, this.location, "", endpic, new BMap.Size(32, 32)); //终点
-      polyline(
-        this.map,
-        this.points,
-        this.polylineMuster,
-        "red",
-        "solid",
-        "3",
-        "0.8"
-      ); //线路
-      let icon = new BMap.Icon(
-        "http://developer.baidu.com/map/jsdemo/img/car.png",
-        new BMap.Size(52, 26)
-      );
-      this.lushu = trajectory(
-        this.lushu,
-        this.map,
-        Polygons,
-        icon,
-        speed,
-        "京A30780"
-      );
+      mark(this.map, shart, this.location, "", shartpic, new BMap.Size(32, 32)); //起点图标
+      mark(this.map, end, this.location, "", endpic, new BMap.Size(32, 32)); //终点图标
+      polyline(this.map, this.points, this.polylineMuster, "red", "solid", "3", "0.8"); //线路
+      let icon = new BMap.Icon(  "http://developer.baidu.com/map/jsdemo/img/car.png", new BMap.Size(52, 26));
+      this.lushu = trajectory(this.lushu, this.map, this.points, icon, speed, "京A30780");
       this.lushu.start(); //开始
       // this.lushu.stop(); //停止
       // this.lushu.pause();//暂停

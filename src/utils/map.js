@@ -1,15 +1,15 @@
 // 新建图标
 //map 地图
-//markespos 图标地址集合
+//markups 图标地址集合
 //markers生成的百度地图图标合集用作删除
 //infoWindow 点击图标弹出框内容
 //img  图标
 //size 图标大小
-export function mark(map, markespos, markers, infoWindow, img, size = new BMap.Size(26, 26)) {
-    markespos.map((addr) => {
-        let poist = new BMap.Point(addr.lng, addr.lat); // 创建点坐标
+export function mark(map, markups, markers, infoWindow, img, size = new BMap.Size(26, 26)) {
+    markups.map((addr) => {
+        let posit = new BMap.Point(addr.lng, addr.lat); // 创建点坐标
         var myIcon = new BMap.Icon(img, size);
-        let marker = new BMap.Marker(poist, { icon: myIcon }); // 创建标注
+        let marker = new BMap.Marker(posit, { icon: myIcon }); // 创建标注
         map.addOverlay(marker); // 将标注添加到地图中
         //提示信息
         // 鼠标移上标注点要发生的事
@@ -73,15 +73,19 @@ export function removeMarker(map, markers) {
 }
 
 //路数
-export function trajectory(lushu,map,Polygons,icon,speed,defaultContent){
-        lushu= new BMapLib.LuShu(map, Polygons, {
+export function trajectory(lushun,map,points,icon,speed,defaultContent){
+        let Polygons = [];
+        points.map(item => {
+        Polygons.push(new BMap.Point(item.lng, item.lat));
+        });
+        lushun= new BMapLib.LuShu(map, Polygons, {
                 defaultContent:defaultContent,//"从天安门到百度大厦"
                 autoView: true, //是否开启自动视野调整，如果开启那么路书在运动过程中会根据视野自动调整
                 icon: icon,
                 speed: speed,
                 enableRotation: true, //是否设置marker随着道路的走向进行旋转
-                landmarkPois: []
+                landmarkPoise: []
              });
-    return  lushu
+    return  lushun
 }
 
