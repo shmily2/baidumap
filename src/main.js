@@ -19,11 +19,16 @@ Vue.use(BaiduMap, {
   // ak 是在百度地图开发者平台申请的密钥 详见 http://lbsyun.baidu.com/apiconsole/key */
   ak: 'Ynu1SkO1atIh778Mp9y98gMfXUrmF3i1'
 })
+//video.js
+import "video.js/dist/video-js.css";
+import Video from "video.js";
+import 'videojs-contrib-hls';
+
 Vue.use(ElementUI, {
   i18n: (key, value) => i18n.t(key, value)
 });
 Vue.config.productionTip = false
-Vue.prototype.$api = api
+Vue.prototype.$video = Video; //引入Video播放器
 Vue.prototype.$echarts = echarts
 
 new Vue({

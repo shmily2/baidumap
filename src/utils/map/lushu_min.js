@@ -230,10 +230,10 @@ var BMapLib = (window.BMapLib = BMapLib || {});
     },
     _clearMark: function(f) {
       this.stop();
-      console.log(this._marker)
+      console.log(this._marker);
       this._map.removeOverlay(this._marker);
       clearTimeout(this._timeoutFlag);
-      console.log(this._overlay)
+      console.log(this._overlay);
       this._overlay && this._map.removeOverlay(this._overlay);
     },
     _addInfoWin: function() {
@@ -381,12 +381,14 @@ var BMapLib = (window.BMapLib = BMapLib || {});
     _troughPointIndex: function(f) {
       var h = this._opts.landmarkPois,
         j;
-      for (var g = 0, e = h.length; g < e; g++) {
-        if (!h[g].bShow) {
-          j = this._map.getDistance(new BMap.Point(h[g].lng, h[g].lat), f);
-          if (j < 10) {
-            h[g].bShow = true;
-            return g;
+      if (h) {
+        for (var g = 0, e = h.length; g < e; g++) {
+          if (!h[g].bShow) {
+            j = this._map.getDistance(new BMap.Point(h[g].lng, h[g].lat), f);
+            if (j < 10) {
+              h[g].bShow = true;
+              return g;
+            }
           }
         }
       }

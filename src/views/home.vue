@@ -101,8 +101,8 @@
                       "
                     >
                       <source
-                        src="https://linkingvision.com/download/h5stream/video/h5ssample.mp4"
-                        type="video/mp4"
+                        :src="vide.src"
+                        :type="vide.type"
                       />
                     </video>
                     <h5>{{ vide.name }}</h5>
@@ -181,12 +181,36 @@ export default {
       qing: require("../assets/qing.png"),
       weatherData: "",
       video: [
-        { name: "南门出入口" },
-        { name: "北门出入口" },
-        { name: "边界点A" },
-        { name: "边界点B" },
-        { name: "重要机房点A" },
-        { name: "重要机房点B" }
+        {
+          name: "南门出入口",
+          src: "http://vjs.zencdn.net/v/oceans.mp4",
+          type: "video/mp4"
+        },
+        {
+          name: "北门出入口",
+          src: "http://img.yopoo.cn/banner_video.mp4",
+          type: "video/mp4"
+        },
+        {
+          name: "边界点A",
+          src: "http://vjs.zencdn.net/v/oceans.mp4",
+          type: "video/mp4"
+        },
+        {
+          name: "边界点B",
+          src: "http://img.yopoo.cn/banner_video.mp4",
+          type: "video/mp4"
+        },
+        {
+          name: "重要机房点A",
+          src: "http://vjs.zencdn.net/v/oceans.mp4",
+          type: "video/mp4"
+        },
+        {
+          name: "重要机房点B",
+          src: "http://img.yopoo.cn/banner_video.mp4",
+          type: "video/mp4"
+        }
       ],
       map: "", //地图初始化
       point: "", //地图中心点
@@ -784,7 +808,7 @@ export default {
 .homemap {
   height: calc(100vh - 270px);
   width: calc(100% - 870px);
-  margin:auto;
+  margin: auto;
   margin-top: 125px;
 }
 .menubox {
