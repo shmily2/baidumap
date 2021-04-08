@@ -329,7 +329,7 @@ export default {
     baiduMap(map) {
       this.map = map;
       this.point = new BMap.Point(116.404, 39.915); // 创建点坐标
-        this.map.setMapStyle({ style: "midnight" }); //地图风格
+      this.map.setMapStyle({ style: "midnight" }); //地图风格
       this.map.centerAndZoom(this.point, 12); // 初始化地图，设置中心点坐标和地图级别
       this.map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
     },
