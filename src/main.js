@@ -15,6 +15,7 @@ import "../font/iconfont.css"
 import BaiduMap from 'vue-baidu-map'
 import "../src/utils/map/map3"
 import "../src/utils/map/lushu_min"
+
 Vue.use(BaiduMap, {
   // ak 是在百度地图开发者平台申请的密钥 详见 http://lbsyun.baidu.com/apiconsole/key */
   ak: 'Ynu1SkO1atIh778Mp9y98gMfXUrmF3i1'
@@ -29,7 +30,8 @@ Vue.use(ElementUI, {
 });
 Vue.config.productionTip = false
 Vue.prototype.$video = Video; //引入Video播放器
-Vue.prototype.$echarts = echarts
+Vue.prototype.$echarts = echarts;
+Vue.prototype.$api =api;
 
 new Vue({
   router,

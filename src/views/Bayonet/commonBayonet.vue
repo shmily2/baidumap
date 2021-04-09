@@ -1,34 +1,64 @@
 <template>
-  <VideoPlayer :list="list"></VideoPlayer>
+  <div>
+    <el-button @click="add">添加</el-button>
+    <el-radio-group v-model="screen">
+      <el-radio :label="1">1*1</el-radio>
+      <el-radio :label="2">2*2</el-radio>
+      <el-radio :label="3">3*3</el-radio>
+      <el-radio :label="4">4*4</el-radio>
+    </el-radio-group>
+    <div>
+      <VideoPlayer
+        :list="list"
+        :screen="screen"
+        @changeList="changeList"
+      ></VideoPlayer>
+    </div>
+  </div>
 </template>
 <script>
 export default {
   data() {
     return {
-      list: [
-        {
-          src: "http://vjs.zencdn.net/v/oceans.mp4 ",
-          id: 2,
-          pic:
-            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2657765580,3884894214&fm=26&gp=0.jpg",
-          type: "video/mp4"
-        },
-        {
-          src: "http://ivi.bupt.edu.cn/hls/cctv1hd.m3u8 ",
-          id: 0,
+      screen: 1,
+      idsort: [],
+      list: []
+    };
+  },
+  methods: {
+    changeList(val) {
+      this.list = val;
+    },
+    add() {
+      debugger
+      if(this.list.length >=this.screen * this.screen) {
+        let id = this.idsort.sort()[0];
+        for (let i = 0; i < this.list.length; i++) {
+          if (this.list[i].id == id) {
+            let id = new Date().getTime();
+            let data = {
+              src: "http://vjs.zencdn.net/v/oceans.mp4",
+              id: id,
+              pic:
+                "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2657765580,3884894214&fm=26&gp=0.jpg",
+              type: "video/mp4"
+            };
+            this.list.splice(i,1,data)
+            this.idsort.splice(i,1,id);
+          }
+        }
+      } else {
+        let id = new Date().getTime();
+        this.list.push({
+          src: "http://img.yopoo.cn/banner_video.mp4 ",
+          id: id,
           pic:
             "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1747155899,4222803875&fm=26&gp=0.jpg",
-          type: "application/x-mpegURL"
-        },
-        {
-          src: "http://ivi.bupt.edu.cn/hls/cctv6hd.m3u8",
-          id: 1,
-          pic:
-            "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1330784235,4146572500&fm=26&gp=0.jpg",
-          type: "application/x-mpegURL"
-        }
-      ]
-    };
+          type: "video/mp4"
+        });
+        this.idsort.push(id);
+      }
+    }
   }
 };
 </script>

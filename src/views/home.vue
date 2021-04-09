@@ -414,6 +414,7 @@ export default {
         let infoWindow = new BMap.InfoWindow("这是危化品车辆", {
           offset: new BMap.Size(2, -2)
         });
+        console.log(this.$api)
         this.$api.dept.Cameras().then(res => {
           mark(this.map, res.data, this.whpcl.markers, infoWindow, Sdangerous);
         });
