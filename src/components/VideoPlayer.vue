@@ -146,6 +146,7 @@ export default {
         width: 100%;
         border: 1px solid #333;
       }
+      
       .videohlstwo {
         width: calc(50% - 10px);
         border: 1px solid #333;
