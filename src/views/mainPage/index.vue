@@ -4,11 +4,13 @@
     <div class="cententbox">
       <!-- 移动端菜单打开右侧遮罩 -->
       <div
-        :class="{
-          bg:
-            this.$store.getters.endState == 'mobile' &&
-            this.$store.getters.barbackground
-        }"
+        :class="[
+          {
+            bg:
+              this.$store.getters.endState == 'mobile' &&
+              this.$store.getters.barbackground
+          }
+        ]"
         @click="handleClickOutside"
       ></div>
       <div class="bottom" :class="{ height: this.$store.getters.headfixed }">
@@ -21,10 +23,10 @@
               this.$store.getters.barbackground == false
           }"
         >
-            <el-scrollbar style="height: 100%">
-              <navbar></navbar>
-            </el-scrollbar>
-          </div>
+          <el-scrollbar style="height: 100%">
+            <navbar></navbar>
+          </el-scrollbar>
+        </div>
         <div class="right">
           <div class="tab">
             <el-tabs
@@ -141,7 +143,7 @@ export default {
       value: true,
       drawer: false,
       visible: false,
-      isCollapse:true,
+      isCollapse: true,
       lang: "",
       info: {
         circleUrl:
@@ -348,5 +350,16 @@ export default {
   margin: 0px !important;
   flex: 1;
   overflow: hidden;
+}
+
+.el-menu--collapse > div > .el-submenu > .el-submenu__title span {
+  height: 0;
+  width: 0;
+  overflow: hidden;
+  visibility: hidden;
+  display: inline-block;
+}
+.el-menu--collapse > div> .el-submenu> .el-submenu__title.el-submenu__icon-arrow {
+  display: none;
 }
 </style>
