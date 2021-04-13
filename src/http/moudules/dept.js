@@ -100,3 +100,10 @@ export const weather=(data)=>{
         data:data
     })
 }
+//视频
+export const voided=()=>{
+    return axios({
+        url:"dept/voided",
+        method: "post",
+    })
+}

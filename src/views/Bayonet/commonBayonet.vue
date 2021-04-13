@@ -1,18 +1,7 @@
 <template>
   <div>
-    <el-button @click="add">添加</el-button>
-    <el-radio-group v-model="screen">
-      <el-radio :label="1">1*1</el-radio>
-      <el-radio :label="2">2*2</el-radio>
-      <el-radio :label="3">3*3</el-radio>
-      <el-radio :label="4">4*4</el-radio>
-    </el-radio-group>
     <div>
-      <VideoPlayer
-        :list="list"
-        :screen="screen"
-        @changeList="changeList"
-      ></VideoPlayer>
+      <VideoPlayer></VideoPlayer>
     </div>
   </div>
 </template>
@@ -30,8 +19,8 @@ export default {
       this.list = val;
     },
     add() {
-      debugger
-      if(this.list.length >=this.screen * this.screen) {
+      debugger;
+      if (this.list.length >= this.screen * this.screen) {
         let id = this.idsort.sort()[0];
         for (let i = 0; i < this.list.length; i++) {
           if (this.list[i].id == id) {
@@ -43,8 +32,8 @@ export default {
                 "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2657765580,3884894214&fm=26&gp=0.jpg",
               type: "video/mp4"
             };
-            this.list.splice(i,1,data)
-            this.idsort.splice(i,1,id);
+            this.list.splice(i, 1, data);
+            this.idsort.splice(i, 1, id);
           }
         }
       } else {
