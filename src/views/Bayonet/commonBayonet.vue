@@ -36,7 +36,7 @@ export default {
           let value = {
             src: res.data.address,
             name: res.data.name,
-            type:"video/mp4",//
+            type:"video/mp4",//application/x-mpegURL(m3u8格式)
             id: new Date().getTime()
           };
           this.$refs.videoPlay.itemclick(value);
