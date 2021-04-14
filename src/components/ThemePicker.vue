@@ -6,7 +6,6 @@
     :size="size">
   </el-color-picker>
 </template>
-
 <script>
 
 const version = require('element-ui/package.json').version // element-ui version from node_modules
