@@ -1,7 +1,16 @@
 <template>
-  <div>
+  <div class="commonbayonet">
+    <div class="radio">
+      <el-button @click="vodeoinit">添加</el-button>
+      <el-radio-group v-model="radio">
+        <el-radio :label="1">1x1</el-radio>
+        <el-radio :label="2">2x2</el-radio>
+        <el-radio :label="3">3x3</el-radio>
+        <el-radio :label="4">4x4</el-radio>
+      </el-radio-group>
+    </div>
     <div>
-      <VideoPlayer></VideoPlayer>
+      <VideoPlayer :radio="radio" ref="videoPlay"></VideoPlayer>
     </div>
   </div>
 </template>
@@ -9,45 +18,42 @@
 export default {
   data() {
     return {
-      screen: 1,
-      idsort: [],
-      list: []
+      radio: 1,
     };
   },
-  methods: {
-    changeList(val) {
-      this.list = val;
+  watch: {
+    radio: {
+      handler(val, oldVal) {
+        this.$refs.videoPlay.change(val);
+      },
+      deep: true //true 深度监听
     },
-    add() {
-      debugger;
-      if (this.list.length >= this.screen * this.screen) {
-        let id = this.idsort.sort()[0];
-        for (let i = 0; i < this.list.length; i++) {
-          if (this.list[i].id == id) {
-            let id = new Date().getTime();
-            let data = {
-              src: "http://vjs.zencdn.net/v/oceans.mp4",
-              id: id,
-              pic:
-                "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2657765580,3884894214&fm=26&gp=0.jpg",
-              type: "video/mp4"
-            };
-            this.list.splice(i, 1, data);
-            this.idsort.splice(i, 1, id);
-          }
+  },
+  methods: {
+    vodeoinit() {
+      this.$api.dept.voided().then(res => {
+        if (res.code == 200) {
+          let value = {
+            src: res.data.address,
+            name: res.data.name,
+            type:"video/mp4",//
+            id: new Date().getTime()
+          };
+          this.$refs.videoPlay.itemclick(value);
         }
-      } else {
-        let id = new Date().getTime();
-        this.list.push({
-          src: "http://img.yopoo.cn/banner_video.mp4 ",
-          id: id,
-          pic:
-            "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1747155899,4222803875&fm=26&gp=0.jpg",
-          type: "video/mp4"
-        });
-        this.idsort.push(id);
-      }
+      });
     }
   }
 };
 </script>
+<style scoped lang="scss">
+.commonbayonet {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  .radio {
+    height: 40px;
+    line-height: 40px;
+  }
+}
+</style>
