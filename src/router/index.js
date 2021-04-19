@@ -238,6 +238,7 @@ function addDynamicRoutes(menuList = [], routes = []) {
                             parentTitle: menuList[i].parentTitle,
                             parentName:menuList[i].parentName,
                             title:menuList[i].title,
+                            keepAlive:false,
                         }
                     }
                     //判断是否为iframe
@@ -280,6 +281,7 @@ function addDynamicRoutes(menuList = [], routes = []) {
                         parentTitle: menuList[i].parentTitle,
                         parentName:menuList[i].parentName,
                         title:menuList[i].title,
+                        keepAlive:false,
                     }
                 }
                 //判断是否为iframe

@@ -1,6 +1,8 @@
 <template>
   <div id="maplushu">
-    <mapview @baiduMap="baiduMap" class="drivingTrackmap"></mapview>
+    <el-scrollbar style="height:calc(100% - 40ppx)">
+      <mapview @baiduMap="baiduMap" class="drivingTrackmap"></mapview>
+    </el-scrollbar >
   </div>
 </template>
 

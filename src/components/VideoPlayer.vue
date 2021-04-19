@@ -1,6 +1,6 @@
 <template>
   <div class="VideoPlayer">
-    <div class="centent">
+    <div class="centent" ref="center">
       <div class="player" v-if="this.player.length > 0">
         <div
           :class="[
@@ -14,23 +14,24 @@
         >
           <video
             :ref="`refName${index}`"
-            class="video-js"
+            class="video-js vjs-big-play-centered"
             style="object-fit:cover;"
           ></video>
         </div>
       </div>
-      <div v-else class="title">请选择播放视频</div>
+      <div v-else class="title">{{text}}</div>
     </div>
   </div>
 </template>
 <script>
 export default {
   name: "VideoPlayer",
+  props:["proportion","text"],
   data() {
     return {
       videovalue: [],
       player: [],
-      radio:1,
+      radio: 1,
     };
   },
   methods: {
@@ -46,10 +47,11 @@ export default {
               controls: true, //用户可以与之交互的控件
               loop: true, //视频一结束就重新开始
               muted: false, //默认情况下将使所有音频静音
-              aspectRatio: "16:9", //显示比率
+              aspectRatio:this.proportion, //显示比率
               fullscreen: {
                 options: { navigationUI: "hide" }
               },
+
               sources: [
                 {
                   src: value.src,
@@ -70,7 +72,7 @@ export default {
           if (this.player[i].typeid == sortnumber) {
             this.player[i].src({
               src: value.src,
-              type:value.type
+              type: value.type
             });
             console.log(this.player[i]);
             this.player[i].load();
@@ -83,10 +85,10 @@ export default {
     },
     //选择分屏
     change(radio) {
-      this.radio=radio;
+      this.radio = radio;
       if (this.player.length < this.radio * this.radio) {
       } else {
-        console.log(this.radio * this.radio)
+        console.log(this.radio * this.radio);
         let sources = this.player.slice(0, this.radio * this.radio);
         this.player = sources;
       }
@@ -94,7 +96,7 @@ export default {
   },
   destroyed() {
     for (var i = 0; i < this.player.length; i++) {
-          this.player[i].dispose();
+      this.player[i].dispose();
     }
   }
 };
@@ -120,8 +122,8 @@ export default {
         border: 1px solid #333;
       }
       .videohlstwo {
-        width: calc(50% - 10px);
-        border: 1px solid #333;
+        width: 50%;
+        border: none;
       }
       .videohlsthre {
         width: calc(33.33% - 10px);

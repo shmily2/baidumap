@@ -1,5 +1,6 @@
 <template>
   <div class="page">
+    <el-scrollbar style="height:100%">
     <h2 class="header">Kitty Generator</h2>
     <div class="intro">
       <p>Kitty代码生成器，可以通过界面配置快速生成包括 model，dao，service，controller 以及页面的相关代码。</p>
@@ -32,6 +33,7 @@
         <img class="usageImage" src="https://images.gitee.com/uploads/images/2018/1114/180642_2c4f986d_645970.png" />
       </div>
     </div>
+    </el-scrollbar>
   </div>
 </template>
 
@@ -42,6 +44,10 @@ export default {
 </script>
 
 <style>
+.page{
+  height:100%;
+  overflow: hidden;
+}
 .header {
   font-size: 28px;
   text-align: left;

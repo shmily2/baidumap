@@ -73,60 +73,59 @@
               </el-tab-pane>
             </el-tabs>
           </div>
-          <el-scrollbar style="height: 100%">
-            <div class="centent">
-              <router-view></router-view>
-              <el-drawer :visible.sync="drawer" direction="rtl" size="280px">
-                <div class="drawerView">
-                  <span>{{ $t("theme.theme") }}</span>
-                  <theme-picker
-                    class="theme-picker"
-                    :default="themeColor"
-                    @onThemeChange="onThemeChange"
-                  ></theme-picker>
-                </div>
-                <div class="drawerView">
-                  <span>{{ $t("route.head") }}</span>
-                  <el-switch
-                    v-model="value"
-                    active-color="#13ce66"
-                    inactive-color="#ff4949"
-                    @change="change"
-                  ></el-switch>
-                </div>
-                <div class="drawerView">
-                  <span>{{ $t("login.lange") }}</span>
-                  <div
-                    v-popover:popover
-                    class="fa fa-language"
-                    :style="{ color: themeColor }"
-                  ></div>
-                  <el-popover
-                    trigger="click"
-                    ref="popover"
-                    placement="top"
-                    width="160"
-                    v-model="visible"
-                  >
-                    <el-radio-group v-model="lang" @change="changeLanguage">
-                      <el-radio-button label="zh" size="small"
-                        >中文</el-radio-button
-                      >
-                      <el-radio-button label="en" size="small"
-                        >English</el-radio-button
-                      >
-                    </el-radio-group>
-                  </el-popover>
-                </div>
-              </el-drawer>
-              <div
-                class="el-icon-s-tools setUp"
-                :style="{ color: themeColor }"
-                @click="drawer = true"
-                :class="{ drawer: drawer }"
-              ></div>
-            </div>
-          </el-scrollbar>
+          <div class="centent">
+            <router-view></router-view>
+            <el-drawer :visible.sync="drawer" direction="rtl" size="280px">
+              <div class="drawerView">
+                <span>{{ $t("theme.theme") }}</span>
+                <theme-picker
+                  class="theme-picker"
+                  :default="themeColor"
+                  @onThemeChange="onThemeChange"
+                ></theme-picker>
+              </div>
+              <div class="drawerView">
+                <span>{{ $t("route.head") }}</span>
+                <el-switch
+                  v-model="value"
+                  active-color="#13ce66"
+                  inactive-color="#ff4949"
+                  @change="change"
+                ></el-switch>
+              </div>
+              <div class="drawerView">
+                <span>{{ $t("login.lange") }}</span>
+                <div
+                  v-popover:popover
+                  class="fa fa-language"
+                  :style="{ color: themeColor }"
+                ></div>
+                <el-popover
+                  trigger="click"
+                  ref="popover"
+                  placement="top"
+                  width="160"
+                  v-model="visible"
+                >
+                  <el-radio-group v-model="lang" @change="changeLanguage">
+                    <el-radio-button label="zh" size="small"
+                      >中文</el-radio-button
+                    >
+                    <el-radio-button label="en" size="small"
+                      >English</el-radio-button
+                    >
+                  </el-radio-group>
+                </el-popover>
+              </div>
+            </el-drawer>
+            <div
+              class="el-icon-s-tools setUp"
+              :style="{ color: themeColor }"
+              @click="drawer = true"
+              :class="{ drawer: drawer }"
+            ></div>
+          </div>
+          <!-- </el-scrollbar> -->
           <!-- </div> -->
         </div>
       </div>
@@ -205,7 +204,6 @@ export default {
       this.$store.dispatch("onbarcbackground", false);
       this.$store.dispatch("onCollapse");
     },
-
     // tabs, 选中tab
     selectedTabHandle(tab) {
       tab = this.mainTabs.filter(item => item.title === tab.label);
@@ -251,9 +249,10 @@ export default {
       this.removeTabHandle(tempTabName);
       this.$nextTick(() => {
         this.$router.push({ name: tempTabName });
+        
       });
     }
-  }
+  },
 };
 </script>
 <style scoped>
@@ -295,7 +294,7 @@ export default {
 .centent {
   text-align: left;
   height: 100%;
-  overflow: auto;
+  overflow: hidden;
 }
 .setUp {
   font-size: 30px;
@@ -359,7 +358,10 @@ export default {
   visibility: hidden;
   display: inline-block;
 }
-.el-menu--collapse > div> .el-submenu> .el-submenu__title.el-submenu__icon-arrow {
+.el-menu--collapse
+  > div
+  > .el-submenu
+  > .el-submenu__title.el-submenu__icon-arrow {
   display: none;
 }
 </style>
