@@ -33,7 +33,6 @@ export default {
   },
   methods: {
     handleRoute(menu) {
-      console.log(menu);
       // 如果是嵌套页面，转换成iframe的path
       let path = getIFramePath(menu.url);
       if (!path) {

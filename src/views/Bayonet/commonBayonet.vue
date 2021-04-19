@@ -23,9 +23,9 @@
 export default {
   data() {
     return {
-      radio: 1,//分屏数量默认1
-      proportion: "",//视屏宽搞比例
-      text:"点击添加视频"
+      radio: 1, //分屏数量默认1
+      proportion: "", //视屏宽搞比例
+      text: "点击添加视频"
     };
   },
   watch: {
@@ -56,7 +56,22 @@ export default {
         }
       });
     }
-  }
+  },
+  //进入路由
+  beforeRouteEnter (to, from, next) {
+     console.log(to);
+    console.log(from);
+    to.meta.keepAlive = true;
+    next();
+  },
+  //离开路由
+  // beforeRouteLeave(to, from, next) {
+  //   debugger
+  //   console.log(to);
+  //   console.log(from);
+  //   from.meta.keepAlive = true;
+  //   next();
+  // }
 };
 </script>
 <style scoped lang="scss">

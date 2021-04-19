@@ -19,19 +19,19 @@
           ></video>
         </div>
       </div>
-      <div v-else class="title">{{text}}</div>
+      <div v-else class="title">{{ text }}</div>
     </div>
   </div>
 </template>
 <script>
 export default {
   name: "VideoPlayer",
-  props:["proportion","text"],
+  props: ["proportion", "text"],
   data() {
     return {
       videovalue: [],
       player: [],
-      radio: 1,
+      radio: 1
     };
   },
   methods: {
@@ -47,7 +47,7 @@ export default {
               controls: true, //用户可以与之交互的控件
               loop: true, //视频一结束就重新开始
               muted: false, //默认情况下将使所有音频静音
-              aspectRatio:this.proportion, //显示比率
+              aspectRatio: this.proportion, //显示比率
               fullscreen: {
                 options: { navigationUI: "hide" }
               },
@@ -98,7 +98,7 @@ export default {
     for (var i = 0; i < this.player.length; i++) {
       this.player[i].dispose();
     }
-  }
+  },
 };
 </script>
 <style lang="scss" scoped>

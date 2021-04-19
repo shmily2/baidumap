@@ -8,7 +8,7 @@
     background-color="#3b3f40"
     text-color="#fff"
     :active-text-color="themeColor"
-    :class="collapse?'menu-bar-collapse-width':'menu-bar-width'"
+    :class="collapse ? 'menu-bar-collapse-width' : 'menu-bar-width'"
     :collapse="this.$store.getters.collapse"
   >
     <!-- 导航菜单树组件，动态加载菜单 -->
@@ -21,16 +21,16 @@ export default {
   name: "navbar",
   data() {
     return {
-      menuitems: "",
+      menuitems: ""
     };
   },
   mounted() {},
   computed: {
     ...mapState({
-      appName: (state) => state.app.appName,
-      themeColor: (state) => state.app.themeColor,
-      collapse: (state) => state.app.collapse,
-      navTree: (state) => state.menu.navTree,
+      appName: state => state.app.appName,
+      themeColor: state => state.app.themeColor,
+      collapse: state => state.app.collapse,
+      navTree: state => state.menu.navTree
     }),
     mainTabs: {
       //读取属性时
@@ -40,7 +40,7 @@ export default {
       //改变属性时
       set(val) {
         this.$store.commit("updateMainTabs", val);
-      },
+      }
     },
     mainTabsActiveName: {
       get() {
@@ -48,11 +48,11 @@ export default {
       },
       set(val) {
         this.$store.commit("updateMainTabsActiveName", val);
-      },
-    },
+      }
+    }
   },
   watch: {
-    $route: "handleRoute",
+    $route: "handleRoute"
   },
   created() {
     this.handleRoute(this.$route);
@@ -72,34 +72,36 @@ export default {
       let tab = "";
       if (route.meta.tabshow) {
         // tab标签页选中, 如果不存在则先添加
-        tab = this.mainTabs.filter((item) => item.title === route.meta.title)[0];
+        tab = this.mainTabs.filter(item => item.title === route.meta.title)[0];
         if (!tab) {
           tab = {
             name: route.name,
             title: route.meta.title,
-            icon: route.meta.icon,
+            icon: route.meta.icon
           };
           this.mainTabs = this.mainTabs.concat(tab);
         } else {
           this.mainTabs.map((item, index) => {
             if (item.title === route.meta.title) {
-                 item.name = route.name;
+              item.name = route.name;
             }
           });
         }
       } else {
-        tab = this.mainTabs.filter( (item) => item.title === route.meta.parentTitle )[0];
+        tab = this.mainTabs.filter(
+          item => item.title === route.meta.parentTitle
+        )[0];
         if (!tab) {
           tab = {
             name: route.name,
             title: route.meta.parentTitle,
-            icon: route.meta.icon,
+            icon: route.meta.icon
           };
           this.mainTabs = this.mainTabs.concat(tab);
         } else {
           this.mainTabs.map((item, index) => {
             if (item.title === route.meta.parentTitle) {
-               route.name = route.meta.parentName;
+              route.name = route.meta.parentName;
             }
           });
         }
@@ -113,30 +115,30 @@ export default {
           this.$refs.navmenu.initOpenedMenu();
         }
       });
-    },
+    }
   },
 };
 </script>
 <style>
-.el-submenu__title>i[class^=el-icon-]{
-  color:#fff;
+.el-submenu__title > i[class^="el-icon-"] {
+  color: #fff;
 }
-.el-menu-item >i[class^=el-icon-]{
-  color:#fff;
+.el-menu-item > i[class^="el-icon-"] {
+  color: #fff;
 }
-.is-active>i[class^=el-icon-]{
+.is-active > i[class^="el-icon-"] {
   color: inherit;
 }
-.el-menu{
-  text-align: left!important;
+.el-menu {
+  text-align: left !important;
 }
 .mobile {
   width: 0;
 }
 .menu-bar-collapse-width {
-    width: 64px;
-    border: none;
-  }
+  width: 64px;
+  border: none;
+}
 .menu-bar-width {
   width: 200px;
   overflow-y: auto;

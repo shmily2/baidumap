@@ -51,7 +51,7 @@ const router = new Router({
             name: "login",
             component: login,
             meta: {
-                keepAlive: true,
+                keepAlive: false,
                 tabshow: true,
                 title:"登录",
                 parentName: null,

@@ -6,11 +6,18 @@
 </template>
 <script>
 export default {
+  data(){
+    return{
+      mum:[],
+    }
+  },
   methods: {
     click() {
+      this.mum =[1,2,3,4,5,6]
       this.$router.push("/demo/details");
     },
-    edit(){
+    edit() {
+      this.mum =[0]
       this.$router.push("/demo/edit");
     }
   },
