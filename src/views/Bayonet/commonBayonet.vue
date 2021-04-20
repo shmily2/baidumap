@@ -36,7 +36,6 @@ export default {
       deep: true //true 深度监听
     }
   },
-
   mounted() {
     let height = document.getElementById("videoplay").offsetHeight;
     let width = document.getElementById("videoplay").offsetWidth;

@@ -77,7 +77,9 @@ export default {
           tab = {
             name: route.name,
             title: route.meta.title,
-            icon: route.meta.icon
+            icon: route.meta.icon,
+            index: route.meta.index,
+            clickTab: true
           };
           this.mainTabs = this.mainTabs.concat(tab);
         } else {
@@ -95,28 +97,32 @@ export default {
           tab = {
             name: route.name,
             title: route.meta.parentTitle,
-            icon: route.meta.icon
+            icon: route.meta.icon,
+            index: route.meta.index,
+            clickTab: true
           };
           this.mainTabs = this.mainTabs.concat(tab);
         } else {
           this.mainTabs.map((item, index) => {
             if (item.title === route.meta.parentTitle) {
-              route.name = route.meta.parentName;
+              // route.name = route.meta.parentName;
+             
             }
           });
         }
       }
-      this.mainTabsActiveName = tab.title;
+      
+      this.mainTabsActiveName = tab.index;
       // 切换标签页时同步更新高亮菜单
       this.$nextTick(() => {
         if (this.$refs.navmenu != null) {
           this.$refs.navmenu.activeIndex = "" + route.meta.index; //菜单高亮
-          this.$store.commit("updateMainTabsActiveName", route.name); //tab高亮
+          this.$store.commit("updateMainTabsActiveName", route.meta.index); //tab高亮
           this.$refs.navmenu.initOpenedMenu();
         }
       });
     }
-  },
+  }
 };
 </script>
 <style>

@@ -170,7 +170,7 @@ function denudates(arr) {
             denudates(menusList[i].children);
         } else {
             if (menusList[i].tabshow == false) {
-                menusList[i].id=menusList[i].parentId
+                menusList[i].id=menusList[i].parentId+''
             } 
         }
     }
@@ -233,7 +233,7 @@ function addDynamicRoutes(menuList = [], routes = []) {
                         name: menuList[i].name,
                         meta: {
                             icon: menuList[i].icon,
-                            index: menuList[i].id,
+                            index: menuList[i].id+'',
                             tabshow: menuList[i].tabshow,
                             parentTitle: menuList[i].parentTitle,
                             parentName:menuList[i].parentName,
@@ -276,7 +276,7 @@ function addDynamicRoutes(menuList = [], routes = []) {
                     name: menuList[i].name,
                     meta: {
                         icon: menuList[i].icon,
-                        index: menuList[i].id,
+                        index: menuList[i].id+'',
                         tabshow: menuList[i].tabshow,
                         parentTitle: menuList[i].parentTitle,
                         parentName:menuList[i].parentName,

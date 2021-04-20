@@ -65,7 +65,7 @@
                 v-for="item in mainTabs"
                 :key="item.title"
                 :label="item.title"
-                :name="item.name"
+                :name="item.index"
               >
                 <span slot="label"
                   ><i :class="item.icon"></i> {{ item.title }}
@@ -213,7 +213,8 @@ export default {
     },
     // tabs, 删除tab
     removeTabHandle(tabName) {
-      this.mainTabs = this.mainTabs.filter(item => item.name !== tabName);
+      console.log(tabName)
+      this.mainTabs = this.mainTabs.filter(item => item.index !== tabName);
       if (this.mainTabs.length >= 1) {
         // 当前选中tab被删除
         if (tabName === this.mainTabsActiveName) {
