@@ -36,6 +36,7 @@ export default {
       deep: true //true 深度监听
     }
   },
+
   mounted() {
     let height = document.getElementById("videoplay").offsetHeight;
     let width = document.getElementById("videoplay").offsetWidth;
@@ -55,23 +56,15 @@ export default {
           this.$refs.videoPlay.itemclick(value);
         }
       });
-    }
+    } 
   },
   //进入路由
   beforeRouteEnter (to, from, next) {
      console.log(to);
-    console.log(from);
-    to.meta.keepAlive = true;
-    next();
+     console.log(from);
+     to.meta.keepAlive = true;
+      next();
   },
-  //离开路由
-  // beforeRouteLeave(to, from, next) {
-  //   debugger
-  //   console.log(to);
-  //   console.log(from);
-  //   from.meta.keepAlive = true;
-  //   next();
-  // }
 };
 </script>
 <style scoped lang="scss">
@@ -88,4 +81,4 @@ export default {
     flex: 1;
   }
 }
-</style>
+</style>  

@@ -27,7 +27,7 @@ const router = new Router({
             redirect: "/401",
             meta: {
                 keepAlive: true,
-                tabshow: true,
+                tabshow: false,
                 parentName: null,
                 title:"主页面",
             },
@@ -52,7 +52,7 @@ const router = new Router({
             component: login,
             meta: {
                 keepAlive: false,
-                tabshow: true,
+                tabshow: false,
                 title:"登录",
                 parentName: null,
             },
@@ -61,11 +61,11 @@ const router = new Router({
             path: "/home",
             name: "home",
             component: Home,
-            tabshow: true,
+            tabshow: false,
             parentName: null,
             meta: {
                 keepAlive: true,
-                tabshow: true,
+                tabshow: false,
                 title:"首页",
                 parentName: null,
             }

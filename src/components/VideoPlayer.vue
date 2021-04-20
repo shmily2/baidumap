@@ -106,7 +106,6 @@ export default {
   height: 100%;
   width: 100%;
   background: #fff;
-  padding: 10px;
   box-sizing: border-box;
   display: flex;
   color: #333;
