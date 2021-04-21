@@ -213,7 +213,7 @@ export default {
     },
     // tabs, 删除tab
     removeTabHandle(tabName) {
-      console.log(tabName)
+      let name = "";
       this.mainTabs = this.mainTabs.filter(item => item.index !== tabName);
       if (this.mainTabs.length >= 1) {
         // 当前选中tab被删除
@@ -221,7 +221,7 @@ export default {
           this.$router.push(
             { name: this.mainTabs[this.mainTabs.length - 1].name },
             () => {
-              this.mainTabsActiveName = this.$route.name;
+              this.mainTabsActiveName = this.$route.index;
             }
           );
         }
@@ -231,29 +231,39 @@ export default {
     },
     // tabs, 关闭当前
     tabsCloseCurrentHandle() {
-      this.removeTabHandle(this.mainTabsActiveName);
+      if (this.mainTabs.length > 1) {
+        this.removeTabHandle(this.mainTabsActiveName);
+      } else {
+        this.$message({
+          message: "只有一个标签不能关闭",
+          offset: 200,
+          type: "error"
+        });
+      }
     },
-    // tabs, 关闭其它
+    // tabs, 关闭其它index
     tabsCloseOtherHandle() {
-      this.mainTabs = this.mainTabs.filter(
-        item => item.name === this.mainTabsActiveName
-      );
+      if (this.mainTabs.length > 1) {
+        this.mainTabs = this.mainTabs.filter(
+          item => item.index === this.mainTabsActiveName
+        );
+      }
     },
     // tabs, 关闭全部
     tabsCloseAllHandle() {
       this.mainTabs = [];
-      this.$router.push("/");
+      this.$router.push("/home");
     },
     // tabs, 刷新当前
     tabsRefreshCurrentHandle() {
       var tempTabName = this.mainTabsActiveName;
+      let name = this.$route.name;
       this.removeTabHandle(tempTabName);
       this.$nextTick(() => {
-        this.$router.push({ name: tempTabName });
-        
+        this.$router.push({ name: name });
       });
     }
-  },
+  }
 };
 </script>
 <style scoped>
