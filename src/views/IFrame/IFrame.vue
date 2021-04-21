@@ -16,43 +16,43 @@ export default {
   data() {
     return {
       src: "",
-      loading: null,
+      loading: null
     };
   },
   methods: {
     // 获取路径
-    resetSrc: function (url) {
+    resetSrc: function(url) {
       this.src = url;
       this.load();
     },
-    load: function () {
+    load: function() {
       this.loading = this.$loading({
         lock: true,
         text: "loading...",
         spinner: "el-icon-loading",
         background: "rgba(0, 0, 0, 0.5)",
         // fullscreen: false,
-        target: document.querySelector("#mainContainer"),
+        target: document.querySelector("#mainContainer")
       });
     },
-    onloaded: function () {
+    onloaded: function() {
       if (this.loading) {
-         this.loading.close()
+        this.loading.close();
       }
-    },
+    }
   },
   mounted() {
     this.resetSrc(this.$store.state.iframe.iframeUrl);
   },
   watch: {
     $route: {
-      handler: function (val, oldVal) {
+      handler: function(val, oldVal) {
         // 如果是跳转到嵌套页面，切换iframe的url
         console.log(this.$store.state.iframe.iframeUrl);
         this.resetSrc(this.$store.state.iframe.iframeUrl);
-      },
-    },
-  },
+      }
+    }
+  }
 };
 </script>
 
@@ -71,7 +71,8 @@ export default {
   bottom: 0px;
   .frame {
     width: 100%;
-    height: 100%;
+    margin-top: 42px;
+    height: calc(100% - 42px);
   }
 }
 </style>
