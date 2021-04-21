@@ -316,6 +316,7 @@ function addDynamicRoutes(menuList = [], routes = []) {
     meta: {
       tabshow: true,
       title: "error",
+      index:"401",
       parentName: "mainPage",
     },
   });
