@@ -38,6 +38,7 @@ export default {
       if (!path) {
         path = menu.url;
       }
+      console.log(this.$router.options)
       // 通过菜单URL跳转至指定路由
       this.$router.push(path);
     }

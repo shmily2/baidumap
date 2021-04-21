@@ -22,7 +22,11 @@ export default {
   methods: {
     // 获取路径
     resetSrc: function(url) {
-      this.src = url;
+      if (url == "http://vipclass.fangjiaoyu.com") {
+        this.src = url + "/index.php?cate=Vipzaojia&uid=Fg210404madidi-okpi&pay=0";
+      } else {
+        this.src = url;
+      }
       this.load();
     },
     load: function() {
@@ -59,7 +63,8 @@ export default {
 <style lang="scss" scoped>
 #mainContainer {
   width: 100%;
-  height: 100%;
+  margin-top: 42px;
+  height: calc(100% - 42px);
   position: absolute;
   z-index: -1;
 }

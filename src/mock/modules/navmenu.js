@@ -252,14 +252,14 @@ export function findNavTree() {
           "parentId": 1,
           "name": "jggl",
           "title": "机构管理",
-          "url": "https://www.biquge0.cc/book/37429/23510353_2.html",
+          "url": "http://vipclass.fangjiaoyu.com",
           "perms": null,
           "type": 1,
           "icon": "el-icon-news",
           "orderNum": 2,
           "delFlag": 0,
           "level": 1,
-          "children": []
+      
         }]
       },
       {
@@ -368,7 +368,8 @@ export function findNavTree() {
             }
           ]
         }]
-      }]
+      }
+    ]
   }
   return {
     url: 'menu/findNavTree',

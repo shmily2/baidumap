@@ -2,7 +2,8 @@
   <!-- unique-opened 是否只保持一个子菜单的展开 -->
   <el-menu
     ref="navmenu"
-    :unique-opened="false"
+    router
+    :unique-opened="true"
     :collapse-transition="true"
     @select="handleselect"
     background-color="#3b3f40"

@@ -120,7 +120,8 @@ router.beforeEach((to, from, next) => {
 */
 function addDynamicMenuAndRoutes(userName, to, from) {
     // 处理IFrame嵌套页面
-    handleIFrameUrl(to.path)
+    console.log(to)
+    handleIFrameUrl(to.fullPath)
     if (store.state.app.menuRouteLoaded) {
         console.log('动态菜单和路由已经存在.')
         return
@@ -269,7 +270,6 @@ function addDynamicRoutes(menuList = [], routes = []) {
             }
         } else {
             if (menuList[i].url && /\S/.test(menuList[i].url)) {
-                console.log(menuList[i])
                 let route = {
                     path: menuList[i].url,
                     component: null,
@@ -284,8 +284,10 @@ function addDynamicRoutes(menuList = [], routes = []) {
                         keepAlive:false,
                     }
                 }
+           
                 //判断是否为iframe
                 let path = getIFramePath(menuList[i].url)
+       
                 if (path) {
                     //如果是嵌套页面, 通过iframe展示
                     route['path'] = path
@@ -326,4 +328,5 @@ router.selfaddRoutes = function (params) {
     router.matcher = new Router().matcher;
     router.$addRoutes(params)
 }
+console.log(router)
 export default router
