@@ -59,7 +59,6 @@ export default {
   }
 };
 </script>
-
 <style lang="scss" scoped>
 #mainContainer {
   width: 100%;
@@ -70,7 +69,7 @@ export default {
 }
 .iframe-container {
   position: absolute;
-  top: 0px;
+  top: 40px;
   left: 0px;
   right: 0px;
   bottom: 0px;

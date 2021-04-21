@@ -71,8 +71,10 @@ export default {
     // 路由操作处理
     handleRoute(route) {
       let tab = "";
-      if (route.meta.tabshow) {
-        // tab标签页选中, 如果不存在则先添加
+      console.log(route.meta)
+      console.log(route.meta.tabshow)
+      if (route.meta.tabshow==true) {
+        // tab标签页选中, 如果不存在则先添加console.log()
         tab = this.mainTabs.filter(item => item.title === route.meta.title)[0];
         if (!tab) {
           tab = {
@@ -81,16 +83,19 @@ export default {
             icon: route.meta.icon,
             index: route.meta.index,
           };
+          console.log(tab)
           this.mainTabs = this.mainTabs.concat(tab);
         } else {
           this.mainTabs.map((item, index) => {
             if (item.title === route.meta.title) {
               item.name = route.name;
+              console.log(item)
             }
           });
         }
-      } else {
+      } else if(route.meta.tabshow==false){
         tab = this.mainTabs.filter( item => item.title === route.meta.parentTitle)[0];
+          console.log(route.meta.title)
         if (!tab) {
           tab = {
             name: route.name,

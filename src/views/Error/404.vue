@@ -1,60 +1,85 @@
 <template>
-  <div class="site-wrapper site-page--not-found"> 
-    <div class="site-content__wrapper">
-      <div class="site-content">
-        <h2 class="not-found-title">404</h2>
-        <p class="not-found-desc">抱歉！您访问的页面<em>失联</em>啦 ...</p>
-        <el-button @click="$router.go(-1)">返回上一页</el-button>
-        <el-button type="primary" class="not-found-btn-gohome" @click="$router.push('/home')">进入首页</el-button>
-      </div>
-    </div>
+  <div class="errPage-container">
+    <el-button @click="back" icon='arrow-left' class="pan-back-btn">返回</el-button>
+    <el-row>
+      <el-col :span="12">
+        <h1 class="text-jumbo text-ginormous">Oops!</h1>
+        gif来源<a href='https://zh.airbnb.com/' target='_blank'>airbnb</a> 页面
+        <h2>你没有权限去该页面</h2>
+        <h6>如有不满请联系你领导</h6>
+        <ul class="list-unstyled">
+          <li>或者你可以去:</li>
+          <li class="link-type">
+            <router-link to="/home">回首页</router-link>
+          </li>
+          <li class="link-type"><a href="https://www.taobao.com/">随便看看</a></li>
+          <li><a @click.prevent="dialogVisible=true" href="#">点我看图</a></li>
+        </ul>
+      </el-col>
+      <el-col :span="12">
+        <img :src="errGif" width="313" height="428" alt="Girl has dropped her ice cream.">
+      </el-col>
+    </el-row>
+    <el-dialog title="随便看" :visible.sync="dialogVisible">
+      <img class="pan-img" :src="ewizardClap">
+    </el-dialog>
   </div>
 </template>
 
 <script>
-  export default {
+import errGif from '@/assets/401_images/401.gif'
+
+export default {
+  name: 'page401',
+  data() {
+    return {
+      errGif: errGif + '?' + +new Date(),
+      ewizardClap: 'https://wpimg.wallstcn.com/007ef517-bafd-4066-aae4-6883632d9646',
+      dialogVisible: false
+    }
+  },
+  methods: {
+    back() {
+        this.$router.go(-1)
+    }
   }
+}
 </script>
-<style lang="scss" scoped>
-  .site-wrapper.site-page--not-found {
-    position: absolute;
-     top: 80px;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    overflow: hidden;
-    .site-content__wrapper {
-      padding: 0;
-      margin: 0;
-      background-color: #fff;
+
+<style rel="stylesheet/scss" lang="scss" scoped>
+  .errPage-container {
+    width: 800px;
+    margin: 100px auto;
+    .pan-back-btn {
+      background: #008489;
+      color: #fff;
     }
-    .site-content {
-      position: fixed;
-      top: 15%;
-      left: 50%;
-      z-index: 2;
-      padding: 30px;
-      text-align: center;
-      transform: translate(-50%, 0);
+    .pan-gif {
+      margin: 0 auto;
+      display: block;
     }
-    .not-found-title {
-      margin: 20px 0 15px;
-      font-size: 8em;
-      font-weight: 500;
-      color: rgb(55, 71, 79);
+    .pan-img {
+      display: block;
+      margin: 0 auto;
+      width: 100%;
     }
-    .not-found-desc {
-      margin: 0 0 30px;
-      font-size: 26px;
-      text-transform: uppercase;
-      color: rgb(118, 131, 143);
-      > em {
-        font-style: normal;
-        color: #ee8145;
+    .text-jumbo {
+      font-size: 60px;
+      font-weight: 700;
+      color: #484848;
+    }
+    .list-unstyled {
+      font-size: 14px;
+      li {
+        padding-bottom: 5px;
       }
-    }
-    .not-found-btn-gohome {
-      margin-left: 30px;
+      a {
+        color: #008489;
+        text-decoration: none;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
     }
   }
 </style>
