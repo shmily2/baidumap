@@ -2,7 +2,6 @@
   <!-- unique-opened 是否只保持一个子菜单的展开 -->
   <el-menu
     ref="navmenu"
-    router
     :unique-opened="true"
     :collapse-transition="true"
     @select="handleselect"
@@ -72,7 +71,7 @@ export default {
     handleRoute(route) {
       let tab = "";
       console.log(route.meta)
-      console.log(route.meta.tabshow)
+      console.log(route.meta.tabshow) 
       if (route.meta.tabshow==true) {
         // tab标签页选中, 如果不存在则先添加console.log()
         tab = this.mainTabs.filter(item => item.title === route.meta.title)[0];
