@@ -7,466 +7,291 @@
       label-width="100px"
       class="demo-ruleForm"
     >
-      <el-form-item label="活动名称" prop="name">
-        <el-input v-model="ruleForm.name"></el-input>
-      </el-form-item>
-      <el-form-item label="活动区域" prop="region">
+      <el-form-item
+        v-for="(item, index) in formConfig.fromdata"
+        :key="index"
+        :label="item.label"
+        :prop="item.prop"
+        :required="item.required"
+      >
+        <!-- input框只读点击事件 -->
+        <el-input
+          v-if="item.type == 'input' && item.readonly"
+          :maxlength="item.max || '20'"
+          v-model="ruleForm[item.prop]"
+          :clearable="true"
+          :readonly="item.readonly || false"
+          :placeholder="item.disabled ? '' : item.placeholder"
+          :disabled="item.disabled || false"
+          @click.native="item.click"
+        >
+          <template slot="suffix">{{ item.suffix }}</template>
+        </el-input>
+        <!-- 正常input框 -->
+        <el-input
+          v-else-if="item.type == 'input' && item.readonly != true"
+          :maxlength="item.max || '20'"
+          v-model="ruleForm[item.prop]"
+          :clearable="true"
+          :placeholder="item.disabled ? '' : item.placeholder"
+          :disabled="item.disabled || false"
+        >
+          <template slot="suffix">{{ item.suffix }}</template>
+        </el-input>
+        <!-- select框 -->
         <el-select
-          v-model="ruleForm.region"
-          :multiple="multiple"
-          :filterable="filterable"
-          placeholder="请选择活动区域"
+          v-else-if="item.type == 'select'"
+          v-model="ruleForm[item.prop]"
+          :multiple="item.multiple"
+          :filterable="item.filterable || false"
+          :placeholder="item.disabled ? '' : item.placeholder"
+          :disabled="item.disabled || false"
+          @change="item.click"
+          :value-key="item.value"
+          collapse-tags
         >
-          <el-option label="区域一" value="shanghai"></el-option>
-          <el-option label="区域二" value="beijing"></el-option>
-          <el-option label="区域三" value="suzhou"></el-option>
-          <el-option label="区域四" value="taixin"></el-option>
-          <el-option label="区域五" value="changzhou"></el-option>
-          <el-option label="区域六" value="wuxi"></el-option>
-          <el-option label="区域七" value="nanjing"></el-option>
-          <el-option label="区域八" value="hangzhou"></el-option>
+          <div v-if="item.valueType">
+            <el-option
+              v-for="it in item.options"
+              :label="it.label"
+              :multiple="it.multiple || false"
+              :filterable="it.filterable || false"
+              :key="it.value"
+              :value="it"
+            ></el-option>
+          </div>
+          <div v-else>
+            <el-option
+              v-for="it in item.options"
+              :label="it.label"
+              :multiple="it.multiple || false"
+              :filterable="it.filterable || false"
+              :key="it.value"
+              :value="it.value"
+            ></el-option>
+          </div>
         </el-select>
-      </el-form-item>
-      <el-form-item label="活动时间">
-        <el-date-picker
-          type="date"
-          placeholder="选择开始日期"
-          v-model="ruleForm.date1"
-        ></el-date-picker>
-        <span>-</span>
-        <el-date-picker
-          type="date"
-          placeholder="选择结束日期"
-          v-model="ruleForm.date2"
-        ></el-date-picker>
-      </el-form-item>
-      <el-form-item label="时间范围" required>
-        <el-date-picker
-          v-model="ruleForm.valueue1"
-          type="datetime"
-          placeholder="选择开始日期时间"
+        <!-- 多行文本框 -->
+        <el-input
+          v-else-if="item.type == 'textarea'"
+          :type="item.type"
+          :maxlength="item.max || '300'"
+          v-model="ruleForm[item.prop]"
+          :placeholder="item.disabled ? '' : item.placeholder"
+          :disabled="item.disabled || false"
+        ></el-input>
+        <!-- Switch 开关 -->
+        <el-switch
+          v-else-if="item.type == 'switch'"
+          :active-color="item.selectColor"
+          :inactive-color="item.noSelectColor"
+          :disabled="item.disabled || false"
+          :active-value="item.selectvalue"
+          :inactive-value="item.noSelectvalue"
+          :active-text="item.text"
+          v-model="ruleForm[item.prop]"
+          @change="item.click"
+        ></el-switch>
+        <!-- 单选 -->
+        <el-radio-group
+          v-else-if="item.type == 'radio'"
+          v-model="ruleForm[item.prop]"
+          :disabled="item.disabled || false"
+          @change="item.click"
         >
-        </el-date-picker>
-        <span>-</span>
-        <el-date-picker
-          v-model="ruleForm.valueue2"
-          type="datetime"
-          placeholder="选择结束日期时间"
+          <el-radio
+            :label="itm.value"
+            v-for="itm in item.options"
+            :key="itm.value"
+            >{{ itm.label }}</el-radio
+          >
+        </el-radio-group>
+
+        <!-- 多选 -->
+        <el-checkbox-group
+          v-model="ruleForm[item.prop]"
+          v-else-if="item.type == 'checkbox'"
+          :disabled="item.disabled || false"
+          @change="item.click"
         >
-        </el-date-picker>
-      </el-form-item>
-      <el-form-item label="上传文件" prop="file">
-        <el-input v-model="ruleForm.file" style="display:none"></el-input>
+          <el-checkbox
+            :label="itm.value"
+            v-for="itm in item.options"
+            :key="itm.value"
+            >{{ itm.label }}</el-checkbox
+          >
+        </el-checkbox-group>
+        <!-- 点击按钮 -->
+        <div v-else-if="item.type == 'button'" class="frombutton">
+          <el-button
+            size="small"
+            v-for="list in item.options"
+            :key="list.label"
+            :type="list.type"
+            @click="buttonclick(list)"
+            >{{ list.label }}</el-button
+          >
+        </div>
+        <!-- 照片 -->
+        <div v-else-if="item.type == 'Photo'">
+          <el-image
+            style="width:240px;"
+            :src="item.src"
+            fit="cover"
+            :preview-src-list="item.srcList"
+          ></el-image>
+        </div>
+        <!-- 级联选择器 -->
+        <el-cascader
+          v-else-if="item.type == 'cascader'"
+          v-model="ruleForm[item.prop]"
+          clearable
+          :options="item.options"
+          :props="item.props"
+          :show-all-levels="item.levels"
+          :placeholder="item.placeholder"
+          :filterable="item.filterable"
+          @change="handleChange"
+        >
+          <template slot-scope="{ node, data }">
+            <span>{{ data.label }}</span>
+            <span v-if="!node.isLeaf"> ({{ data.children.length }}) </span>
+          </template>
+        </el-cascader>
+        <!-- 上传文件 -->
         <el-upload
-          ref="uploadButton"
-          :http-request="submitForm"
+          v-else-if="item.type == 'file'"
+          :ref="item.ref"
+          :action="item.action"
           class="upload-demo"
           :auto-upload="false"
-          action=""
-          :on-remove="handleRemove"
-          :before-remove="beforeRemove"
-          :on-change="handchange"
+          :before-upload="file => beforeAvatarUpload(file, index)"
+          :on-remove="(file, fileList) => handleRemove(file, fileList, index)"
+          :before-remove="
+            (file, fileList) => beforeRemove(file, fileList, index)
+          "
+          :on-change="(file, fileList) => handchange(file, fileList, index)"
           multiple
-          :limit="3"
-          :on-exceed="handleExceed"
-          :file-list="ruleForm.fileList"
+          :limit="item.limit"
+          :on-exceed="
+            (files, fileList) =>
+              handleExceed(files, fileList, index, item.label, item.limit)
+          "
+          :file-list="item.fileList"
         >
           <el-button size="small" type="primary">点击上传</el-button>
-
           <div slot="tip" class="el-upload__tip">
-            只能上传jpg/png文件，且不超过500kb
+            {{ item.prompting }}
           </div>
+          <div
+            slot="tip"
+            :id="'tip' + index"
+            v-show="item.fileList.length < 1"
+            class="tip"
+          ></div>
         </el-upload>
-      </el-form-item>
-      <el-form-item label="即时配送" prop="delivery">
-        <el-switch v-model="ruleForm.delivery"></el-switch>
-      </el-form-item>
-      <el-form-item label="活动性质" prop="type">
-        <el-checkbox-group v-model="ruleForm.type">
-          <el-checkbox label="美食/餐厅线上活动" name="type"></el-checkbox>
-          <el-checkbox label="地推活动" name="type"></el-checkbox>
-          <el-checkbox label="线下主题活动" name="type"></el-checkbox>
-          <el-checkbox label="单纯品牌曝光" name="type"></el-checkbox>
-        </el-checkbox-group>
-      </el-form-item>
-      <el-form-item label="特殊资源" prop="resource">
-        <el-radio-group v-model="ruleForm.resource">
-          <el-radio label="线上品牌商赞助"></el-radio>
-          <el-radio label="线下场地免费"></el-radio>
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="活动形式" prop="desc">
-        <el-input type="textarea" v-model="ruleForm.desc"></el-input>
-      </el-form-item>
-      <el-form-item label="级联选择器" prop="cascader">
-        <el-cascader
-          v-model="value"
-          :options="options"
-          :props="{ expandTrigger: 'hover' }"
-          @change="handleChange"
-        ></el-cascader>
-      </el-form-item>
-      <el-form-item label="单个时间">
+        <!-- 时间 -->
+        <div v-else-if="item.type == 'doubleTime'">
+          <el-date-picker
+            :value-format="
+              item.start.dateFormate
+                ? item.start.dateFormate
+                : 'yyyy-MM-dd HH:mm:ss'
+            "
+            v-model="ruleForm[item.start.prop]"
+            :type="item.datatype"
+            :disabled="item.start.disabled"
+            clearable
+            :picker-options="item.start.pickerOptions"
+            :placeholder="item.start.disabled ? '' : item.start.placeholder"
+          ></el-date-picker>
+          <span>-</span>
+          <el-date-picker
+            :type="item.datatype"
+            v-model="ruleForm[item.end.prop]"
+            :disabled="item.end.disabled"
+            clearable
+            :picker-options="item.end.pickerOptions"
+            :value-format="
+              item.end.dateFormate
+                ? item.end.dateFormate
+                : 'yyyy-MM-dd HH:mm:ss'
+            "
+            :placeholder="item.end.disabled ? '' : item.end.placeholder"
+          ></el-date-picker>
+        </div>
+        <!-- 时间 -->
         <el-date-picker
-          v-model="ruleForm.picker"
-          align="right"
-          class="singledate"
-          type="date"
-          placeholder="选择日期"
-          :picker-options="pickerOptions"
+          v-else
+          :type="item.type"
+          v-model="ruleForm[item.prop]"
+          :disabled="item.disabled"
+          clearable
+          :picker-options="item.pickerOptions"
+          :value-format="item.dateFormate ? item.dateFormate : 'yyyy-MM-dd HH:mm:ss' "
+          :placeholder="item.disabled ? '' : item.placeholder"
         >
         </el-date-picker>
       </el-form-item>
+
       <el-form-item style="border:none"> </el-form-item>
       <el-form-item style="border:none"> </el-form-item>
       <el-form-item style="border:none"> </el-form-item>
       <el-form-item style="border:none"> </el-form-item>
     </el-form>
     <div class="fromfoot">
-      <el-button type="primary" @click="submitForm('ruleForm')"
-        >立即创建</el-button
+      <el-button
+        v-for="(list, ind) in formConfig.footer"
+        :key="ind"
+        :type="list.type"
+        @click="list.click('ruleForm')"
+        >{{ list.name }}</el-button
       >
-      <el-button @click="resetForm('ruleForm')">重置</el-button>
+      <!-- <el-button @click="resetForm('ruleForm')">重置</el-button> -->
     </div>
   </div>
 </template>
 <script>
 export default {
   name: "myfrom",
+  props: {
+    formConfig: {
+      type: Object,
+      required: true
+    },
+    ruleForm: {
+      type: Object,
+      required: true
+    },
+    rules: {
+      type: Object,
+      required: true
+    }
+  },
   data() {
     return {
       multiple: true, //多选
       filterable: true,
       value: [],
-      options: [
-        {
-          value: "zhinan",
-          label: "指南",
-          children: [
-            {
-              value: "shejiyuanze",
-              label: "设计原则",
-              children: [
-                {
-                  value: "yizhi",
-                  label: "一致"
-                },
-                {
-                  value: "fankui",
-                  label: "反馈"
-                },
-                {
-                  value: "xiaolv",
-                  label: "效率"
-                },
-                {
-                  value: "kekong",
-                  label: "可控"
-                }
-              ]
-            },
-            {
-              value: "daohang",
-              label: "导航",
-              children: [
-                {
-                  value: "cexiangdaohang",
-                  label: "侧向导航"
-                },
-                {
-                  value: "dingbudaohang",
-                  label: "顶部导航"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          value: "zujian",
-          label: "组件",
-          children: [
-            {
-              value: "basic",
-              label: "Basic",
-              children: [
-                {
-                  value: "layout",
-                  label: "Layout 布局"
-                },
-                {
-                  value: "color",
-                  label: "Color 色彩"
-                },
-                {
-                  value: "typography",
-                  label: "Typography 字体"
-                },
-                {
-                  value: "icon",
-                  label: "Icon 图标"
-                },
-                {
-                  value: "button",
-                  label: "Button 按钮"
-                }
-              ]
-            },
-            {
-              value: "form",
-              label: "Form",
-              children: [
-                {
-                  value: "radio",
-                  label: "Radio 单选框"
-                },
-                {
-                  value: "checkbox",
-                  label: "Checkbox 多选框"
-                },
-                {
-                  value: "input",
-                  label: "Input 输入框"
-                },
-                {
-                  value: "input-number",
-                  label: "InputNumber 计数器"
-                },
-                {
-                  value: "select",
-                  label: "Select 选择器"
-                },
-                {
-                  value: "cascader",
-                  label: "Cascader 级联选择器"
-                },
-                {
-                  value: "switch",
-                  label: "Switch 开关"
-                },
-                {
-                  value: "slider",
-                  label: "Slider 滑块"
-                },
-                {
-                  value: "time-picker",
-                  label: "TimePicker 时间选择器"
-                },
-                {
-                  value: "date-picker",
-                  label: "DatePicker 日期选择器"
-                },
-                {
-                  value: "datetime-picker",
-                  label: "DateTimePicker 日期时间选择器"
-                },
-                {
-                  value: "upload",
-                  label: "Upload 上传"
-                },
-                {
-                  value: "rate",
-                  label: "Rate 评分"
-                },
-                {
-                  value: "form",
-                  label: "Form 表单"
-                }
-              ]
-            },
-            {
-              value: "data",
-              label: "Data",
-              children: [
-                {
-                  value: "table",
-                  label: "Table 表格"
-                },
-                {
-                  value: "tag",
-                  label: "Tag 标签"
-                },
-                {
-                  value: "progress",
-                  label: "Progress 进度条"
-                },
-                {
-                  value: "tree",
-                  label: "Tree 树形控件"
-                },
-                {
-                  value: "pagination",
-                  label: "Pagination 分页"
-                },
-                {
-                  value: "badge",
-                  label: "Badge 标记"
-                }
-              ]
-            },
-            {
-              value: "notice",
-              label: "Notice",
-              children: [
-                {
-                  value: "alert",
-                  label: "Alert 警告"
-                },
-                {
-                  value: "loading",
-                  label: "Loading 加载"
-                },
-                {
-                  value: "message",
-                  label: "Message 消息提示"
-                },
-                {
-                  value: "message-box",
-                  label: "MessageBox 弹框"
-                },
-                {
-                  value: "notification",
-                  label: "Notification 通知"
-                }
-              ]
-            },
-            {
-              value: "navigation",
-              label: "Navigation",
-              children: [
-                {
-                  value: "menu",
-                  label: "NavMenu 导航菜单"
-                },
-                {
-                  value: "tabs",
-                  label: "Tabs 标签页"
-                },
-                {
-                  value: "breadcrumb",
-                  label: "Breadcrumb 面包屑"
-                },
-                {
-                  value: "dropdown",
-                  label: "Dropdown 下拉菜单"
-                },
-                {
-                  value: "steps",
-                  label: "Steps 步骤条"
-                }
-              ]
-            },
-            {
-              value: "others",
-              label: "Others",
-              children: [
-                {
-                  value: "dialog",
-                  label: "Dialog 对话框"
-                },
-                {
-                  value: "tooltip",
-                  label: "Tooltip 文字提示"
-                },
-                {
-                  value: "popover",
-                  label: "Popover 弹出框"
-                },
-                {
-                  value: "card",
-                  label: "Card 卡片"
-                },
-                {
-                  value: "carousel",
-                  label: "Carousel 走马灯"
-                },
-                {
-                  value: "collapse",
-                  label: "Collapse 折叠面板"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          value: "ziyuan",
-          label: "资源",
-          children: [
-            {
-              value: "axure",
-              label: "Axure Components"
-            },
-            {
-              value: "sketch",
-              label: "Sketch Templates"
-            },
-            {
-              value: "jiaohu",
-              label: "组件交互文档"
-            }
-          ]
-        }
-      ],
       pickerOptions: {
         disabledDate(time) {
           return time.getTime() > Date.now();
         }
-      },
-      ruleForm: {
-        name: "",
-        picker: "",
-        region: "",
-        date1: "",
-        date2: "",
-        valueue1: "",
-        valueue2: "",
-        delivery: false,
-        type: [],
-        resource: "",
-        desc: "",
-        file: "",
-        fileList: []
-      },
-      rules: {
-        name: [
-          { required: true, message: "请输入活动名称", trigger: "change" },
-          { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" }
-        ],
-        region: [
-          { required: true, message: "请选择活动区域", trigger: "change" }
-        ],
-        date1: [
-          {
-            type: "date",
-            required: true,
-            message: "请选择日期",
-            trigger: "change"
-          }
-        ],
-        date2: [
-          {
-            type: "date",
-            required: true,
-            message: "请选择时间",
-            trigger: "change"
-          }
-        ],
-        type: [
-          {
-            type: "array",
-            required: true,
-            message: "请至少选择一个活动性质",
-            trigger: "change"
-          }
-        ],
-        resource: [
-          { required: true, message: "请选择活动资源", trigger: "change" }
-        ],
-        file: [{ required: true, message: "请选择文件", trigger: "change" }],
-        desc: [{ required: true, message: "请填写活动形式", trigger: "blur" }]
       }
     };
   },
   methods: {
+    beforeAvatarUpload(file, index) {
+      const isJPG = file.type === "image/jpeg";
+      const isLt2M = file.size / 1024 / 1024 < 2;
+      if (!isJPG) {
+        this.$message.error("上传头像图片只能是 JPG 格式!");
+      }
+      if (!isLt2M) {
+        this.$message.error("上传头像图片大小不能超过 2MB!");
+      }
+      return isJPG && isLt2M;
+    },
     submitForm(formName) {
       // 通过submit调用uploadFile
       //   this.$refs.uploadButton.submit();
@@ -482,36 +307,78 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
-    //文件变化
-    handchange(file, fileList) {
-      this.ruleForm.fileList = fileList;
-      if (fileList.length > 0) {
-        this.ruleForm.file = fileList[0].name;
-      } else {
-        this.ruleForm.file = "";
-      }
-    },
-    // 删除文件
-    handleRemove(file, fileList) {
-      this.ruleForm.fileList = fileList;
-      if (fileList.length > 0) {
-        this.ruleForm.file = fileList[0].name;
-      } else {
-        this.ruleForm.file = "";
-      }
-    },
-    handleExceed(files, fileList) {
+    //超出限制
+    handleExceed(files, fileList, index, label, limit) {
       this.$message.warning(
-        `当前限制选择 3 个文件，本次选择了 ${
+        `${label}限制选择 ${limit}个文件，本次选择了 ${
           files.length
         } 个文件，共选择了 ${files.length + fileList.length} 个文件`
       );
     },
-    beforeRemove(file, fileList) {
+    beforeRemove(file, fileList, index) {
       return this.$confirm(`确定移除 ${file.name}？`);
     },
+    // 删除文件
+    handleRemove(file, fileList, index) {
+      this.formConfig.fromdata[index].fileList = fileList;
+      document.getElementById(
+        `tip${index}`
+      ).innerHTML = this.formConfig.fromdata[index].tip;
+    },
+    //文件变化
+    handchange(file, fileList, index) {
+      this.formConfig.fromdata[index].fileList = fileList;
+      document.getElementById(
+        `tip${index}`
+      ).innerHTML = this.formConfig.fromdata[index].tip;
+    },
+
+    //级联选择
     handleChange(value) {
       console.log(value);
+    },
+    //按钮事件
+    buttonclick(val) {
+      //下载
+      if (val.eventtype == "download") {
+        this.download(val);
+      } else if (val.eventtype == "preview") {
+        //预览
+        this.preview(val);
+      }
+    },
+    //下载
+    download(val) {
+      // var temp = document.createElement("form");
+      // temp.action = val.src;
+      // temp.method = "post";
+      // temp.style.display = "none";
+      // for (var key in val.data) {
+      //   var opt = document.createElement("input");
+      //   opt.name = key;
+      //   opt.value = val.data[key];
+      //   temp.appendChild(opt);
+      // }
+      // document.body.appendChild(temp);
+      // temp.submit();
+      //  a标签下载
+      let link = document.createElement("a"); // 创建a标签
+      link.style.display = "none";
+      link.href = val.src + "?response-content-type=application/octet-stream"; // 设置下载地址
+      link.setAttribute("download", ""); // 添加downLoad属性
+      document.body.appendChild(link);
+      link.click();
+    },
+    //预览
+    preview(val) {
+      console.log("预览");
+      // a标签下载
+      let link = document.createElement("a"); // 创建a标签
+      link.style.display = "none";
+      link.href = val.src; // 设置下载地址
+      link.target = "_blank";
+      document.body.appendChild(link);
+      link.click();
     }
   }
 };
@@ -545,10 +412,11 @@ export default {
     width: 100%;
   }
   .el-upload {
-    width:100%;
-    border: 1px solid #dcdfe6;
+    width: 100%;
+    /* border: 1px solid #dcdfe6; */
     text-align: left;
-    padding-left:12px;
+    padding-left: 12px;
+    box-sizing: border-box;
   }
   .el-cascader {
     width: 445px;
@@ -556,14 +424,26 @@ export default {
   .el-form-item__content > .singledate {
     width: 445px;
   }
+  .el-icon-circle-close:before {
+    content: "\e78d";
+    color: #000;
+  }
+  /* .frombutton,
   .el-checkbox-group,
   .el-switch,
   .el-radio-group {
     border: 1px solid #dcdfe6;
-    padding: 8px;
     height: 100%;
     width: 100%;
     box-sizing: border-box;
+    padding-left: 12px;
+  } */
+  .el-radio {
+    height: 40px;
+    line-height: 40px;
+  }
+  .tip {
+    color: red;
   }
 }
 </style>
