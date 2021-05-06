@@ -1,19 +1,22 @@
 <template>
-  <div>
+  <div class="table">
     <!-- stripe属性可以创建带斑马纹的表格 
      border 竖直方向的边框
      max-height属性为 Table 指定最大高度,此时若表格所需的高度大于最大高度，则会显示一个滚动条。
      highlight-current-row属性即可实现单选
      current-change当表格的当前行发生变化的时候会触发该事件
--->
+     cell 改变字体颜色-->
     <el-table
-      :data="tableData"
-      :strip="strip"
+      :data="table.tableData"
+      strip
       border
-      :row-class-name="tableRowClassName"
+      :row-key="table.id"
+      :tree-props="table.treeProps"
       highlight-current-row
-      @current-change="handleCurrentChange"
-      @selection-change="handleSelectionChange"
+      :span-method="table.spanMethod"
+      @current-change="table.handleCurrentChange"
+      @selection-change="table.handleSelectionChange"
+      :cell-style="table.cell"
       show-overflow-tooltip
       style="width: 100%"
       :max-height="maxheight"
@@ -22,237 +25,273 @@
       type属性为index即可显示从 1 开始的索引号。
       type属性为selection
      -->
-      <el-table-column type="selection" width="55"> </el-table-column>
-      <el-table-column fixed type="index" width="50"> </el-table-column>
+      <template v-for="item in table.tableLabel">
+        <!-- checkbox框 -->
+        <el-table-column
+          v-if="item.type && item.type == 'selection'"
+          :fixed="item.fixed"
+          :type="item.type"
+          :key="item.prop"
+          align="center"
+          :width="item.width == undefined ? '50' : item.width"
+        ></el-table-column>
+        <!-- 序号-->
+        <el-table-column
+          v-else-if="item.type && item.label == '序号'"
+          :fixed="item.fixed"
+          :type="item.type"
+          :key="item.prop"
+          align="center"
+          :label="item.label"
+          :width="item.width == undefined ? '100' : item.width"
+        >
+          <template slot-scope="scopeSize">
+            <span
+              v-if="
+                item.scopeSize && scopeSize.$index + 1 == table.tableData.length
+              "
+            ></span>
+            <span v-else>{{
+              (table.currentPage - 1) * table.pageSize + scopeSize.$index + 1
+            }}</span>
+          </template>
+        </el-table-column>
+        <!-- 多级表头 -->
+        <el-table-column
+          v-else-if="item.type == 'mortabhead'"
+          :key="item.label"
+          align="center"
+          :fixed="item.fixed"
+          :label="item.label"
+          :minWidth="item.width"
+          show-overflow-tooltip
+        >
+          <el-table-column
+            v-for="(list, index) in item.options"
+            :min-minWidth="item.minWidth == undefined ? '' : item.minWidth"
+            align="center"
+            :prop="list.prop"
+            :label="list.label"
+            :minWidth="item.width"
+            show-overflow-tooltip
+            :key="index"
+          >
+            <template slot-scope="scope">
+              {{
+                (list.formatter &&
+                  list.formatter(
+                    scope.row,
+                    scope.column,
+                    scope.row[list.prop]
+                  )) ||
+                  scope.row[list.prop]
+              }}
+            </template>
+          </el-table-column>
+        </el-table-column>
+         <!--表格内select选择 -->
+         <el-table-column
+          v-else-if="item.type == 'select'"
+          :key="item.id"
+          :fixed="item.fixed"
+          :prop="item.prop"
+          :label="item.label"
+          :minWidth="item.width"
+        >
+         <template slot-scope="scope">
+            <el-select
+              v-model="scope.row.sex"
+              :disabled="scope.row.disabled"
+              :placeholder="scope.row.disabled ? '' : item.placeholder"
+            >
+              <el-option
+                :label="opt.label"
+                :value="opt.value"
+                v-for="opt in item.options"
+                :key="opt.value"
+              ></el-option>
+            </el-select>
+          </template> 
+        </el-table-column>
+        <!--表格内input填写 -->
+       <el-table-column
+          v-else-if="item.type == 'input'"
+          :key="item.id"
+          :prop="item.prop"
+          :fixed="item.fixed"
+          :minWidth="item.width"
+          :label="item.label"
+        >
+          <template slot-scope="scope">
+            <el-input
+              v-model="scope.row.qiname"
+              :disabled="scope.row.disabled"
+              :maxlength="item.max"
+              :placeholder="scope.row.disabled ? '' : item.placeholder"
+            ></el-input>
+          </template>
+        </el-table-column> 
+        <!--表格内时间选择 -->
+       <el-table-column
+          v-else-if="item.type == 'clocks'"
+          :key="item.id"
+          :fixed="item.fixed"
+          :prop="item.prop"
+          :minWidth="item.width"
+          :label="item.label"
+        >
+          <template slot-scope="scope">
+            <el-date-picker
+              v-model="scope.row.clock"
+              :type="item.clocksType"
+              :picker-options="item.pickerOptions"
+              :range-separator="item.separator"
+              :start-placeholder="item.startplaceholder"
+              :end-placeholder="item.endplaceholder"
+              :placeholder="scope.row.disabled ? '' : item.placeholder"
+              :disabled="scope.row.disabled"
+            >
+            </el-date-picker>
+          </template>
+        </el-table-column> 
 
-      <el-table-column label="日期" width="120">
-        <template slot-scope="scope">{{ scope.row.date }}</template>
-      </el-table-column>
-      <el-table-column prop="name" label="姓名" width="180"> </el-table-column>
-      <el-table-column prop="date" label="日期" width="180"></el-table-column>
-      <el-table-column prop="name" label="姓名" width="180"> </el-table-column>
-      <!-- 多级表头 -->
-      <el-table-column label="配送信息">
-        <el-table-column prop="name" label="姓名" width="120">
+        <!-- 操作 -->
+        <el-table-column
+          v-else-if="item.type == 'button'"
+          :key="item.label"
+          align="center"
+          :fixed="item.fixed"
+          :label="item.label"
+          :minWidth="item.width"
+        >
+          <template slot-scope="scope">
+            <el-button
+              v-for="(butlist, butind) in item.options"
+              :key="butind"
+              size="mini"
+              :disabled="butlist.disabled"
+              :type="butlist.type"
+              @click="butlist.click(scope.$index, scope.row)"
+              >{{ butlist.label }}</el-button
+            >
+          </template>
         </el-table-column>
-        <el-table-column label="地址">
-          <el-table-column prop="province" label="省份" width="120">
-          </el-table-column>
-          <el-table-column prop="city" label="市区" width="120">
-          </el-table-column>
-          <el-table-column prop="address" label="地址" width="300">
-          </el-table-column>
-          <el-table-column prop="zip" label="邮编"> </el-table-column>
+        <!-- 正常表格 -->
+        <el-table-column
+          v-else
+          :key="item.prop"
+          :fixed="item.fixed"
+          :sortable="item.sortable"
+          :label="item.label"
+          :prop="item.prop"
+          align="center"
+          :minWidth="item.width"
+        >
+          <template slot-scope="scope">
+            <!-- 行内点击 -->
+            <div
+              v-if="item.typeclick"
+              :style="'text-align:center;' + item.style"
+              @click="item.click(item, scope.row)"
+            >
+              {{ scope.row[item.prop] }}
+            </div>
+            <!-- 时间格式过滤器-->
+            <div v-else-if="item.dateFormate">
+              <!-- item.format ||-->
+              {{
+                scope.row[item.param] | dateFormateFilters(item.format || "-")
+              }}
+            </div>
+            <!--默认方式展示-->
+            <div v-else :style="item.style">
+              {{
+                (item.formatter &&
+                  item.formatter(
+                    scope.row,
+                    scope.column,
+                    scope.row[item.prop],
+                    scope.$index
+                  )) ||
+                  scope.row[item.prop]
+              }}
+            </div>
+          </template>
         </el-table-column>
-      </el-table-column>
+      </template>
     </el-table>
-    <div class="pagina">
+    <!-- 分页 -->
+    <div class="pagina" v-if="table.pagination">
       <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="currentPage4"
+        @size-change="table.handleSizeChange"
+        @current-change="table.handleCurrentChange"
+        :current-page="table.currentPage"
         :page-sizes="[10, 20, 30, 40]"
-        :page-size="pageSize"
+        :page-size="table.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="total"
+        :total="table.total"
       >
       </el-pagination>
     </div>
   </div>
 </template>
-
   <script>
+import { formatWithSeparator } from "../utils/datetime";
 export default {
   name: "mytable",
-  props: ["maxheight"],
-  data() {
-    return {
-      currentPage4: 1,
-      currentRow: null,
-      pageSize:10,
-      total:0,
-      strip: "true",
-      border: "true",
-      multipleSelection: [], //多选
-      tableData: [
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          province: "上海",
-          city: "普陀区",
-          address:
-            "上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄",
-          zip: 200333
-        },
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333
-        },
-        {
-          date: "2016-05-08",
-          name: "王小虎",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333
-        },
-        {
-          date: "2016-05-06",
-          name: "王小虎",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333
-        },
-        {
-          date: "2016-05-07",
-          name: "王小虎",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333
-        },
-        {
-          date: "2016-05-08",
-          name: "王小虎",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333
-        },
-        {
-          date: "2016-05-06",
-          name: "王小虎",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333
-        },
-        {
-          date: "2016-05-07",
-          name: "王小虎",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333
-        },
-        {
-          date: "2016-05-08",
-          name: "王小虎",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333
-        },
-        {
-          date: "2016-05-06",
-          name: "王小虎",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333
-        },
-        {
-          date: "2016-05-07",
-          name: "王小虎",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333
-        }
-      ]
-    };
+  props: {
+    maxheight: {
+      type: Number,
+      required: true
+    },
+    table: {
+      type: Object,
+      required: true
+    }
   },
-  created(){
-    this.total = this.tableData.length;
+  data() {
+    return {};
+  },
+  created() {
+    this.table.total = this.table.tableData.length;
   },
   methods: {
-    tableRowClassName({ row, rowIndex }) {
-      if (rowIndex === 1) {
-        return "warning-row";
-      } else if (rowIndex === 3) {
-        return "success-row";
-      }
-      return "";
-    },
-    handleCurrentChange(val) {
-      this.currentRow = val;
-    },
-    handleSelectionChange(val) {
-      this.multipleSelection = val;
-    },
-    handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
-    },
-    handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+    //行背景色
+    // tableRowClassName({ row, rowIndex }) {
+    //   if (rowIndex === 1) {
+    //     return "warning-row";
+    //   } else if (rowIndex === 3) {
+    //     return "success-row";
+    //   }
+    //   return "";
+    // },
+ 
+  },
+  filters: {
+    dateFormateFilters(date, format) {
+      return formatWithSeparator(date, format);
     }
   }
 };
 </script>
-<style>
-.el-table .warning-row {
-  background: oldlace;
-}
+<style lang="scss">
+.table {
+  .el-table .warning-row {
+    background: red;
+  }
 
-.el-table .success-row {
-  background: #f0f9eb;
-}
-.pagina{
-  width:100%;
-  text-align: center;
-  padding-top:20px;
+  .el-table .success-row {
+    background: greenyellow;
+  }
+  .pagina {
+    minWidth: 100%;
+    text-align: center;
+    padding-top: 20px;
+  }
+  .el-table .cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 </style>

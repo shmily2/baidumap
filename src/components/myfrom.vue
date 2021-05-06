@@ -3,8 +3,7 @@
     <el-form
       :model="ruleForm"
       :rules="rules"
-      ref="ruleForm"
-      label-width="100px"
+      :ref="formName"
       class="demo-ruleForm"
     >
       <el-form-item
@@ -12,6 +11,7 @@
         :key="index"
         :label="item.label"
         :prop="item.prop"
+        :class="[{ slotclass: item.type == 'slot' }]"
         :required="item.required"
       >
         <!-- input框只读点击事件 -->
@@ -190,8 +190,12 @@
             class="tip"
           ></div>
         </el-upload>
+        <!-- 自定义 -->
+        <template v-else-if="item.type === 'slot'">
+          <slot :name="item.slot" />
+        </template>
         <!-- 时间 -->
-        <div v-else-if="item.type == 'doubleTime'">
+        <div v-else-if="item.type == 'doubleTime'" class="doubletime">
           <el-date-picker
             :value-format="
               item.start.dateFormate
@@ -228,23 +232,30 @@
           :disabled="item.disabled"
           clearable
           :picker-options="item.pickerOptions"
-          :value-format="item.dateFormate ? item.dateFormate : 'yyyy-MM-dd HH:mm:ss' "
+          :value-format="
+            item.dateFormate ? item.dateFormate : 'yyyy-MM-dd HH:mm:ss'
+          "
           :placeholder="item.disabled ? '' : item.placeholder"
         >
         </el-date-picker>
       </el-form-item>
-
-      <el-form-item style="border:none"> </el-form-item>
-      <el-form-item style="border:none"> </el-form-item>
-      <el-form-item style="border:none"> </el-form-item>
-      <el-form-item style="border:none"> </el-form-item>
+      <el-form-item style="border:none"></el-form-item>
+      <el-form-item style="border:none"
+        ><label for="date" class="el-form-item__label"></label>
+      </el-form-item>
+      <el-form-item style="border:none"
+        ><label for="date" class="el-form-item__label"></label>
+      </el-form-item>
+      <el-form-item style="border:none"
+        ><label for="date" class="el-form-item__label"></label>
+      </el-form-item>
     </el-form>
     <div class="fromfoot">
       <el-button
         v-for="(list, ind) in formConfig.footer"
         :key="ind"
         :type="list.type"
-        @click="list.click('ruleForm')"
+        @click="list.click()"
         >{{ list.name }}</el-button
       >
       <!-- <el-button @click="resetForm('ruleForm')">重置</el-button> -->
@@ -255,6 +266,10 @@
 export default {
   name: "myfrom",
   props: {
+    formName: {
+      type: String,
+      required: true
+    },
     formConfig: {
       type: Object,
       required: true
@@ -379,6 +394,21 @@ export default {
       link.target = "_blank";
       document.body.appendChild(link);
       link.click();
+    },
+    //提交
+    submitForm(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          alert("submit!");
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    },
+    //重置
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
     }
   }
 };
@@ -393,7 +423,12 @@ export default {
     justify-content: space-around;
   }
   .el-form-item {
+    width:420px;
     margin-bottom: 22px;
+    display: flex;
+    .el-form-item__label {
+      width: 100px;
+    }
   }
   .fromfoot {
     width: 100%;
@@ -403,8 +438,18 @@ export default {
     line-height: 40px;
     position: relative;
     font-size: 14px;
-    width: 445px;
+    width: 300px;
     height: 100%;
+    .doubletime {
+      .el-date-editor.el-input,
+      .el-date-editor.el-input__inner {
+        width: 146px;
+      }
+    }
+    .el-date-editor.el-input,
+    .el-date-editor.el-input__inner {
+      width: 300px;
+    }
   }
   .el-select {
     display: inline-block;
@@ -419,10 +464,10 @@ export default {
     box-sizing: border-box;
   }
   .el-cascader {
-    width: 445px;
+    width: 300px;
   }
   .el-form-item__content > .singledate {
-    width: 445px;
+    width: 300px;
   }
   .el-icon-circle-close:before {
     content: "\e78d";
@@ -444,6 +489,16 @@ export default {
   }
   .tip {
     color: red;
+  }
+  .slotclass {
+    width: 100%;
+    .el-form-item__content {
+      line-height: 40px;
+      position: relative;
+      font-size: 14px;
+      width: 100%;
+      height: 100%;
+    }
   }
 }
 </style>
