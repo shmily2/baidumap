@@ -239,7 +239,6 @@ export default {
   methods: {
     baiduMap(map) {
       this.map = map;
-      this.map.centerAndZoom(this.point, 13); // 初始化地图，设置中心点坐标和地图级别
       this.map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
       this.point = new BMap.Point(116.363944, 39.90384); // 创建点坐标
       this.map.centerAndZoom(this.point, 13); // 初始化地图，设置中心点坐标和地图级别
@@ -247,9 +246,20 @@ export default {
     routerlink(row) {
       let that = this;
       that.$nextTick(() => {
-        //轨迹
-        let shart = [new BMap.Point(116.363944, 39.90384)]; //开始坐标
-        let end = [new BMap.Point(116.360495, 39.871951)]; //结束坐标
+        that.map.clearOverlays();
+        let shartfirst = Number(row.startPoint.split(",")[0]);
+        let shartlast = Number(row.startPoint.split(",")[1]);
+        let endfirst = Number(row.entdPoint.split(",")[0]);
+        let endlast = Number(row.entdPoint.split(",")[1]);
+        this.point = new BMap.Point(shartfirst, shartlast); // 创建点坐标
+        this.map.centerAndZoom(this.point, 16 ); // 初始化地图，设置中心点坐标和地图级别
+        this.points = [
+          { lng: shartfirst, lat: shartlast, of: "inner" },
+          { lng: endfirst, lat: endlast, of: "inner" }
+        ];
+
+        let shart = [new BMap.Point(shartfirst, shartlast)]; //开始坐标
+        let end = [new BMap.Point(endfirst, endlast)]; //结束坐标
         let enableDragging = "";
         if (that.type == "see") {
           enableDragging = false;
@@ -293,16 +303,12 @@ export default {
     },
     //新增
     add(type) {
-      this.type = "add";
-      this.dialogData.outertitle = "巡更路线管理新增";
-      this.dialogData.outerVisible = true;
-      this.dialogData.footshow = true;
-      let that = this;
-      that.$nextTick(() => {
-        if (that.location.length > 0) {
-          that.map.clearOverlays();
-        }
-      });
+      // this.type = "add";
+      // this.dialogData.outertitle = "巡更路线管理新增";
+      // this.dialogData.outerVisible = true;
+      // this.dialogData.footshow = true;
+      // let that = this;
+      // that.map.clearOverlays();
     },
     addsubmit() {
       var myDate = new Date();
