@@ -19,6 +19,7 @@
       :cell-style="table.cell"
       show-overflow-tooltip
       style="width: 100%"
+      :ref="table.ref"
       :max-height="maxheight"
     >
       <!-- fixed属性固定列
@@ -302,8 +303,8 @@ export default {
 ::-webkit-resizer 两个滚动条的交汇处上用于通过拖动调整元素大小的小控件
   */
   div::-webkit-scrollbar {
-    width:8px;
-    height:10px;
+    width: 8px;
+    height: 10px;
   }
   div::-webkit-scrollbar-track {
     background: rgb(239, 239, 239);

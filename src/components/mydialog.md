@@ -17,10 +17,10 @@ export default {
     return {
       dialogData: {
         outertype: "big",
-        outertitle: "外层",
-        outerVisible: false,
-        outername: "outername",
         innertype: "small",
+        outertitle: "外层",
+        outerVisible:true,
+        outername: "outername",
         innertitle: "内层",
         innerVisible: false,
         innername: "innername",

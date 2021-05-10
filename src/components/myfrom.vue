@@ -147,11 +147,14 @@
         </div>
         <!-- 照片 -->
         <div v-else-if="item.type == 'Photo'">
+
           <el-image
-            :src="item.src"
+            :src="ruleForm[item.prop]"
             fit="cover"
-            :preview-src-list="item.srcList"
+            :preview-src-list="ruleForm[item.srcList]"
+            v-if="ruleForm[item.prop]"
           ></el-image>
+          <span v-else style="color:red">暂未上传图片</span>
         </div>
         <!-- 级联选择器 -->
         <el-cascader
@@ -430,8 +433,10 @@ export default {
     width: 420px;
     margin-bottom: 22px;
     display: flex;
+    align-items: center;
     .el-form-item__label {
       width: 100px;
+      line-height: 16px;
     }
   }
   .zw {

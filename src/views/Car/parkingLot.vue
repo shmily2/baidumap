@@ -35,9 +35,6 @@
           :formName="editformName"
           ref="fromedit"
         >
-          <div slot="Basics" class="title">
-            <span class="font">预案内容</span>
-          </div>
         </myform>
       </div>
     </mydialog>
@@ -45,9 +42,20 @@
 </template>
 <script>
 import { formatWithSeparator } from "../../utils/datetime";
+import { number } from "../../utils/validate";
 export default {
   name: "parkingLot",
   data() {
+    //数字
+    var validate = (rule, value, callback) => {
+      if (!value) {
+        callback();
+      } else if (!number(value)) {
+        callback(new Error("请输入正整数"));
+      } else {
+        callback();
+      }
+    };
     return {
       type: "",
       searchConfig: {
@@ -57,20 +65,21 @@ export default {
             label: "标准名称",
             placeholder: "请输入标准名称",
             prop: "LEV",
-            disabled:false,
-
+            max:20,
+            disabled: false
           },
           {
-            type:"input",
-            label:"创建人",
-             placeholder: "请输入创建人",
-            prop:"TYPE",
+            type: "input",
+            label: "创建人",
+            max:20,
+            placeholder: "请输入创建人",
+            prop: "TYPE"
           }
         ]
       },
       searchruleForm: {
         LEV: "",
-        TYPE: "",
+        TYPE: ""
       },
       searchrules: {},
       searchformName: "searchfrom",
@@ -105,35 +114,14 @@ export default {
                 click: (index, row) => {
                   this.dialogData.footshow = false;
                   this.dialogData.outerVisible = true;
-                  this.dialogData.outertitle = "预警通知管理详情";
+                  this.dialogData.outertitle = "巡更标准管理详情";
                   this.$nextTick(() => {
                     Object.assign(this.editruleForm, row);
-                    this.editConfig.fromdata[5].fileList = this.editruleForm.fileList;
                     for (var i = 0; i < this.editConfig.fromdata.length; i++) {
                       if (this.editConfig.fromdata[i].type == "select") {
                         this.editConfig.fromdata[i].type = "input";
                       }
                       this.editConfig.fromdata[i].disabled = true;
-                    }
-
-                    this.editConfig.fromdata[5].type = "button";
-                    for (
-                      let j = 0;
-                      j < this.editConfig.fromdata[5].fileList.length;
-                      j++
-                    ) {
-                      this.editConfig.fromdata[5].fileList[j].button = [
-                        {
-                          type: "info",
-                          eventtype: "preview",
-                          label: "预览"
-                        },
-                        {
-                          type: "primary",
-                          eventtype: "download",
-                          label: "下载"
-                        }
-                      ];
                     }
                   });
                 }
@@ -145,12 +133,10 @@ export default {
                 click: (index, row) => {
                   this.type = "edit";
                   this.index = index;
-                  this.dialogData.outertitle = "预警通知管理编辑";
+                  this.dialogData.outertitle = "巡更标准管理编辑";
                   this.dialogData.footshow = true;
                   this.dialogData.outerVisible = true;
                   this.$nextTick(() => {
-                    Object.assign(this.editruleForm, row);
-                    this.editConfig.fromdata[5].fileList = this.editruleForm.fileList;
                     for (var i = 0; i < this.editConfig.fromdata.length; i++) {
                       if (
                         this.editConfig.fromdata[i].options &&
@@ -160,7 +146,7 @@ export default {
                       }
                       this.editConfig.fromdata[i].disabled = false;
                     }
-                    this.editConfig.fromdata[5].type = "file";
+                    Object.assign(this.editruleForm, row);
                   });
                 }
               },
@@ -178,16 +164,22 @@ export default {
         tableData: [
           {
             id: 1,
-            STATUS: "一级预案",
             NAME: "巡更标准名称3",
             VARSNAME: "巡更测试类型",
             IP: "经发局",
+            renshu: "6",
+            cishu: "4",
+            haoshi: "180",
+            yjzztx: "早晚各二次",
             CONTENT: "pm001",
             time: "2021-05-07 13:36:39"
           },
           {
             id: 2,
-            STATUS: "一级预案",
+            renshu: "4",
+            cishu: "4",
+            haoshi: "120",
+            yjzztx: "早晚各一次",
             NAME: "巡更标准名称2",
             VARSNAME: "巡更测试类型",
             IP: "经发局",
@@ -196,13 +188,16 @@ export default {
           },
           {
             id: 3,
-            STATUS: "一级预案",
             NAME: "巡更标准名称1",
             VARSNAME: "巡更测试类型",
             IP: "经发局",
             CONTENT: "pm001",
+            renshu: "6",
+            cishu: "3",
+             yjzztx: "早中晚各一次",
+            haoshi: "360",
             time: "2021-05-06 14:53:20"
-          },
+          }
         ],
         handleSizeChange(val) {
           console.log(`每页 ${val} 条`);
@@ -248,342 +243,91 @@ export default {
       editConfig: {
         fromdata: [
           {
-            type: "select",
+            type: "input",
             prop: "NAME",
             max: 20,
             disabled: false,
-            placeholder: "请选择所属单位",
-            label: "所属单位",
+            placeholder: "请输入巡更标准名称",
+            label: "巡更标准名称",
+            click: () => {}
+          },
+          {
+            type: "select",
+            prop: "VARSNAME",
+            disabled: false,
+            placeholder: "请选择巡更类型",
+            label: "巡更类型",
             options: [
               {
-                value: "经开区",
-                deptLevel: 0,
-                label: "经开区",
-                deptOrder: 1,
-                fvalue: -1,
-                path: "-1,0"
-              },
-              {
-                value: "管委会",
-                deptLevel: 1,
-                label: "管委会",
-                deptOrder: 1,
-                fvalue: 0,
-                path: "-1,0,1440"
-              },
-              {
-                value: "苏化片区",
-                deptLevel: 1,
-                label: "苏化片区",
-                deptOrder: 2,
-                fvalue: 0,
-                path: "-1,0,1421"
-              },
-              {
-                value: "唐店片区",
-                deptLevel: 1,
-                label: "唐店片区",
-                deptOrder: 3,
-                fvalue: 0,
-                path: "-1,0,1423"
-              },
-              {
-                value: "小李测试公司2",
-                deptLevel: 1,
-                label: "小李测试公司2",
-                fvalue: 0,
-                path: "-1,0,1474"
-              },
-              {
-                value: "小李测试公司",
-                deptLevel: 1,
-                label: "小李测试公司",
-                fvalue: 0,
-                path: "-1,0,1473"
-              },
-              {
-                value: "利民化学有限责任公司",
-                deptLevel: 2,
-                label: "利民化学有限责任公司",
-                deptOrder: 1,
-                fvalue: 1423
-              },
-              {
-                value: "财审局",
-                deptLevel: 2,
-                label: "财审局",
-                deptOrder: 1,
-                fvalue: 1440,
-                path: "-1,0,1440,1439"
-              },
-              {
-                value: "江苏晋煤恒盛化工股份有限公司",
-                deptLevel: 2,
-                label: "江苏晋煤恒盛化工股份有限公司",
-                deptOrder: 1,
-                fvalue: 1421
-              },
-              {
-                value: "党群办",
-                deptLevel: 2,
-                label: "党群办",
-                deptOrder: 2,
-                fvalue: 1440,
-                path: "-1,0,1440,1441"
-              },
-              {
-                value: "新沂市永诚化工公司",
-                deptLevel: 2,
-                label: "新沂市永诚化工公司",
-                deptOrder: 2,
-                fvalue: 1423
-              },
-              {
-                value: "江苏蓝丰生物化工股份公司",
-                deptLevel: 2,
-                label: "江苏蓝丰生物化工股份公司",
-                deptOrder: 2,
-                fvalue: 1421
-              },
-              {
-                value: "新河化工",
-                deptLevel: 2,
-                label: "新河化工",
-                deptOrder: 3,
-                fvalue: 1423,
-                path: "-1,0,1423,1426"
-              },
-              {
-                value: "企业发展中心",
-                deptLevel: 2,
-                label: "企业发展中心",
-                deptOrder: 3,
-                fvalue: 1440,
-                path: "-1,0,1440,1442"
-              },
-              {
-                value: "机关党委",
-                deptLevel: 2,
-                label: "机关党委",
-                deptOrder: 4,
-                fvalue: 1440,
-                path: "-1,0,1440,1443"
-              },
-              {
-                value: "江苏金路化工有限公司",
-                deptLevel: 2,
-                label: "江苏金路化工有限公司",
-                deptOrder: 4,
-                fvalue: 1423
-              },
-              {
-                value: "经发局",
-                deptLevel: 2,
-                label: "经发局",
-                deptOrder: 5,
-                fvalue: 1440,
-                path: "-1,0,1440,1444"
-              },
-              {
-                value: "江苏维尤纳特精细化工公司",
-                deptLevel: 2,
-                label: "江苏维尤纳特精细化工公司",
-                deptOrder: 5,
-                fvalue: 1423
-              },
-              {
-                value: "新沂大江化工公司",
-                deptLevel: 2,
-                label: "新沂大江化工公司",
-                deptOrder: 6,
-                fvalue: 1423,
-                path: "-1,0,1423,1429"
-              },
-              {
-                value: "社会事业局",
-                deptLevel: 2,
-                label: "社会事业局",
-                deptOrder: 6,
-                fvalue: 1440,
-                path: "-1,0,1440,1445"
-              },
-              {
-                value: "规划建设局",
-                deptLevel: 2,
-                label: "规划建设局",
-                deptOrder: 7,
-                fvalue: 1440,
-                path: "-1,0,1440,1446"
-              },
-              {
-                value: "新沂市泰松化工有限公司",
-                deptLevel: 2,
-                label: "新沂市泰松化工有限公司",
-                deptOrder: 7,
-                fvalue: 1423
-              },
-              {
-                value: "综合执法局",
-                deptLevel: 2,
-                label: "综合执法局",
-                deptOrder: 8,
-                fvalue: 1440,
-                path: "-1,0,1440,1447"
-              },
-              {
-                value: "江苏新汉菱生物工程公司",
-                deptLevel: 2,
-                label: "江苏新汉菱生物工程公司",
-                deptOrder: 8,
-                fvalue: 1423
+                label: "巡更测试类型",
+                value: "巡更测试类型"
               }
             ],
             click: () => {}
           },
           {
             type: "input",
-            prop: "VARSNAME",
-            max: 20,
+            prop: "renshu",
+            max: 10,
             disabled: false,
-            placeholder: "请输入预案名称",
-            label: "预案名称",
+            placeholder: "请输入巡更人数",
+            label: "巡更人数",
             readonly: false, //只读,
             click: () => {}
           },
+
           {
-            type: "select",
-            prop: "CONTENT",
+            type: "input",
+            prop: "cishu",
+            max: 10,
             disabled: false,
-            placeholder: "请选择预案类型",
-            label: "预案类型",
-            options: [
-              {
-                label: "综合预案",
-                value: "综合预案"
-              }
-            ],
+            placeholder: "请输入巡更次数(一天)",
+            label: "巡更次数(一天)",
             click: () => {}
           },
           {
-            type: "select",
-            prop: "STATUS",
+            type: "input",
+            prop: "haoshi",
+            max: 10,
             disabled: false,
-            placeholder: "请选择预案等级",
-            label: "预案等级",
-            options: [
-              {
-                label: "一级预案",
-                value: "一级预案"
-              }
-            ],
-            click: () => {}
-          },
-          {
-            type: "select",
-            prop: "IP",
-            disabled: false,
-            placeholder: "请选择事故类型",
-            label: "事故类型",
-            options: [
-              {
-                label: "一般事故",
-                value: "一般事故"
-              },
-              {
-                label: "其他",
-                value: "其他"
-              }
-            ],
-            click: () => {}
-          },
-          {
-            type: "file",
-            label: "预案附件",
-            ref: "uploadButton",
-            action: "https://jsonplaceholder.typicode.com/posts/",
-            limit: 1,
-            fileList: [],
-            prompting: "",
-            tip: "请上传预案附件",
-            required: false
-          },
-          { type: "slot", slot: "Basics", disabled: false },
-          {
-            type: "textarea",
-            prop: "wxxfx",
-            max: 300,
-            disabled: false,
-            placeholder: "请输入危险性分析	",
-            label: "危险性分析	"
+            placeholder: "请输入巡更耗时(单次)",
+            label: "巡更耗时(单次)",
+            click: () => {},
+            suffix: "分钟" //input框尾部的文字
           },
           {
             type: "textarea",
             prop: "yjzztx",
             max: 300,
             disabled: false,
-            placeholder: "请输入应急组织体系",
-            label: "应急组织体系"
-          },
-          {
-            type: "textarea",
-            prop: "wxyjk",
-            max: 300,
-            disabled: false,
-            placeholder: "请输入危险源监控",
-            label: "危险源监控"
-          },
-          {
-            type: "textarea",
-            prop: "xyfj",
-            max: 300,
-            disabled: false,
-            placeholder: "请输入响应分级",
-            label: "响应分级"
-          },
-          {
-            type: "textarea",
-            prop: "xycx",
-            max: 300,
-            disabled: false,
-            placeholder: "请输入响应程序",
-            label: "响应程序"
-          },
-          {
-            type: "textarea",
-            prop: "hqcz",
-            max: 300,
-            disabled: false,
-            placeholder: "请输入后期处置",
-            label: "后期处置"
-          },
-          {
-            type: "textarea",
-            prop: "bzcs",
-            max: 300,
-            disabled: false,
-            placeholder: "请输入保障措施",
-            label: "保障措施"
+            placeholder: "请输入巡更标准说明",
+            label: "巡更标准说明"
           }
         ]
       },
       editruleForm: {
         NAME: "",
-        VARSNAME: "",
-        CONTENT: "",
-        fileList: [],
-        STATUS: "",
-        IP: "",
-        wxxfx: "",
-        yjzztx: "",
-        wxyjk: "",
-        xyfj: "",
-        xycx: "",
-        hqcz: "",
-        bzcs: "",
-        time: ""
+        VARSNAME: "巡更测试类型",
+        CONTENT: "pm001",
+        IP: "经发局",
+        renshu: "",
+        cishu: "",
+        haoshi: "",
+        yjzztx: ""
       },
       editrules: {
-        NAME: [{ required: true, message: "请选择所属单位", trigger: "change" }]
+        renshu: [
+          { validator: validate, trigger: "blur" },
+          { max: 10, message: "最多输入10位数字", trigger: "blur" }
+        ],
+        cishu: [
+          { validator: validate, trigger: "blur" },
+          { max: 10, message: "最多输入10位数字", trigger: "blur" }
+        ],
+        haoshi: [
+          { validator: validate, trigger: "blur" },
+          { max: 10, message: "最多输入10位数字", trigger: "blur" }
+        ]
       },
       editformName: "editfrom"
     };
@@ -605,7 +349,7 @@ export default {
     //新增
     add(type) {
       this.type = "add";
-      this.dialogData.outertitle = "预警通知管理新增";
+      this.dialogData.outertitle = "巡更标准管理新增";
       this.dialogData.outerVisible = true;
       this.dialogData.footshow = true;
       this.$nextTick(() => {
@@ -618,8 +362,6 @@ export default {
           }
           this.editConfig.fromdata[i].disabled = false;
         }
-        this.editConfig.fromdata[5].fileList = [];
-        this.editConfig.fromdata[5].type = "file";
         this.$refs.fromedit.resetForm();
       });
     },
@@ -628,24 +370,17 @@ export default {
         var myDate = new Date();
         var mytime = formatWithSeparator(myDate, "-", ":"); //获取当前时间
         this.editruleForm.time = mytime;
-        let file = JSON.parse(
-          JSON.stringify(this.editConfig.fromdata[5].fileList)
-        );
-        this.editruleForm.fileList = file;
         let data = Object.assign({}, this.editruleForm);
-        console.log(data);
         this.table.tableData.unshift(data);
         this.dialogData.outerVisible = false;
       }
     },
     editsubmit() {
-      let file = JSON.parse(
-        JSON.stringify(this.editConfig.fromdata[5].fileList)
-      );
-      this.editruleForm.fileList = file;
-      let data = Object.assign({}, this.editruleForm);
-      this.table.tableData.splice(this.index, 1, data);
-      this.dialogData.outerVisible = false;
+      if (this.$refs.fromedit.submitForm()) {
+        let data = Object.assign({}, this.editruleForm);
+        this.table.tableData.splice(this.index, 1, data);
+        this.dialogData.outerVisible = false;
+      }
     },
     seesubmit() {}
   }
