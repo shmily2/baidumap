@@ -47,6 +47,7 @@
           :placeholder="item.disabled ? '' : item.placeholder"
           :disabled="item.disabled || false"
           @change="item.click"
+          :clearable="true"
           :value-key="item.value"
           collapse-tags
         >
@@ -123,19 +124,30 @@
         </el-checkbox-group>
         <!-- 点击按钮 -->
         <div v-else-if="item.type == 'button'" class="frombutton">
-          <el-button
-            size="small"
-            v-for="list in item.options"
-            :key="list.label"
-            :type="list.type"
-            @click="buttonclick(list)"
-            >{{ list.label }}</el-button
-          >
+          <div v-if="item.fileList.length > 0">
+            <div
+              v-for="list in item.fileList"
+              :key="list.url"
+              class="upshowbut"
+            >
+              <span>{{ list.name }}</span>
+              <div v-if="list.button">
+                <el-button
+                  v-for="but in list.button"
+                  size="small"
+                  :type="but.type"
+                  :key="list.url + but.label"
+                  @click="buttonclick(list)"
+                  >{{ but.label }}</el-button
+                >
+              </div>
+            </div>
+          </div>
+          <div v-else>暂无数据</div>
         </div>
         <!-- 照片 -->
         <div v-else-if="item.type == 'Photo'">
           <el-image
-            style="width:240px;"
             :src="item.src"
             fit="cover"
             :preview-src-list="item.srcList"
@@ -186,7 +198,7 @@
           <div
             slot="tip"
             :id="'tip' + index"
-            v-show="item.fileList.length < 1"
+            v-show="item.tipshow"
             class="tip"
           ></div>
         </el-upload>
@@ -239,16 +251,10 @@
         >
         </el-date-picker>
       </el-form-item>
-      <el-form-item style="border:none"></el-form-item>
-      <el-form-item style="border:none"
-        ><label for="date" class="el-form-item__label"></label>
-      </el-form-item>
-      <el-form-item style="border:none"
-        ><label for="date" class="el-form-item__label"></label>
-      </el-form-item>
-      <el-form-item style="border:none"
-        ><label for="date" class="el-form-item__label"></label>
-      </el-form-item>
+      <el-form-item class="zw"></el-form-item>
+      <el-form-item class="zw"></el-form-item>
+      <el-form-item class="zw"></el-form-item>
+      <el-form-item class="zw"></el-form-item>
     </el-form>
     <div class="fromfoot">
       <el-button
@@ -264,7 +270,7 @@
 </template>
 <script>
 export default {
-  name: "myfrom",
+  name: "myform",
   props: {
     formName: {
       type: String,
@@ -307,21 +313,7 @@ export default {
       }
       return isJPG && isLt2M;
     },
-    submitForm(formName) {
-      // 通过submit调用uploadFile
-      //   this.$refs.uploadButton.submit();
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          alert("submit!");
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
-    },
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
-    },
+
     //超出限制
     handleExceed(files, fileList, index, label, limit) {
       this.$message.warning(
@@ -339,6 +331,11 @@ export default {
       document.getElementById(
         `tip${index}`
       ).innerHTML = this.formConfig.fromdata[index].tip;
+      if (fileList.length < 1 && this.formConfig.fromdata[index].required) {
+        this.formConfig.fromdata[index].tipshow = true;
+      } else {
+        this.formConfig.fromdata[index].tipshow = false;
+      }
     },
     //文件变化
     handchange(file, fileList, index) {
@@ -346,6 +343,11 @@ export default {
       document.getElementById(
         `tip${index}`
       ).innerHTML = this.formConfig.fromdata[index].tip;
+      if (fileList.length < 1 && this.formConfig.fromdata[index].required) {
+        this.formConfig.fromdata[index].tipshow = true;
+      } else {
+        this.formConfig.fromdata[index].tipshow = false;
+      }
     },
 
     //级联选择
@@ -379,7 +381,7 @@ export default {
       //  a标签下载
       let link = document.createElement("a"); // 创建a标签
       link.style.display = "none";
-      link.href = val.src + "?response-content-type=application/octet-stream"; // 设置下载地址
+      link.href = val.url + "?response-content-type=application/octet-stream"; // 设置下载地址
       link.setAttribute("download", ""); // 添加downLoad属性
       document.body.appendChild(link);
       link.click();
@@ -390,32 +392,34 @@ export default {
       // a标签下载
       let link = document.createElement("a"); // 创建a标签
       link.style.display = "none";
-      link.href = val.src; // 设置下载地址
+      link.href = val.url; // 设置下载地址
       link.target = "_blank";
       document.body.appendChild(link);
       link.click();
     },
     //提交
-    submitForm(formName) {
-      this.$refs[formName].validate(valid => {
+    submitForm() {
+      let result = "";
+      this.$refs[this.formName].validate(valid => {
         if (valid) {
-          alert("submit!");
+          console.log("submit!");
+          return (result = true);
         } else {
           console.log("error submit!!");
-          return false;
+          return (result = false);
         }
       });
+      return result;
     },
     //重置
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
+    resetForm() {
+      this.$refs[this.formName].resetFields();
     }
   }
 };
 </script>
 <style lang="scss">
 .myform {
-  height: 100%;
   overflow: auto;
   .el-form {
     display: flex;
@@ -423,12 +427,15 @@ export default {
     justify-content: space-around;
   }
   .el-form-item {
-    width:420px;
+    width: 420px;
     margin-bottom: 22px;
     display: flex;
     .el-form-item__label {
       width: 100px;
     }
+  }
+  .zw {
+    margin-bottom: 0px;
   }
   .fromfoot {
     width: 100%;
@@ -440,10 +447,11 @@ export default {
     font-size: 14px;
     width: 300px;
     height: 100%;
+
     .doubletime {
       .el-date-editor.el-input,
       .el-date-editor.el-input__inner {
-        width: 146px;
+        width: 147px;
       }
     }
     .el-date-editor.el-input,
@@ -473,6 +481,11 @@ export default {
     content: "\e78d";
     color: #000;
   }
+  .upshowbut {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
   /* .frombutton,
   .el-checkbox-group,
   .el-switch,
@@ -483,6 +496,18 @@ export default {
     box-sizing: border-box;
     padding-left: 12px;
   } */
+  .el-input.is-disabled .el-input__inner {
+    background-color: #f5f7fa;
+    border-color: #e7ecf7;
+    color: #454750;
+    cursor: not-allowed;
+  }
+  .el-textarea.is-disabled .el-textarea__inner {
+    background-color: #f5f7fa;
+    border-color: #e4e7ed;
+    color: #454750;
+    cursor: not-allowed;
+  }
   .el-radio {
     height: 40px;
     line-height: 40px;
@@ -499,6 +524,30 @@ export default {
       width: 100%;
       height: 100%;
     }
+  }
+  /*修改滚动条样式
+  :-webkit-scrollbar 滚动条整体部分
+::-webkit-scrollbar-thumb  滚动条里面的小方块，能向上向下移动（或往左往右移动，取决于是垂直滚动条还是水平滚动条）
+::-webkit-scrollbar-track  滚动条的轨道（里面装有Thumb）
+::-webkit-scrollbar-button 滚动条的轨道的两端按钮，允许通过点击微调小方块的位置。
+::-webkit-scrollbar-track-piece 内层轨道，滚动条中间部分（除去）
+::-webkit-scrollbar-corner 边角，即两个滚动条的交汇处
+::-webkit-resizer 两个滚动条的交汇处上用于通过拖动调整元素大小的小控件
+  */
+  div::-webkit-scrollbar {
+    width: 8px;
+    height: 10px;
+  }
+  div::-webkit-scrollbar-track {
+    background: rgb(239, 239, 239);
+    border-radius: 2px;
+  }
+  div::-webkit-scrollbar-thumb {
+    background: rgba(191, 191, 191, 0.4);
+    border-radius: 20px;
+  }
+  div::-webkit-scrollbar-thumb:hover {
+    background: #333;
   }
 }
 </style>

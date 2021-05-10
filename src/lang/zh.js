@@ -130,7 +130,7 @@ export default {
     login: {
       title: '管理系统',
       lange:"语言切换",
-      companyName:"智慧园区管控系统",
+      companyName:"新沂智慧园区管控系统",
       usernameflure:"用户名不能为空",
       logIn: '登录',
       username: '账号',

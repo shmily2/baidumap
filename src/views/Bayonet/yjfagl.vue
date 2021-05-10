@@ -54,17 +54,40 @@ export default {
         fromdata: [
           {
             type: "input",
-            label: "标准名称",
-            placeholder: "请输入标准名称",
+            label: "预警设备",
+            placeholder: "请输入预警设备",
             prop: "LEV",
             disabled:false,
 
           },
           {
-            type:"input",
-            label:"创建人",
-             placeholder: "请输入创建人",
-            prop:"TYPE",
+            type: "select",
+            label: "预警类型",
+            placeholder: "预警类型",
+            levels: false, //仅显示最后一级
+            filterable: true, //可搜索
+            prop: "TYPE",
+            props: {
+              expandTrigger: "clik"
+            },
+            options: [
+              {
+                label:"园区入侵",
+                value:"园区入侵"
+              },
+              {
+                label:"园区入侵",
+                value:"园区入侵"
+              },
+              {
+                label:"园区入侵",
+                value:"园区入侵"
+              },
+              {
+                label:"园区入侵",
+                value:"园区入侵"
+              },
+            ]
           }
         ]
       },
@@ -84,15 +107,16 @@ export default {
         tableLabel: [
           { label: "序号", type: "index", prop: "index" },
           {
-            label: "巡更标准名称",
+            label: "所属单位",
             prop: "NAME",
             minWidth: "200",
             click: true
           },
-          { label: "类型", prop: "VARSNAME", minWidth: "180" },
-          { label: "创建人", prop: "CONTENT", minWidth: "180" },
-          { label: "创建单位", prop: "IP", minWidth: "180" },
-          { label: "创建时间", prop: "time", minWidth: "180" },
+          { label: "预案名称", prop: "VARSNAME", minWidth: "180" },
+          { label: "预案类型", prop: "CONTENT", minWidth: "180" },
+          { label: "事故类型", prop: "IP", minWidth: "180" },
+          { label: "预案级别", prop: "STATUS", minWidth: "180" },
+          { label: "起草时间", prop: "time", minWidth: "180" },
           {
             type: "button",
             label: "操作",
@@ -105,7 +129,7 @@ export default {
                 click: (index, row) => {
                   this.dialogData.footshow = false;
                   this.dialogData.outerVisible = true;
-                  this.dialogData.outertitle = "预警通知管理详情";
+                  this.dialogData.outertitle = "预警方案管理详情";
                   this.$nextTick(() => {
                     Object.assign(this.editruleForm, row);
                     this.editConfig.fromdata[5].fileList = this.editruleForm.fileList;
@@ -145,7 +169,7 @@ export default {
                 click: (index, row) => {
                   this.type = "edit";
                   this.index = index;
-                  this.dialogData.outertitle = "预警通知管理编辑";
+                  this.dialogData.outertitle = "预警方案管理编辑";
                   this.dialogData.footshow = true;
                   this.dialogData.outerVisible = true;
                   this.$nextTick(() => {
@@ -179,30 +203,39 @@ export default {
           {
             id: 1,
             STATUS: "一级预案",
-            NAME: "巡更标准名称3",
-            VARSNAME: "巡更测试类型",
-            IP: "经发局",
-            CONTENT: "pm001",
-            time: "2021-05-07 13:36:39"
+            NAME: "利民化学有限责任公司",
+            VARSNAME: "1111",
+            IP: "其他",
+            CONTENT: "综合预案",
+            time: "2021-05-07 16:27:08"
           },
           {
             id: 2,
             STATUS: "一级预案",
-            NAME: "巡更标准名称2",
-            VARSNAME: "巡更测试类型",
-            IP: "经发局",
-            CONTENT: "pm001",
-            time: "2021-05-06 14:53:28"
+            NAME: "江苏晋煤恒盛化工股份有限公司",
+            VARSNAME: "预案名称1",
+            IP: "一般事故",
+            CONTENT: "综合预案",
+            time: "2021-05-08 13:55:57"
           },
           {
             id: 3,
             STATUS: "一级预案",
-            NAME: "巡更标准名称1",
-            VARSNAME: "巡更测试类型",
-            IP: "经发局",
-            CONTENT: "pm001",
-            time: "2021-05-06 14:53:20"
+            NAME: "江苏晋煤恒盛化工股份有限公司",
+            VARSNAME: "12121212",
+            IP: "一般事故",
+            CONTENT: "综合预案",
+            time: "2021-04-29 15:11:40"
           },
+          {
+            id: 4,
+            STATUS: "一级预案",
+            NAME: "江苏晋煤恒盛化工股份有限公司",
+            VARSNAME: "预案名称",
+            IP: "其他",
+            CONTENT: "综合预案",
+            time: "2021-04-29 13:56:24"
+          }
         ],
         handleSizeChange(val) {
           console.log(`每页 ${val} 条`);
@@ -217,7 +250,7 @@ export default {
       dialogData: {
         footshow: true,
         outertype: "big",
-        outertitle: "巡更标准详情查看",
+        outertitle: "预警设备信息修改",
         outerVisible: false,
         outername: "outername",
         center: true,
@@ -605,7 +638,7 @@ export default {
     //新增
     add(type) {
       this.type = "add";
-      this.dialogData.outertitle = "预警通知管理新增";
+      this.dialogData.outertitle = "预警方案管理新增";
       this.dialogData.outerVisible = true;
       this.dialogData.footshow = true;
       this.$nextTick(() => {

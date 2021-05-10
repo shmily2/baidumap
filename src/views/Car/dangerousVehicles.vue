@@ -19,7 +19,7 @@ export default {
         outertype: "big",
         innertype: "small",
         outertitle: "外层",
-        outerVisible: false,
+        outerVisible:true,
         outername: "outername",
         innertitle: "内层",
         innerVisible: false,

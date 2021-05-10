@@ -1,5 +1,5 @@
 <template>
-  <div class="DangerousBayonet">
+  <div class="yjxxgl">
     <div>
       <myform
         :formConfig="searchConfig"
@@ -12,16 +12,6 @@
     <div class="footer">
       <el-button type="primary" @click="onSubmit">查询</el-button>
       <el-button type="success" @click="onReset">重置</el-button>
-    </div>
-    <div class="addbut">
-      <el-button
-        type="primary"
-        icon="el-icon-plus"
-        size="mini"
-        plain
-        @click="add"
-        >新增</el-button
-      >
     </div>
     <div id="table" ref="table">
       <mytable :maxheight="maxheight" :table="table"></mytable>
@@ -44,7 +34,6 @@
   </div>
 </template>
 <script>
-import { formatWithSeparator } from "../../utils/datetime";
 export default {
   name: "parkingLot",
   data() {
@@ -52,6 +41,11 @@ export default {
       type: "",
       searchConfig: {
         fromdata: [
+          {
+            type: "input",
+            prop: "NAME",
+            label: "预警设备"
+          },
           {
             type: "select",
             prop: "TYPE",
@@ -103,15 +97,15 @@ export default {
         tableLabel: [
           { label: "序号", type: "index", prop: "index" },
           {
-            label: "预警类型",
+            label: "预警设备",
             prop: "NAME",
             width: "100",
             click: true
           },
-          { label: "状态", prop: "VARSNAME", width: "100" },
-          { label: "责任人", prop: "CONTENT", width: "240" },
-          { label: "通知内容", prop: "STATUS", width: "240" },
-          { label: "创建时间", prop: "time", width: "180" },
+          { label: "预警类型", prop: "VARSNAME", width: "100" },
+          { label: "预警时间", prop: "TIME", width: "180" },
+          { label: "预警位置", prop: "CONTENT", width: "240" },
+          { label: "预警状态", prop: "STATUS", width: "240" },
           {
             type: "button",
             label: "操作",
@@ -122,10 +116,10 @@ export default {
                 type: "primary",
                 disabled: false,
                 click: (index, row) => {
+                  console.log(row);
                   this.type = "edit";
                   this.index = index;
                   this.dialogData.footshow = true;
-                  this.dialogData.outertitle ="预警通知管理编辑"
                   this.dialogData.outerVisible = true;
                   this.$nextTick(() => {
                     Object.assign(this.editruleForm, row);
@@ -155,27 +149,21 @@ export default {
         tableData: [
           {
             id: 1,
-            NAME: "园区入侵",
-            VARSNAME: "一般",
-            STATUS: "短信内容短信内容短信内容",
-            CONTENT: "黄总",
-            time: "2021-05-07 14:00:18"
+            NAME: "测试123",
+            VARSNAME: "园区入侵",
+            STATUS: "通知失败",
+            CONTENT: "亚邦路南段北普通卡口",
+            CONTENTVALUE:[["管委会", "李南昌"],["管委会", "章学辉"]],
+            TIME: "2021-04-26 16:12:00"
           },
           {
             id: 2,
-            NAME: "园区入侵",
-            VARSNAME: "一般",
-            STATUS: "23",
-            CONTENT: "xyadmin,dataAdmin",
-            time: "2021-04-29 15:09:20"
-          },
-          {
-            id: 3,
-            NAME: "园区入侵",
-            VARSNAME: "一般",
-            STATUS: "短信内容短信内容短信内容短信内容短信内容1",
-            CONTENT: "王默,黄总,陈昶睿,卡口值班员, 佟雨泽,陈烁,王一",
-            time: "2021-04-29 15:08:53"
+            NAME: "测试123",
+            VARSNAME: "园区入侵",
+            STATUS: "通知失败",
+            CONTENT: "亚邦路南段北普通卡口",
+            CONTENTVALUE:[["苏化片区", "江苏蓝丰化工股份公司", "王庆猛"]],
+            TIME: "2021-04-26 16:08:00"
           }
         ],
         handleSizeChange(val) {
@@ -191,7 +179,7 @@ export default {
       dialogData: {
         footshow: true,
         outertype: "small",
-        outertitle: "预警通知管理新增",
+        outertitle: "预警信息管理编辑",
         outerVisible: false,
         outername: "outername",
         center: true,
@@ -200,13 +188,7 @@ export default {
             title: "发送",
             type: "primary",
             click: () => {
-              if (this.type == "add") {
-                this.addsubmit();
-              } else if (this.type == "edit") {
-                this.editsubmit();
-              } else if (this.typ == "see") {
-                this.seesubmit();
-              }
+              this.editsubmit();
             }
           },
           {
@@ -222,8 +204,13 @@ export default {
       editConfig: {
         fromdata: [
           {
-            type: "select",
+            type: "input",
             prop: "NAME",
+            label: "预警设备"
+          },
+          {
+            type: "select",
+            prop: "VARSNAME",
             max: 20,
             disabled: false,
             placeholder: "请选择预警类型",
@@ -257,18 +244,17 @@ export default {
             click: () => {}
           },
           {
+            type: "datetime",
+            label: "预警时间",
+            prop: "TIME"
+          },
+          {
             type: "input",
-            prop: "VARSNAME",
+            prop: "CONTENT",
             disabled: false,
-            placeholder: "请选择预警状态",
-            label: "预警状态",
-            click: () => {},
-            options: [
-              {
-                label: "一般",
-                value: "一般"
-              }
-            ]
+            placeholder: "请输入预警位置",
+            label: "预警位置",
+            disabled: true
           },
           {
             type: "cascader",
@@ -540,15 +526,10 @@ export default {
         VARSNAME: "",
         CONTENT: "",
         CONTENTVALUE: "",
-        STATUS: ""
+        STATUS: "",
+        TIME: ""
       },
       editrules: {
-        NAME: [
-          { required: true, message: "请选择预警类型", trigger: "change" }
-        ],
-        VARSNAME: [
-          { required: true, message: "请选择状态", trigger: "change" }
-        ],
         CONTENTVALUE: [
           { required: true, message: "请选择接收人员", trigger: "change" }
         ],
@@ -571,52 +552,7 @@ export default {
     onReset() {
       this.$refs.fromdemo.resetForm();
     },
-    //新增
-    add(type) {
-      this.type = "add";
-      this.dialogData.outertitle ="预警通知管理新增"
-      this.dialogData.outerVisible = true;
-      this.dialogData.footshow = true;
-      this.$nextTick(() => {
-        for (var i = 0; i < this.editConfig.fromdata.length; i++) {
-          if (
-            this.editConfig.fromdata[i].options &&
-            this.editConfig.fromdata[i].type == "input"
-          ) {
-            this.editConfig.fromdata[i].type = "select";
-          }
-          this.editConfig.fromdata[i].disabled = false;
-        }
-        this.$refs.fromedit.resetForm();
-      });
-    },
-    addsubmit() {
-      if (this.$refs.fromedit.submitForm()) {
-        var myDate = new Date();
-        var mytime = formatWithSeparator(myDate, "-", ":"); //获取当前时间
-        this.editruleForm.time = mytime;
-        this.editruleForm.CONTENT = "";
-        if (this.editruleForm.CONTENTVALUE.length > 0) {
-          for (let i = 0; i < this.editruleForm.CONTENTVALUE.length; i++) {
-            let ind = this.editruleForm.CONTENTVALUE[i].length - 1;
-            this.editruleForm.CONTENT +=
-              this.editruleForm.CONTENTVALUE[i][ind] + " ";
-          }
-        }
-        let data = Object.assign({}, this.editruleForm);
-        this.table.tableData.unshift(data);
-        this.dialogData.outerVisible = false;
-      }
-    },
     editsubmit() {
-      this.editruleForm.CONTENT = "";
-      if (this.editruleForm.CONTENTVALUE.length > 0) {
-        for (let i = 0; i < this.editruleForm.CONTENTVALUE.length; i++) {
-          let ind = this.editruleForm.CONTENTVALUE[i].length - 1;
-          this.editruleForm.CONTENT +=
-            this.editruleForm.CONTENTVALUE[i][ind] + " ";
-        }
-      }
       let data = Object.assign({}, this.editruleForm);
       this.table.tableData.splice(this.index, 1, data);
       this.dialogData.outerVisible = false;
@@ -626,7 +562,7 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-.DangerousBayonet {
+.yjxxgl {
   padding: 10px;
   box-sizing: border-box;
   height: 100%;

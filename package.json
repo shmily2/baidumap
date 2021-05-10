@@ -1,6 +1,7 @@
 {
-  "name": "projectmap",
+  "name": "wisdomclosed",
   "version": "0.1.0",
+  "description": "智慧封闭平台",
   "private": true,
   "scripts": {
     "build": "vue-cli-service build",

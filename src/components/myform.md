@@ -1,7 +1,7 @@
 <template>
   <div id="whpkk">
     <el-scrollbar style="height:100%">
-      <myfrom
+      <myform
         :formConfig="formConfig"
         :ruleForm="ruleForm"
         :rules="rules"
@@ -12,7 +12,7 @@
           <span class="line"></span>
           <span class="font">现有设备情况</span>
         </div>
-      </myfrom>
+      </myform>
     </el-scrollbar>
   </div>
 </template>
@@ -174,6 +174,7 @@ export default {
               {
                 label: "点击下载",
                 type: "primary",
+                name:"1583560283(1).png",
                 eventtype: "download",
                 src:
                   "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
@@ -182,6 +183,7 @@ export default {
                 label: "文件预览",
                 type: "info",
                 eventtype: "preview",
+                name:"1583560283.png",
                 src:
                   "https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg"
               }
@@ -545,14 +547,11 @@ export default {
         date: "",
         start: "",
         end: "",
-        valueue1: "",
-        valueue2: "",
         delivery: false,
         type: [],
         resource: 0,
         desc: "",
         file: "",
-        fileList: []
       },
       rules: {
         name: [

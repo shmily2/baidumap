@@ -34,22 +34,20 @@ export default {
       ]
     };
   },
-  //进入路由
-  beforeRouteEnter(to, from, next) {
-    console.log(to);
-    console.log(from);
-    to.meta.keepAlive = true;
-    next();
-  },
+  // //进入路由
+  // beforeRouteEnter(to, from, next) {
+  //   console.log(to);
+  //   console.log(from);
+  //   to.meta.keepAlive = true;
+  //   next();
+  // },
   methods: {
     baiduMap(map) {
       this.map = map;
-      this.point = new BMap.Point(116.404, 39.915); // 创建点坐标
       this.map.centerAndZoom(this.point, 13); // 初始化地图，设置中心点坐标和地图级别
       this.map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
       this.point = new BMap.Point(116.363944, 39.90384); // 创建点坐标
       this.map.centerAndZoom(this.point, 13); // 初始化地图，设置中心点坐标和地图级别
-
       //轨迹
       let shart = [new BMap.Point(116.363944, 39.90384)]; //开始坐标
       let end = [new BMap.Point(116.360495, 39.871951)]; //结束坐标

@@ -185,6 +185,7 @@ export default {
   created() {
     this.lang = this.$i18n.locale;
   },
+  inject: ["reload"], //注入reload方法
   methods: {
     //头部固定
     change() {
@@ -256,12 +257,13 @@ export default {
     },
     // tabs, 刷新当前
     tabsRefreshCurrentHandle() {
-      var tempTabName = this.mainTabsActiveName;
-      let name = this.$route.name;
-      this.removeTabHandle(tempTabName);
-      this.$nextTick(() => {
-        this.$router.push({ name: name });
-      });
+      this.reload()
+      // var tempTabName = this.mainTabsActiveName;
+      // let name = this.$route.name;
+      // this.removeTabHandle(tempTabName);
+      // this.$nextTick(() => {
+      //   this.$router.push({ name: name });
+      // });
     }
   }
 };

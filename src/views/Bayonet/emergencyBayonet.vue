@@ -1,179 +1,151 @@
 <template>
-  <div id="yjkk" ref="yjkk">
-    <mytable :maxheight="maxheight" :table="table"></mytable>
+  <div class="parkingLot">
+    <div>
+      <myform
+        :formConfig="searchConfig"
+        :ruleForm="searchruleForm"
+        :rules="searchrules"
+        :formName="searchformName"
+        ref="fromdemo"
+      ></myform>
+    </div>
+    <div class="footer">
+      <el-button type="primary" @click="onSubmit">查询</el-button>
+      <el-button type="success" @click="onReset">重置</el-button>
+    </div>
+    <div id="table" ref="table">
+      <mytable :maxheight="maxheight" :table="table"></mytable>
+    </div>
+    <mydialog :dialogData="dialogData">
+      <div slot="outername" class="account">
+        <myform
+          :formConfig="editConfig"
+          :ruleForm="editruleForm"
+          :rules="editrules"
+          :formName="editformName"
+          ref="fromedit"
+        ></myform>
+      </div>
+    </mydialog>
   </div>
 </template>
 <script>
 export default {
-  name: "yjkk",
+  name: "parkingLot",
   data() {
     return {
+      searchConfig: {
+        fromdata: [
+          {
+            type: "input",
+            prop: "NAME",
+            max: 20,
+            disabled: false,
+            placeholder: "请输入名称",
+            label: "名称",
+            readonly: false, //只读,
+            click: () => {}
+          },
+          {
+            type: "select",
+            prop: "TYPE",
+            disabled: false,
+            placeholder: "请选择设备类型",
+            label: "设备类型",
+            options: [
+              {
+                label: "红外摄像头",
+                value: "1817"
+              },
+              {
+                label: "AI摄像头",
+                value: 1816
+              },
+              {
+                label: "湿度感应器",
+                value: 1815
+              },
+              {
+                label: "气压感应器",
+                value: 1814
+              }
+            ],
+            click: () => {}
+          },
+          {
+            type: "select",
+            prop: "LEV",
+            disabled: false,
+            placeholder: "请选择所属控制区",
+            label: "所属控制区",
+            options: [
+              {
+                label: "核心区",
+                value: 5
+              },
+              {
+                label: "关键区",
+                value: 6
+              },
+              {
+                label: "一般区",
+                value: 7
+              }
+            ],
+            click: () => {}
+          }
+        ]
+      },
+      searchruleForm: {
+        LEV: "",
+        TYPE: "",
+        NAME: ""
+      },
+      searchrules: {},
+      searchformName: "searchfrom",
       maxheight: 300,
       table: {
-        handleSizeChange(val) {
-          console.log(`每页 ${val} 条`);
-        },
-        handleCurrentChange(val) {
-          console.log(`当前页: ${val}`);
-        },
-        handleSelectionChange(val) {
-          console.log(val);
-        },
-        treeProps: { children: "children", hasChildren: "hasChildren" },
-        id: "id",
-        cell: ({ row, column, rowIndex, columnIndex }) => {
-          if (columnIndex == 3) {
-            if (row.date == "2016-05-04") {
-              return "color:red";
-            }
-          }
-          if (columnIndex == 2) {
-            if (row.zip == "200333") {
-              return "cursor:pointer;color:blue";
-            } else {
-              return "";
-            }
-          }
-        },
         pagination: true,
-        currentPage: 1,
         currentRow: null,
+        currentPage: 1,
         pageSize: 10,
-        total: 40,
-        strip: true,
-        border: true,
-        multipleSelection: [], //多选
+        total: 0,
         tableLabel: [
+          { label: "序号", type: "index", prop: "index" },
           {
-            type: "selection",
-            fixed: true,
-            width: 55
+            label: "设备名称",
+            prop: "NAME",
+            minWidth: "200",
+            click: true
           },
-          {
-            label: "序号",
-            type: "index",
-            width: "100",
-            fixed: true
-          },
-          {
-            label: "邮编",
-            prop: "zip",
-            width: "200",
-            fixed: true,
-            typeclick: true,
-            click: (item, row) => {
-              if (row.zip == "200333") {
-                alert("可点击");
-              } else {
-                console.log("不可点击");
-              }
-              console.log(item);
-              console.log(row);
-            }
-          },
-          {
-            label: "日期",
-            prop: "date",
-            width: "200",
-            sortable: true,
-            formatter: row => {
-              if (row.date == "2016-05-04") {
-                return "休息";
-              }
-            },
-            click: (item, row) => {
-              console.log(item);
-              console.log(row);
-            }
-          },
-          {
-            label: "地址",
-            prop: "address",
-            width: "300"
-          },
-          {
-            label: "性别",
-            prop: "sex",
-            width: "200",
-            type: "select",
-            edit: true,
-            placeholder: "请选择性别",
-            options: [
-              {
-                label: "男",
-                value: 1
-              },
-              {
-                label: "女",
-                value: 2
-              }
-            ]
-          },
-          {
-            placeholder: "请选择性别",
-            label: "亲友姓名",
-            type: "input",
-            prop: "qiname",
-            placeholder: "请输入亲友姓名",
-            width: "200",
-            max: 5
-          },
-          {
-            type: "clocks",
-            label: "到达时间",
-            clocksType: "date",
-            prop: "clocks",
-            placeholder: "请选择到达时间",
-            width: "300"
-          },
-          {
-            type: "mortabhead",
-            label: "配送信息",
-            options: [
-              {
-                width: "100",
-                prop: "name",
-                label: "姓名"
-              },
-              {
-                width: "100",
-                prop: "province",
-                label: "省份"
-              },
-              {
-                width: "100",
-                prop: "city",
-                label: "市区"
-              }
-            ]
-          },
-
+          { label: "设备类型", prop: "VARSNAME", minWidth: "180" },
+          { label: "所属控制区", prop: "CONTENT", minWidth: "180" },
+          { label: "设备ip", prop: "IP", minWidth: "180" },
+          { label: "状态", prop: "STATUS", minWidth: "180" },
           {
             type: "button",
             label: "操作",
-            width: "200",
+            minWidth: "200",
             options: [
-              {
-                label: "删除",
-                type: "danger",
-                disabled: true,
-                click: (index, row) => {
-                  console.log(row);
-                }
-              },
               {
                 label: "编辑",
                 type: "primary",
                 disabled: false,
                 click: (index, row) => {
-                  row.disabled = false;
+                  this.editruleForm.id = "";
+                  this.dialogData.outerVisible = true;
+                  this.editruleForm.name = row.NAME;
+                  this.editruleForm.ip = row.IP;
+                  this.editruleForm.id = row.id;
+                  this.editruleForm.pixel = "118.33691,34.316145";
                 }
               },
               {
-                label: "完成",
+                label: "删除",
+                type: "danger",
                 disabled: false,
                 click: (index, row) => {
-                  row.disabled = true;
+                  this.table.tableData.splice(index, 1);
                 }
               }
             ]
@@ -182,247 +154,199 @@ export default {
         tableData: [
           {
             id: 1,
-            date: "2016-05-03",
-            name: "王小虎",
-            province: "上海",
-            city: "普陀区",
-            qiname: "",
-            sex: "男",
-            disabled: true,
-            address:
-              "上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄",
-            zip: 200331
+            STATUS: "在线",
+            NAME: "标注信息气压12",
+            VARSNAME: "气压感应器",
+            IP: "192.168.3.12",
+            CONTENT: "一般控制区域"
           },
           {
             id: 2,
-            date: "2016-05-02",
-            qiname: "",
-            disabled: true,
-            name: "虎",
-            sex: "女",
-            province: "上海",
-            city: "普陀区",
-            address: "上海市普陀区金沙江路 1518 弄",
-            zip: 200332
+            STATUS: "在线",
+            NAME: "标注信息气压",
+            VARSNAME: "信息报警",
+            IP: "192.168.1.14",
+            CONTENT: "核心控制区域"
           },
           {
             id: 3,
-            sex: "女",
-            disabled: true,
-            qiname: "",
-            date: "2016-05-04",
-            name: "王虎",
-            province: "上海",
-            city: "普陀区",
-            address: "上海市普陀区金沙江路 1518 弄",
-            zip: 200330,
-            children: [
-              {
-                id: 31,
-                date: "2016-05-01",
-                disabled: true,
-                name: "王小虎",
-                address: "上海市普陀区金沙江路 1519 弄"
-              },
-              {
-                id: 32,
-                date: "2016-05-01",
-                 disabled: true,
-                name: "王小虎",
-                address: "上海市普陀区金沙江路 1519 弄"
-              }
-            ]
+            STATUS: "离线",
+            NAME: "标注信息气压1",
+            VARSNAME: "灯杆",
+            IP: "192.160.0.27",
+            CONTENT: "关键控制区域"
           },
           {
             id: 4,
-            date: "2016-05-01",
-            disabled: true,
-            name: "王小虎",
-            qiname: "",
-            sex: "男",
-            province: "上海",
-            city: "普陀区",
-            address: "上海市普陀区金沙江路 1518 弄",
-            zip: 200334
+            STATUS: "离线",
+            NAME: "标注信息气压2",
+            VARSNAME: "球枪",
+            IP: "192.0.0.167",
+            CONTENT: "核心控制区域"
           },
           {
             id: 5,
-            date: "2016-05-08",
-            disabled: true,
-            qiname: "",
-            name: "王小虎",
-            province: "上海",
-            sex: "男",
-            city: "普陀区",
-            address: "上海市普陀区金沙江路 1518 弄",
-            zip: 200333
+            STATUS: "在线",
+            NAME: "标注信息气压5",
+            VARSNAME: "监控",
+            IP: "192.102.3.1",
+            CONTENT: "核心控制区域"
           },
           {
             id: 6,
-            date: "2016-05-06",
-            qiname: "",
-            disabled: true,
-            name: "王小虎",
-            sex: "女",
-            province: "上海",
-            city: "普陀区",
-            address: "上海市普陀区金沙江路 1518 弄",
-            zip: 200333
+            STATUS: "离线",
+            NAME: "标注信息",
+            VARSNAME: "气压感应器",
+            IP: "192.110.0.100",
+            CONTENT: "一般控制区域"
           },
           {
             id: 7,
-            date: "2016-05-07",
-            name: "王小虎",
-            disabled: true,
-            qiname: "",
-            province: "上海",
-            sex: "男",
-            city: "普陀区",
-            address: "上海市普陀区金沙江路 1518 弄",
-            zip: 200333
+            STATUS: "离线",
+            NAME: "标注信息气压7",
+            VARSNAME: "球枪",
+            IP: "192.18.0.1",
+            CONTENT: "关键控制区域"
           },
           {
             id: 8,
-            date: "2016-05-04",
-            qiname: "",
-            name: "王小虎",
-            sex: "男",
-            province: "上海",
-            disabled: true,
-            city: "普陀区",
-            address: "上海市普陀区金沙江路 1518 弄",
-            zip: 200333
+            STATUS: "在线",
+            NAME: "标注信息气12",
+            VARSNAME: "球枪",
+            IP: "192.168.01.1",
+            CONTENT: "关键控制区域"
           },
           {
             id: 9,
-            date: "2016-05-01",
-            qiname: "",
-            name: "王小虎",
-            disabled: true,
-            sex: "男",
-            province: "上海",
-            city: "普陀区",
-            address: "上海市普陀区金沙江路 1518 弄",
-            zip: 200333
+            STATUS: "在线",
+            NAME: "标注信息气压19",
+            VARSNAME: "气压感应器",
+            IP: "192.168.0.1",
+            CONTENT: "核心控制区域"
           },
           {
             id: 10,
-            date: "2016-05-08",
-            disabled: true,
-            qiname: "",
-            sex: "女",
-            name: "王小虎",
-            province: "上海",
-            city: "普陀区",
-            address: "上海市普陀区金沙江路 1518 弄",
-            zip: 200333
+            STATUS: "在线",
+            NAME: "标注信息气压20",
+            VARSNAME: "气压感应器",
+            IP: "192.168.0.1",
+            CONTENT: "一般控制区域"
+          }
+        ],
+        handleSizeChange(val) {
+          console.log(`每页 ${val} 条`);
+        },
+        handleCurrentChange(val) {
+          console.log(`当前页: ${val}`);
+        },
+        handleSelectionChange(val) {
+          console.log(val);
+        }
+      },
+      dialogData: {
+        footshow:true,
+        outertype: "small",
+        outertitle: "预警设备信息修改",
+        outerVisible: false,
+        outername: "outername",
+        center: true,
+        footer: [
+          {
+            title: "提交",
+            type: "primary",
+            click: () => {
+              for (let i = 0; i < this.table.tableData.length; i++) {
+                if (this.table.tableData[i].id == this.editruleForm.id) {
+                  this.table.tableData[i].NAME = this.editruleForm.name;
+                  this.table.tableData[i].IP = this.editruleForm.ip;
+                }
+              }
+              this.dialogData.outerVisible = false;
+            }
           },
           {
-            id: 11,
-            date: "2016-05-06",
-            disabled: true,
-            name: "王小虎",
-            sex: "男",
-            province: "上海",
-            qiname: "",
-            city: "普陀区",
-            address: "上海市普陀区金沙江路 1518 弄",
-            zip: 200333
-          },
-          {
-            id: 12,
-            date: "2016-05-07",
-            qiname: "",
-            name: "王小虎",
-            disabled: true,
-            sex: "男",
-            province: "上海",
-            city: "普陀区",
-            address: "上海市普陀区金沙江路 1518 弄",
-            zip: 200333
-          },
-          {
-            id: 13,
-            date: "2016-05-04",
-            disabled: true,
-            name: "王小虎",
-            sex: "男",
-            qiname: "",
-            province: "上海",
-            city: "普陀区",
-            address: "上海市普陀区金沙江路 1518 弄",
-            zip: 200333
-          },
-          {
-            id: 14,
-            date: "2016-05-01",
-            name: "王小虎",
-            province: "上海",
-            disabled: true,
-            qiname: "",
-            city: "普陀区",
-            sex: "女",
-            address: "上海市普陀区金沙江路 1518 弄",
-            zip: 200333
-          },
-          {
-            id: 15,
-            date: "2016-05-08",
-            name: "王小虎",
-            sex: "男",
-            disabled: true,
-            province: "上海",
-            qiname: "",
-            city: "普陀区",
-            address: "上海市普陀区金沙江路 1518 弄",
-            zip: 200333
-          },
-          {
-            id: 16,
-            date: "2016-05-06",
-            disabled: true,
-            qiname: "",
-            name: "王小虎",
-            sex: "男",
-            province: "上海",
-            city: "普陀区",
-            address: "上海市普陀区金沙江路 1518 弄",
-            zip: 200333
-          },
-          {
-            id: 17,
-            date: "2016-05-07",
-            disabled: true,
-            name: "王小虎",
-            qiname: "",
-            province: "上海",
-            city: "普陀区",
-            sex: "女",
-            address: "上海市普陀区金沙江路 1518 弄",
-            zip: 200333
+            title: "取消",
+            type: "",
+            click: () => {
+              this.dialogData.outerVisible = false;
+            }
           }
         ]
-      }
+      },
+      editConfig: {
+        fromdata: [
+          {
+            type: "input",
+            prop: "name",
+            max: 20,
+            disabled: false,
+            placeholder: "请输入设备名称",
+            label: "设备名称",
+            readonly: false, //只读,
+            click: () => {}
+          },
+          {
+            type: "input",
+            prop: "ip",
+            max: 20,
+            disabled: false,
+            placeholder: "请输入设备ip",
+            label: "设备ip",
+            readonly: false, //只读,
+            click: () => {}
+          },
+          {
+            type: "input",
+            prop: "pixel",
+            max: 20,
+            disabled: true,
+            placeholder: "请输入设备位置",
+            label: "设备位置",
+            readonly: false, //只读,
+            click: () => {}
+          }
+        ]
+      },
+      editruleForm: {
+        name: "",
+        ip: "",
+        pixel: ""
+      },
+      editrules: {},
+      editformName: "editfrom"
     };
   },
   created() {
+    this.table.total = this.table.tableData.length;
     this.$nextTick(() => {
-      this.maxheight = this.$refs.yjkk.clientHeight - 120;
+      this.maxheight = this.$refs.table.clientHeight - 120;
+      console.log(this.maxheight);
     });
+  },
+  methods: {
+    onSubmit() {
+      console.log(this.$refs.fromdemo.submitForm());
+    },
+    onReset() {
+      console.log(this.$refs.fromdemo.resetForm());
+    }
   }
 };
 </script>
 <style scoped lang="scss">
-#yjkk {
+.parkingLot {
   padding: 10px;
+  box-sizing: border-box;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  .footer {
+    width: 100%;
+    text-align: center;
+  }
+  #table {
+    flex: 1;
+    padding: 40px 0;
+  }
 }
 </style>
-
-    
-      
-       
-          
-
-     
-          

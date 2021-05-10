@@ -57,13 +57,6 @@ export default {
       });
     } 
   },
-  //进入路由
-  beforeRouteEnter (to, from, next) {
-     console.log(to);
-     console.log(from);
-     to.meta.keepAlive = true;
-      next();
-  },
 };
 </script>
 <style scoped lang="scss">

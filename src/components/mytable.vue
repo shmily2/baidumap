@@ -33,7 +33,7 @@
           :type="item.type"
           :key="item.prop"
           align="center"
-          :width="item.width == undefined ? '50' : item.width"
+          :min-width="item.width == undefined ? '50' : item.width"
         ></el-table-column>
         <!-- 序号-->
         <el-table-column
@@ -89,8 +89,8 @@
             </template>
           </el-table-column>
         </el-table-column>
-         <!--表格内select选择 -->
-         <el-table-column
+        <!--表格内select选择 -->
+        <el-table-column
           v-else-if="item.type == 'select'"
           :key="item.id"
           :fixed="item.fixed"
@@ -98,7 +98,7 @@
           :label="item.label"
           :minWidth="item.width"
         >
-         <template slot-scope="scope">
+          <template slot-scope="scope">
             <el-select
               v-model="scope.row.sex"
               :disabled="scope.row.disabled"
@@ -111,10 +111,10 @@
                 :key="opt.value"
               ></el-option>
             </el-select>
-          </template> 
+          </template>
         </el-table-column>
         <!--表格内input填写 -->
-       <el-table-column
+        <el-table-column
           v-else-if="item.type == 'input'"
           :key="item.id"
           :prop="item.prop"
@@ -130,9 +130,9 @@
               :placeholder="scope.row.disabled ? '' : item.placeholder"
             ></el-input>
           </template>
-        </el-table-column> 
+        </el-table-column>
         <!--表格内时间选择 -->
-       <el-table-column
+        <el-table-column
           v-else-if="item.type == 'clocks'"
           :key="item.id"
           :fixed="item.fixed"
@@ -153,7 +153,7 @@
             >
             </el-date-picker>
           </template>
-        </el-table-column> 
+        </el-table-column>
 
         <!-- 操作 -->
         <el-table-column
@@ -253,7 +253,7 @@ export default {
     return {};
   },
   created() {
-    this.table.total = this.table.tableData.length;
+    // this.table.total = this.table.tableData.length;
   },
   methods: {
     //行背景色
@@ -265,7 +265,6 @@ export default {
     //   }
     //   return "";
     // },
- 
   },
   filters: {
     dateFormateFilters(date, format) {
@@ -284,7 +283,7 @@ export default {
     background: greenyellow;
   }
   .pagina {
-    minWidth: 100%;
+    minwidth: 100%;
     text-align: center;
     padding-top: 20px;
   }
@@ -292,6 +291,33 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+  /*修改滚动条样式
+  :-webkit-scrollbar 滚动条整体部分
+::-webkit-scrollbar-thumb  滚动条里面的小方块，能向上向下移动（或往左往右移动，取决于是垂直滚动条还是水平滚动条）
+::-webkit-scrollbar-track  滚动条的轨道（里面装有Thumb）
+::-webkit-scrollbar-button 滚动条的轨道的两端按钮，允许通过点击微调小方块的位置。
+::-webkit-scrollbar-track-piece 内层轨道，滚动条中间部分（除去）
+::-webkit-scrollbar-corner 边角，即两个滚动条的交汇处
+::-webkit-resizer 两个滚动条的交汇处上用于通过拖动调整元素大小的小控件
+  */
+  div::-webkit-scrollbar {
+    width:8px;
+    height:10px;
+  }
+  div::-webkit-scrollbar-track {
+    background: rgb(239, 239, 239);
+    border-radius: 2px;
+  }
+  div::-webkit-scrollbar-thumb {
+    background: rgba(191, 191, 191, 0.4);
+    border-radius: 20px;
+  }
+  div::-webkit-scrollbar-thumb:hover {
+    background: #333;
+  }
+  div::-webkit-scrollbar-corner {
+    background: #179a16;
   }
 }
 </style>

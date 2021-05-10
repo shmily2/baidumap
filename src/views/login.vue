@@ -95,7 +95,6 @@ export default {
           // 通过的逻辑
           sessionStorage.setItem("user", this.form.username);
           Cookies.set("token", "admin");
-       
           this.$router.push({ name: "home" });
         } else {
           console.log("验证失败");

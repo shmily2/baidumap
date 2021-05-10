@@ -23,7 +23,7 @@ const router = new Router({
       path: "/",
       name: "mainPage",
       component: mainPage,
-      redirect: "/401",
+      redirect: "/Bayonet/emergencyBayonet",
       meta: {
         keepAlive: true,
         tabshow: false,
@@ -50,7 +50,7 @@ const router = new Router({
       tabshow: false,
       parentName: null,
       meta: {
-        keepAlive: true,
+        keepAlive: false,
         tabshow: false,
         title: "首页",
         parentName: null,
@@ -309,17 +309,17 @@ function addDynamicRoutes(menuList = [], routes = []) {
   } else {
     console.log("动态路由加载...");
   }
-  routes.push({
-    path: "*",
-    name: "401",
-    component: NotFound,
-    meta: {
-      tabshow: true,
-      title: "error",
-      index:"401",
-      parentName: "mainPage",
-    },
-  });
+  // routes.push({
+  //   path: "*",
+  //   name: "401",
+  //   component: NotFound,
+  //   meta: {
+  //     tabshow: true,
+  //     title: "error",
+  //     index:"401",
+  //     parentName: "mainPage",
+  //   },
+  // });
   return routes;
 }
 
