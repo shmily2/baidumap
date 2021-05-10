@@ -13,7 +13,7 @@ import "nprogress/nprogress.css"; // progress bar style
 import { getIFramePath, getIFrameUrl } from "@/utils/iframe";
 Vue.use(Router);
 const router = new Router({
-  mode: "history", // require service support
+  //mode: "history", // require service support
   //scrollBehavior翻页滚动位置
   scrollBehavior: () => ({
     y: 0,
