@@ -61,7 +61,7 @@ export default {
             disabled: false,
             placeholder: "请选择select,可搜索",
             label: "活动名称",
-            multiple: true, //对选
+            multiple: true, //多选
             valueType: true, //选择值返回对象
             filterable: true, //可搜索
             click: val => {
