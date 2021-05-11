@@ -28,7 +28,8 @@
     </div>
     <mydialog :dialogData="dialogData">
       <div slot="outername" class="account">
-        <mapview @baiduMap="baiduMap" class="drivingTrackmap"></mapview>
+        <div id="allmap" class="drivingTrackmap"></div>
+        <!-- <mapview @baiduMap="baiduMap" class="drivingTrackmap"></mapview> -->
       </div>
     </mydialog>
   </div>
@@ -38,20 +39,30 @@ import { formatWithSeparator } from "../../utils/datetime";
 import { mark, polyline, removeMarker } from "../../utils/map";
 import shartpic from "../../assets/start.png";
 import endpic from "../../assets/eng.png";
+import smallstart from "../../assets/smallstart.png";
+import smallend from "../../assets/smallend.png";
 export default {
   name: "drivingTrack",
   data() {
     return {
       type: "",
+      driving: "",
       map: "",
       point: "",
-      location: [], //图标
+      startPoi: "",
+      endPoi: "",
+      dragPois: [],
+      markers: {
+        srart: [],
+        end: []
+      },
+      startMarker: null,
+      endMarker: null,
       polylineMuster: [], //线
       lushu: "",
-      points: [
-        { lng: 116.363944, lat: 39.90384, of: "inner" },
-        { lng: 116.360495, lat: 39.871951, of: "inner" }
-      ],
+      points: "",
+      startingpoint: {},
+      finishingpoint: {},
       searchConfig: {
         fromdata: [
           {
@@ -101,9 +112,7 @@ export default {
                   this.dialogData.footshow = false;
                   this.dialogData.outerVisible = true;
                   this.dialogData.outertitle = "巡更路线管理详情";
-                  this.$nextTick(() => {
-                    this.routerlink(row);
-                  });
+                  this.baiduMap(index, row);
                 }
               },
               {
@@ -116,7 +125,31 @@ export default {
                   this.dialogData.outertitle = "巡更路线管理编辑";
                   this.dialogData.footshow = true;
                   this.dialogData.outerVisible = true;
-                  this.routerlink(row);
+                  this.map = new BMap.Map("allmap");
+                  this.map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
+                  let startlng = Number(row.startPoint.split(",")[0]);
+                  let startlat = Number(row.startPoint.split(",")[1]);
+                  let endlng = Number(row.entdPoint.split(",")[0]);
+                  let endlat = Number(row.entdPoint.split(",")[1]);
+                  var myP1 = new BMap.Point(startlng, startlat); //起点
+                  var myP2 = new BMap.Point(endlng, endlat); //终点
+                  this.map.centerAndZoom(this.point, 13); // 初始化地图，设置中心点坐标和地图级别
+                  var driving = new BMap.DrivingRoute(this.map, {
+                    renderOptions: { map: this.map, autoViewport: true,  enableDragging: true  }
+                  });
+                  driving.search(myP1, myP2);
+                  var label = new BMap.Label("线路:" + row.Route, {
+                    position: myP1, // 指定文本标注所在的地理位置
+                    offset: new BMap.Size(30, -30) //设置文本偏移量
+                  }); // 创建文本标注对象
+                  label.setStyle({
+                    color: "red",
+                    fontSize: "12px",
+                    height: "20px",
+                    lineHeight: "20px",
+                    fontFamily: "微软雅黑"
+                  });
+                  this.map.addOverlay(label);
                 }
               },
               {
@@ -237,62 +270,34 @@ export default {
     });
   },
   methods: {
-    baiduMap(map) {
-      this.map = map;
-      this.map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
-      this.point = new BMap.Point(116.363944, 39.90384); // 创建点坐标
-      this.map.centerAndZoom(this.point, 13); // 初始化地图，设置中心点坐标和地图级别
-    },
-    routerlink(row) {
-      let that = this;
-      that.$nextTick(() => {
-        that.map.clearOverlays();
-        let shartfirst = Number(row.startPoint.split(",")[0]);
-        let shartlast = Number(row.startPoint.split(",")[1]);
-        let endfirst = Number(row.entdPoint.split(",")[0]);
-        let endlast = Number(row.entdPoint.split(",")[1]);
-        this.point = new BMap.Point(shartfirst, shartlast); // 创建点坐标
-        this.map.centerAndZoom(this.point, 16 ); // 初始化地图，设置中心点坐标和地图级别
-        this.points = [
-          { lng: shartfirst, lat: shartlast, of: "inner" },
-          { lng: endfirst, lat: endlast, of: "inner" }
-        ];
-
-        let shart = [new BMap.Point(shartfirst, shartlast)]; //开始坐标
-        let end = [new BMap.Point(endfirst, endlast)]; //结束坐标
-        let enableDragging = "";
-        if (that.type == "see") {
-          enableDragging = false;
-        } else {
-          enableDragging = true;
-        }
-        mark(
-          that.map,
-          shart,
-          that.location,
-          "",
-          shartpic,
-          new BMap.Size(32, 32),
-          enableDragging
-        ); //起点图标
-        mark(
-          that.map,
-          end,
-          that.location,
-          "",
-          endpic,
-          new BMap.Size(32, 32),
-          enableDragging
-        ); //终点图标
-        polyline(
-          that.map,
-          that.points,
-          that.polylineMuster,
-          "red",
-          "solid",
-          "3",
-          "0.8"
-        ); //线路
+    //查看
+    baiduMap(index, row) {
+      this.$nextTick(() => {
+        this.map = new BMap.Map("allmap");
+        this.map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
+        let startlng = Number(row.startPoint.split(",")[0]);
+        let startlat = Number(row.startPoint.split(",")[1]);
+        let endlng = Number(row.entdPoint.split(",")[0]);
+        let endlat = Number(row.entdPoint.split(",")[1]);
+        var myP1 = new BMap.Point(startlng, startlat); //起点
+        var myP2 = new BMap.Point(endlng, endlat); //终点
+        this.map.centerAndZoom(this.point, 13); // 初始化地图，设置中心点坐标和地图级别
+        var driving = new BMap.DrivingRoute(this.map, {
+          renderOptions: { map: this.map, autoViewport: true }
+        });
+        driving.search(myP1, myP2);
+        var label = new BMap.Label("线路:" + row.Route, {
+          position: myP1, // 指定文本标注所在的地理位置
+          offset: new BMap.Size(30, -30) //设置文本偏移量
+        }); // 创建文本标注对象
+        label.setStyle({
+          color: "red",
+          fontSize: "12px",
+          height: "20px",
+          lineHeight: "20px",
+          fontFamily: "微软雅黑"
+        });
+        this.map.addOverlay(label);
       });
     },
     onSubmit() {
@@ -303,16 +308,107 @@ export default {
     },
     //新增
     add(type) {
-      // this.type = "add";
-      // this.dialogData.outertitle = "巡更路线管理新增";
-      // this.dialogData.outerVisible = true;
-      // this.dialogData.footshow = true;
-      // let that = this;
-      // that.map.clearOverlays();
+      this.type = "add";
+      this.dialogData.outertitle = "巡更路线管理新增";
+      this.dialogData.outerVisible = true;
+      this.dialogData.footshow = true;
+      this.$nextTick(() => {
+        this.map = new BMap.Map("allmap");
+        this.point = new BMap.Point(116.404, 39.915); // 创建点坐标
+        this.map.centerAndZoom(this.point, 12); // 初始化地图，设置中心点坐标和地图级别
+        this.map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
+        this.Search();
+        let that = this;
+        this.map.addEventListener("rightclick", function(e) {
+          console.log(e);
+          var mapmenu = new BMap.ContextMenu();
+          mapmenu.addItem(
+            new BMap.MenuItem(
+              "设为起点",
+              e => {
+                let startPoi = new BMap.Point(e.lng, e.lat);
+                if (that.startMarker == null) {
+                  var myIcon = new BMap.Icon(shartpic, new BMap.Size(32, 32));
+                  that.startMarker = new BMap.Marker(startPoi, {
+                    icon: myIcon
+                  });
+                  that.startMarker.enableDragging();
+                  that.map.addOverlay(that.startMarker);
+                } else {
+                  that.startMarker.setPosition(startPoi);
+                }
+                if (that.endMarker != null) {
+                  that.searchRoad();
+                }
+              },
+              {
+                iconUrl: smallstart
+              }
+            )
+          );
+          mapmenu.addItem(
+            new BMap.MenuItem(
+              "设为终点",
+              e => {
+                let endPoi = new BMap.Point(e.lng, e.lat);
+                if (that.endMarker == null) {
+                  var myIcon = new BMap.Icon(endpic, new BMap.Size(32, 32));
+                  that.endMarker = new BMap.Marker(endPoi, {
+                    icon: myIcon
+                  });
+                  that.endMarker.enableDragging();
+                  that.map.addOverlay(that.endMarker);
+                } else {
+                  that.endMarker.setPosition(endPoi);
+                }
+                if (that.startMarker != null) {
+                  that.searchRoad();
+                }
+              },
+              {
+                iconUrl: smallend
+              }
+            )
+          );
+          that.map.addContextMenu(mapmenu);
+        });
+      });
+    },
+    Search() {
+      let that = this;
+      that.transit = new BMap.DrivingRoute(that.map, {
+        renderOptions: {
+          map: that.map,
+          enableDragging: true //起终点可进行拖拽
+        },
+        onSearchComplete: function(results) {
+          console.log(results);
+          // if (that.transit.getStatus()) {
+          //   var a = results.getStart();
+          //   that.startPoi = results.getStart().point;
+          //   that.endPoi = results.getEnd().point;
+          //   var pos = results.getPlan(0).getDragPois();
+          //   that.dragPois = [];
+          //   for (var i = 0; i < pos.length; i++) {
+          //     that.dragPois.push(pos[i].point);
+          //   }
+          // }
+        }
+      });
+    },
+    searchRoad() {
+      this.startPoi = null;
+      this.endPoi = null;
+      this.dragPois = null;
+      // this.Search();
+      this.transit.search(
+        this.startMarker.getPosition(),
+        this.endMarker.getPosition()
+      );
+      this.map.removeOverlay(this.startMarker);
+      this.map.removeOverlay(this.endMarker);
     },
     addsubmit() {
-      var myDate = new Date();
-      var mytime = formatWithSeparator(myDate, "-", ":"); //获取当前时间
       this.dialogData.outerVisible = false;
     },
     editsubmit() {

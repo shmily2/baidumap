@@ -12,18 +12,15 @@ export function mark(
   infoWindow,
   img,
   size = new BMap.Size(26, 26),
-  enableDragging= false,
+  enableDragging = false
 ) {
   markups.map((addr) => {
     let posit = new BMap.Point(addr.lng, addr.lat); // 创建点坐标
     var myIcon = new BMap.Icon(img, size);
-    let marker = new BMap.Marker(
-      posit,
-      {
-        icon: myIcon,
-        enableDragging: enableDragging,
-      },
-    ); // 创建标注
+    let marker = new BMap.Marker(posit, {
+      icon: myIcon,
+      enableDragging: enableDragging,
+    }); // 创建标注
     map.addOverlay(marker); // 将标注添加到地图中
     //提示信息
     // 鼠标移上标注点要发生的事
@@ -101,14 +98,8 @@ export function Polygon(
 
 //删除图标 ,折线，多边形合集
 export function removeMarker(map, markers) {
-  //删除合集
-  if (markers.length) {
-    for (var i = 0; i < markers.length; i++) {
-      map.removeOverlay(markers[i]);
-    }
-  } else {
-    //单个删除
-    this.removeOverlay(map);
+  for (var i = 0; i < markers.length; i++) {
+    map.removeOverlay(markers[i]);
   }
 }
 

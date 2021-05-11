@@ -397,7 +397,7 @@ export default {
         time: "",
         CONTENT: "pm001",
         Creationtime: "",
-        personnel: "",
+        personnel: [],
         starttime: "",
         endtime: "",
         Route: "",
