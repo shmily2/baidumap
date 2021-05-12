@@ -153,6 +153,7 @@ export default {
                   this.endMarker = null;
                   this.ruleForm.name = row.Route;
                   this.ruleForm.disabled = false;
+                  let that = this;
                   this.$nextTick(() => {
                     this.map = new BMap.Map("allmap");
                     this.point = new BMap.Point(116.404, 39.915); // 创建点坐标
@@ -164,6 +165,7 @@ export default {
                     let endlat = Number(row.entdPoint.split(",")[1]);
                     var myP1 = new BMap.Point(startlng, startlat); //起点
                     var myP2 = new BMap.Point(endlng, endlat); //终点
+                    this.map.removeEventListener("rightclick", that.mapmenu);
                     this.Search();
                     this.setStarting(myP1);
                     this.setEnd(myP2);
@@ -289,7 +291,7 @@ export default {
   methods: {
     //查看
     baiduMap(index, row) {
-      let that=this;
+      let that = this;
       this.$nextTick(() => {
         this.map = new BMap.Map("allmap");
         this.map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
@@ -300,6 +302,7 @@ export default {
         var myP1 = new BMap.Point(startlng, startlat); //起点
         var myP2 = new BMap.Point(endlng, endlat); //终点
         this.map.centerAndZoom(this.point, 13); // 初始化地图，设置中心点坐标和地图级别
+        this.map.removeEventListener("rightclick", that.mapmenu);
         var driving = new BMap.DrivingRoute(this.map, {
           renderOptions: { map: this.map, autoViewport: true }
         });
@@ -323,14 +326,14 @@ export default {
       this.ruleForm.name = "";
       this.ruleForm.disabled = false;
       this.$nextTick(() => {
-          this.map = new BMap.Map("allmap");
-          this.point = new BMap.Point(116.404, 39.915); // 创建点坐标
-          this.map.centerAndZoom(this.point, 12); // 初始化地图，设置中心点坐标和地图级别
-          this.map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
-          this.Search();
-          let that = this;
-          this.map.addEventListener("rightclick", that.mapmenu);
-        });
+        this.map = new BMap.Map("allmap");
+        this.point = new BMap.Point(116.404, 39.915); // 创建点坐标
+        this.map.centerAndZoom(this.point, 12); // 初始化地图，设置中心点坐标和地图级别
+        this.map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
+        this.Search();
+        let that = this;
+        this.map.addEventListener("rightclick", that.mapmenu);
+      });
     },
     //右击菜单
     mapmenu(e) {
