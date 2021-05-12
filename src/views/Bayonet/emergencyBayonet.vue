@@ -239,12 +239,15 @@ export default {
         handleCurrentChange(val) {
           console.log(`当前页: ${val}`);
         },
+        currentChange(row) {
+          console.log(row);
+        },
         handleSelectionChange(val) {
           console.log(val);
         }
       },
       dialogData: {
-        footshow:true,
+        footshow: true,
         outertype: "small",
         outertitle: "预警设备信息修改",
         outerVisible: false,

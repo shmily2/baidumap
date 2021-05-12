@@ -247,6 +247,9 @@ export default {
         handleCurrentChange(val) {
           console.log(`当前页: ${val}`);
         },
+        currentChange(row){
+          console.log(row)
+        },
         handleSelectionChange(val) {
           console.log(val);
         }
@@ -342,7 +345,6 @@ export default {
         new BMap.MenuItem(
           "设为起点",
           e => {
-            console.log(e);
             this.setStarting(e);
           },
           {

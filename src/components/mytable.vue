@@ -14,7 +14,7 @@
       :tree-props="table.treeProps"
       highlight-current-row
       :span-method="table.spanMethod"
-      @current-change="table.handleCurrentChange"
+      @current-change="table.currentChange"
       @selection-change="table.handleSelectionChange"
       :cell-style="table.cell"
       show-overflow-tooltip

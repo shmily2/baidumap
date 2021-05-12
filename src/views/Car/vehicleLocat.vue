@@ -45,8 +45,107 @@ import { formatWithSeparator } from "../../utils/datetime";
 export default {
   name: "vehicleLocat",
   data() {
+    let that = this;
     return {
       type: "",
+      tadatabox: [
+        {
+          id: 1,
+          name: "我问问",
+          time: "2021-05-08",
+          CONTENT: "pm001",
+          Creationtime: "2021-05-07 13:38:41",
+          personnel: ["朱家贝", "朱志祥", "测33333"],
+          starttime: "2021-05-08 00:00:00",
+          endtime: "2021-05-08 23:59:59",
+          Route: "测试",
+          standard: "巡更标准名称1"
+        },
+        {
+          id: 2,
+          name: "排班名称",
+          time: "2021-05-06",
+          CONTENT: "pm001",
+          Creationtime: "2021-05-06 15:02:39",
+          personnel: ["朱家贝", "测33333"],
+          starttime: "2021-05-07 00:00:00",
+          endtime: "2021-05-07 23:59:59",
+          Route: "小李111",
+          standard: "巡更标准名称1"
+        },
+        {
+          id: 3,
+          name: "排班名称排班名称1",
+          time: "2021-05-06",
+          CONTENT: "pm001",
+          Creationtime: "2021-05-06 14:52:10",
+          personnel: ["朱志祥", "测33333"],
+          starttime: "2021-05-07 00:00:00",
+          endtime: "2021-05-07 23:59:59",
+          Route: "897",
+          standard: "巡更标准名称3"
+        },
+        {
+          id: 4,
+          name: "排班名称e8888",
+          time: "2021-04-29",
+          CONTENT: "pm001",
+          Creationtime: "2021-04-29 14:39:58",
+          personnel: ["朱家贝", "朱志祥", "测33333"],
+          starttime: "2021-04-30 00:00:00",
+          endtime: "2021-04-30 23:59:59",
+          Route: "测试",
+          standard: "巡更标准名称2"
+        },
+        {
+          id: 5,
+          name: "排班名称",
+          time: "2021-04-29",
+          CONTENT: "pm001",
+          Creationtime: "2021-04-29 14:15:48",
+          personnel: ["朱家贝", "朱志祥"],
+          starttime: "2021-04-30 00:00:00",
+          endtime: "2021-04-30 23:59:59",
+          Route: "测试",
+          standard: "巡更标准名称2"
+        },
+        {
+          id: 6,
+          name: "排班名称1",
+          time: "2021-04-01",
+          CONTENT: "pm001",
+          Creationtime: "2021-04-29 09:27:25",
+          personnel: ["朱志祥", "测33333"],
+          starttime: "2021-04-30 00:00:00",
+          endtime: "2021-04-30 23:59:59",
+          Route: "小李111",
+          standard: "巡更标准名称3"
+        },
+        {
+          id: 7,
+          name: "排班名称!@#",
+          time: "2021-04-29",
+          CONTENT: "pm001",
+          Creationtime: "2021-04-29 09:24:49",
+          personnel: ["朱家贝", "测33333"],
+          starttime: "2021-04-30 00:00:00",
+          endtime: "2021-04-30 23:59:59",
+          Route: "897",
+          standard: "巡更标准名称1"
+        },
+        {
+          id: 8,
+          name: "排班名称",
+          time: "2021-04-29",
+          CONTENT: "pm001",
+          Creationtime: "2021-04-29 09:20:28",
+          personnel: ["朱家贝", "朱志祥"],
+          starttime: "2021-04-30 00:00:00",
+          endtime: "2021-04-30 23:59:59",
+          Route: "测试002",
+          standard: "巡更标准名称3"
+        }
+      ],
       searchConfig: {
         fromdata: [
           {
@@ -143,107 +242,30 @@ export default {
                 type: "danger",
                 disabled: false,
                 click: (index, row) => {
-                  this.table.tableData.splice(index, 1);
+                  for (var i = 0; i < that.tadatabox.length; i++) {
+                    if (this.tadatabox[i].id == row.id) {
+                      this.tadatabox.splice(i, 1);
+                    }
+                  }
+                  // this.table.tableData.splice(index, 1);
                 }
               }
             ]
           }
         ],
-        tableData: [
-          {
-            name: "我问问",
-            time: "2021-05-08",
-            CONTENT: "pm001",
-            Creationtime: "2021-05-07 13:38:41",
-            personnel: ["朱家贝", "朱志祥", "测33333"],
-            starttime: "2021-05-08 00:00:00",
-            endtime: "2021-05-08 23:59:59",
-            Route: "测试",
-            standard: "巡更标准名称1"
-          },
-          {
-            name: "排班名称",
-            time: "2021-05-06",
-            CONTENT: "pm001",
-            Creationtime: "2021-05-06 15:02:39",
-            personnel: ["朱家贝", "测33333"],
-            starttime: "2021-05-07 00:00:00",
-            endtime: "2021-05-07 23:59:59",
-            Route: "小李111",
-            standard: "巡更标准名称1"
-          },
-          {
-            name: "排班名称排班名称1",
-            time: "2021-05-06",
-            CONTENT: "pm001",
-            Creationtime: "2021-05-06 14:52:10",
-            personnel: ["朱志祥", "测33333"],
-            starttime: "2021-05-07 00:00:00",
-            endtime: "2021-05-07 23:59:59",
-            Route: "897",
-            standard: "巡更标准名称3"
-          },
-          {
-            name: "排班名称e8888",
-            time: "2021-04-29",
-            CONTENT: "pm001",
-            Creationtime: "2021-04-29 14:39:58",
-            personnel: ["朱家贝", "朱志祥", "测33333"],
-            starttime: "2021-04-30 00:00:00",
-            endtime: "2021-04-30 23:59:59",
-            Route: "测试",
-            standard: "巡更标准名称2"
-          },
-          {
-            name: "排班名称",
-            time: "2021-04-29",
-            CONTENT: "pm001",
-            Creationtime: "2021-04-29 14:15:48",
-            personnel: ["朱家贝", "朱志祥"],
-            starttime: "2021-04-30 00:00:00",
-            endtime: "2021-04-30 23:59:59",
-            Route: "测试",
-            standard: "巡更标准名称2"
-          },
-          {
-            name: "排班名称1",
-            time: "2021-04-01",
-            CONTENT: "pm001",
-            Creationtime: "2021-04-29 09:27:25",
-            personnel: ["朱志祥", "测33333"],
-            starttime: "2021-04-30 00:00:00",
-            endtime: "2021-04-30 23:59:59",
-            Route: "小李111",
-            standard: "巡更标准名称3"
-          },
-          {
-            name: "排班名称!@#",
-            time: "2021-04-29",
-            CONTENT: "pm001",
-            Creationtime: "2021-04-29 09:24:49",
-            personnel: ["朱家贝", "测33333"],
-            starttime: "2021-04-30 00:00:00",
-            endtime: "2021-04-30 23:59:59",
-            Route: "897",
-            standard: "巡更标准名称1"
-          },
-          {
-            name: "排班名称",
-            time: "2021-04-29",
-            CONTENT: "pm001",
-            Creationtime: "2021-04-29 09:20:28",
-            personnel: ["朱家贝", "朱志祥"],
-            starttime: "2021-04-30 00:00:00",
-            endtime: "2021-04-30 23:59:59",
-            Route: "测试002",
-            standard: "巡更标准名称3"
-          }
-        ],
+        tableData: [],
         handleSizeChange(val) {
           console.log(`每页 ${val} 条`);
+          that.table.pageSize = val;
+          that.paging();
         },
         handleCurrentChange(val) {
+          that.table.currentPage = Number(val);
+          that.paging();
           console.log(`当前页: ${val}`);
+        },
+        currentChange(row) {
+          console.log(row);
         },
         handleSelectionChange(val) {
           console.log(val);
@@ -410,14 +432,41 @@ export default {
       editformName: "editfrom"
     };
   },
+  watch: {
+    tadatabox: {
+      handler(newValue, oldValue) {
+        this.paging();
+      },
+      deep: true
+    }
+  },
   created() {
-    this.table.total = this.table.tableData.length;
+    this.paging();
     this.$nextTick(() => {
       this.maxheight = this.$refs.table.clientHeight - 120;
-      console.log(this.maxheight);
     });
   },
   methods: {
+    paging() {
+      if (this.table.tableData.length < 2) {
+        this.table.currentPage = this.table.currentPage> 1 ? this.table.currentPage - 1:1;
+      }
+      if (
+        this.tadatabox.length <
+        this.table.currentPage * this.table.pageSize
+      ) {
+        this.table.tableData = this.tadatabox.slice(
+          (this.table.currentPage - 1) * this.table.pageSize,
+          this.tadatabox.length
+        );
+      } else {
+        this.table.tableData = this.tadatabox.slice(
+          (this.table.currentPage - 1) * this.table.pageSize,
+          this.table.currentPage * this.table.pageSize
+        );
+      }
+      this.table.total = this.tadatabox.length;
+    },
     onSubmit() {
       this.$refs.fromdemo.submitForm();
     },
@@ -445,11 +494,14 @@ export default {
     },
     addsubmit() {
       if (this.$refs.fromedit.submitForm()) {
+        console.log(this.tadatabox);
         var myDate = new Date();
         var mytime = formatWithSeparator(myDate, "-", ":"); //获取当前时间
         this.editruleForm.Creationtime = mytime;
+        this.editruleForm.id = myDate;
         let data = Object.assign({}, this.editruleForm);
-        this.table.tableData.unshift(data);
+        this.tadatabox.unshift(data);
+        // this.table.tableData.unshift(data);
         this.dialogData.outerVisible = false;
       }
     },

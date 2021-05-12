@@ -65,13 +65,13 @@ export default {
             label: "标准名称",
             placeholder: "请输入标准名称",
             prop: "LEV",
-            max:20,
+            max: 20,
             disabled: false
           },
           {
             type: "input",
             label: "创建人",
-            max:20,
+            max: 20,
             placeholder: "请输入创建人",
             prop: "TYPE"
           }
@@ -194,7 +194,7 @@ export default {
             CONTENT: "pm001",
             renshu: "6",
             cishu: "3",
-             yjzztx: "早中晚各一次",
+            yjzztx: "早中晚各一次",
             haoshi: "360",
             time: "2021-05-06 14:53:20"
           }
@@ -204,6 +204,9 @@ export default {
         },
         handleCurrentChange(val) {
           console.log(`当前页: ${val}`);
+        },
+        currentChange(row) {
+          console.log(row);
         },
         handleSelectionChange(val) {
           console.log(val);

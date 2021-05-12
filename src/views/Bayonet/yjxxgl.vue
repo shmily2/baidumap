@@ -153,7 +153,10 @@ export default {
             VARSNAME: "园区入侵",
             STATUS: "通知失败",
             CONTENT: "亚邦路南段北普通卡口",
-            CONTENTVALUE:[["管委会", "李南昌"],["管委会", "章学辉"]],
+            CONTENTVALUE: [
+              ["管委会", "李南昌"],
+              ["管委会", "章学辉"]
+            ],
             TIME: "2021-04-26 16:12:00"
           },
           {
@@ -162,7 +165,7 @@ export default {
             VARSNAME: "园区入侵",
             STATUS: "通知失败",
             CONTENT: "亚邦路南段北普通卡口",
-            CONTENTVALUE:[["苏化片区", "江苏蓝丰化工股份公司", "王庆猛"]],
+            CONTENTVALUE: [["苏化片区", "江苏蓝丰化工股份公司", "王庆猛"]],
             TIME: "2021-04-26 16:08:00"
           }
         ],
@@ -171,6 +174,9 @@ export default {
         },
         handleCurrentChange(val) {
           console.log(`当前页: ${val}`);
+        },
+        currentChange(row) {
+          console.log(row);
         },
         handleSelectionChange(val) {
           console.log(val);

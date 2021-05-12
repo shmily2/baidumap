@@ -125,7 +125,7 @@ export default {
                   this.type = "edit";
                   this.index = index;
                   this.dialogData.footshow = true;
-                  this.dialogData.outertitle ="预警通知管理编辑"
+                  this.dialogData.outertitle = "预警通知管理编辑";
                   this.dialogData.outerVisible = true;
                   this.$nextTick(() => {
                     Object.assign(this.editruleForm, row);
@@ -183,6 +183,9 @@ export default {
         },
         handleCurrentChange(val) {
           console.log(`当前页: ${val}`);
+        },
+        currentChange(row) {
+          console.log(row);
         },
         handleSelectionChange(val) {
           console.log(val);
@@ -574,7 +577,7 @@ export default {
     //新增
     add(type) {
       this.type = "add";
-      this.dialogData.outertitle ="预警通知管理新增"
+      this.dialogData.outertitle = "预警通知管理新增";
       this.dialogData.outerVisible = true;
       this.dialogData.footshow = true;
       this.$nextTick(() => {

@@ -229,6 +229,9 @@ export default {
         },
         handleSelectionChange(val) {
           that.selectionData = val;
+        },
+        currentChange(row) {
+          console.log(row);
         }
       },
       dialogData: {
