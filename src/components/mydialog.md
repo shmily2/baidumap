@@ -23,6 +23,7 @@ export default {
         outername: "outername",
         innertitle: "内层",
         innerVisible: false,
+        
         innername: "innername",
         center: true,
         footer: [

@@ -211,7 +211,7 @@ export default {
       },
       dialogData: {
         footshow: true,
-        outertype: "big",
+        outertype: "small",
         outertitle: "巡更标准详情查看",
         outerVisible: false,
         outername: "outername",

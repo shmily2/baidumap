@@ -125,7 +125,7 @@
         >
           <template slot-scope="scope">
             <el-input
-              v-model="scope.row.qiname"
+              v-model="scope.row[item.prop]"
               :disabled="scope.row.disabled"
               :maxlength="item.max"
               :placeholder="scope.row.disabled ? '' : item.placeholder"

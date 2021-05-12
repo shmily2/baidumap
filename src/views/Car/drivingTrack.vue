@@ -28,8 +28,21 @@
     </div>
     <mydialog :dialogData="dialogData">
       <div slot="outername" class="account">
+        <el-form
+          :model="ruleForm"
+          :rules="rules"
+          ref="ruleForm"
+          label-width="100px"
+          class="demo-ruleForm"
+        >
+          <el-form-item label="路线名称" prop="name">
+            <el-input
+              v-model="ruleForm.name"
+              :disabled="ruleForm.disabled"
+            ></el-input>
+          </el-form-item>
+        </el-form>
         <div id="allmap" class="drivingTrackmap"></div>
-        <!-- <mapview @baiduMap="baiduMap" class="drivingTrackmap"></mapview> -->
       </div>
     </mydialog>
   </div>
@@ -45,6 +58,16 @@ export default {
   name: "drivingTrack",
   data() {
     return {
+      ruleForm: {
+        name: "",
+        disabled: false
+      },
+      rules: {
+        name: [
+          { required: true, message: "请输入路线名称", trigger: "blur" },
+          { max: 20, message: "最多20个字符", trigger: "blur" }
+        ]
+      },
       type: "",
       driving: "",
       map: "",
@@ -111,6 +134,8 @@ export default {
                   this.type = "see";
                   this.dialogData.footshow = false;
                   this.dialogData.outerVisible = true;
+                  (this.ruleForm.disabled = true),
+                    (this.ruleForm.name = row.Route);
                   this.dialogData.outertitle = "巡更路线管理详情";
                   this.baiduMap(index, row);
                 }
@@ -121,35 +146,28 @@ export default {
                 disabled: false,
                 click: (index, row) => {
                   this.type = "edit";
-                  this.index = index;
                   this.dialogData.outertitle = "巡更路线管理编辑";
-                  this.dialogData.footshow = true;
                   this.dialogData.outerVisible = true;
-                  this.map = new BMap.Map("allmap");
-                  this.map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
-                  let startlng = Number(row.startPoint.split(",")[0]);
-                  let startlat = Number(row.startPoint.split(",")[1]);
-                  let endlng = Number(row.entdPoint.split(",")[0]);
-                  let endlat = Number(row.entdPoint.split(",")[1]);
-                  var myP1 = new BMap.Point(startlng, startlat); //起点
-                  var myP2 = new BMap.Point(endlng, endlat); //终点
-                  this.map.centerAndZoom(this.point, 13); // 初始化地图，设置中心点坐标和地图级别
-                  var driving = new BMap.DrivingRoute(this.map, {
-                    renderOptions: { map: this.map, autoViewport: true,  enableDragging: true  }
+                  this.dialogData.footshow = true;
+                  this.startMarker = null;
+                  this.endMarker = null;
+                  this.ruleForm.name = row.Route;
+                  this.ruleForm.disabled = false;
+                  this.$nextTick(() => {
+                    this.map = new BMap.Map("allmap");
+                    this.point = new BMap.Point(116.404, 39.915); // 创建点坐标
+                    this.map.centerAndZoom(this.point, 12); // 初始化地图，设置中心点坐标和地图级别
+                    this.map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
+                    let startlng = Number(row.startPoint.split(",")[0]);
+                    let startlat = Number(row.startPoint.split(",")[1]);
+                    let endlng = Number(row.entdPoint.split(",")[0]);
+                    let endlat = Number(row.entdPoint.split(",")[1]);
+                    var myP1 = new BMap.Point(startlng, startlat); //起点
+                    var myP2 = new BMap.Point(endlng, endlat); //终点
+                    this.Search();
+                    this.setStarting(myP1);
+                    this.setEnd(myP2);
                   });
-                  driving.search(myP1, myP2);
-                  var label = new BMap.Label("线路:" + row.Route, {
-                    position: myP1, // 指定文本标注所在的地理位置
-                    offset: new BMap.Size(30, -30) //设置文本偏移量
-                  }); // 创建文本标注对象
-                  label.setStyle({
-                    color: "red",
-                    fontSize: "12px",
-                    height: "20px",
-                    lineHeight: "20px",
-                    fontFamily: "微软雅黑"
-                  });
-                  this.map.addOverlay(label);
                 }
               },
               {
@@ -247,8 +265,6 @@ export default {
                 this.addsubmit();
               } else if (this.type == "edit") {
                 this.editsubmit();
-              } else if (this.typ == "see") {
-                this.seesubmit();
               }
             }
           },
@@ -257,6 +273,7 @@ export default {
             type: "",
             click: () => {
               this.dialogData.outerVisible = false;
+              this.$refs.ruleForm.resetFields();
             }
           }
         ]
@@ -272,6 +289,7 @@ export default {
   methods: {
     //查看
     baiduMap(index, row) {
+      let that=this;
       this.$nextTick(() => {
         this.map = new BMap.Map("allmap");
         this.map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
@@ -286,18 +304,6 @@ export default {
           renderOptions: { map: this.map, autoViewport: true }
         });
         driving.search(myP1, myP2);
-        var label = new BMap.Label("线路:" + row.Route, {
-          position: myP1, // 指定文本标注所在的地理位置
-          offset: new BMap.Size(30, -30) //设置文本偏移量
-        }); // 创建文本标注对象
-        label.setStyle({
-          color: "red",
-          fontSize: "12px",
-          height: "20px",
-          lineHeight: "20px",
-          fontFamily: "微软雅黑"
-        });
-        this.map.addOverlay(label);
       });
     },
     onSubmit() {
@@ -312,67 +318,100 @@ export default {
       this.dialogData.outertitle = "巡更路线管理新增";
       this.dialogData.outerVisible = true;
       this.dialogData.footshow = true;
+      this.startMarker = null;
+      this.endMarker = null;
+      this.ruleForm.name = "";
+      this.ruleForm.disabled = false;
       this.$nextTick(() => {
-        this.map = new BMap.Map("allmap");
-        this.point = new BMap.Point(116.404, 39.915); // 创建点坐标
-        this.map.centerAndZoom(this.point, 12); // 初始化地图，设置中心点坐标和地图级别
-        this.map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
-        this.Search();
-        let that = this;
-        this.map.addEventListener("rightclick", function(e) {
-          console.log(e);
-          var mapmenu = new BMap.ContextMenu();
-          mapmenu.addItem(
-            new BMap.MenuItem(
-              "设为起点",
-              e => {
-                let startPoi = new BMap.Point(e.lng, e.lat);
-                if (that.startMarker == null) {
-                  var myIcon = new BMap.Icon(shartpic, new BMap.Size(32, 32));
-                  that.startMarker = new BMap.Marker(startPoi, {
-                    icon: myIcon
-                  });
-                  that.startMarker.enableDragging();
-                  that.map.addOverlay(that.startMarker);
-                } else {
-                  that.startMarker.setPosition(startPoi);
-                }
-                if (that.endMarker != null) {
-                  that.searchRoad();
-                }
-              },
-              {
-                iconUrl: smallstart
-              }
-            )
-          );
-          mapmenu.addItem(
-            new BMap.MenuItem(
-              "设为终点",
-              e => {
-                let endPoi = new BMap.Point(e.lng, e.lat);
-                if (that.endMarker == null) {
-                  var myIcon = new BMap.Icon(endpic, new BMap.Size(32, 32));
-                  that.endMarker = new BMap.Marker(endPoi, {
-                    icon: myIcon
-                  });
-                  that.endMarker.enableDragging();
-                  that.map.addOverlay(that.endMarker);
-                } else {
-                  that.endMarker.setPosition(endPoi);
-                }
-                if (that.startMarker != null) {
-                  that.searchRoad();
-                }
-              },
-              {
-                iconUrl: smallend
-              }
-            )
-          );
-          that.map.addContextMenu(mapmenu);
+          this.map = new BMap.Map("allmap");
+          this.point = new BMap.Point(116.404, 39.915); // 创建点坐标
+          this.map.centerAndZoom(this.point, 12); // 初始化地图，设置中心点坐标和地图级别
+          this.map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
+          this.Search();
+          let that = this;
+          this.map.addEventListener("rightclick", that.mapmenu);
         });
-      });
+    },
+    //右击菜单
+    mapmenu(e) {
+      var mapmenu = new BMap.ContextMenu();
+      mapmenu.addItem(
+        new BMap.MenuItem(
+          "设为起点",
+          e => {
+            console.log(e);
+            this.setStarting(e);
+          },
+          {
+            iconUrl: smallstart
+          }
+        )
+      );
+      mapmenu.addItem(
+        new BMap.MenuItem(
+          "设为终点",
+          e => {
+            this.setEnd(e);
+          },
+          {
+            iconUrl: smallend
+          }
+        )
+      );
+      this.map.addContextMenu(mapmenu);
+    },
+    //设为起点
+    setStarting(e) {
+      let startPoi = new BMap.Point(e.lng, e.lat);
+      var myIcon = new BMap.Icon(shartpic, new BMap.Size(32, 32));
+      if (this.startMarker == null) {
+        this.startMarker = new BMap.Marker(startPoi, {
+          icon: myIcon
+        });
+        this.startMarker.enableDragging();
+        this.map.addOverlay(this.startMarker);
+      } else {
+        this.transit.clearResults();
+        this.map.removeOverlay(this.startMarker);
+        this.startMarker = null;
+        this.startPoi = startPoi;
+        this.startMarker = new BMap.Marker(startPoi, {
+          icon: myIcon
+        });
+        this.startMarker.enableDragging();
+        this.map.addOverlay(this.startMarker);
+        this.startMarker.setPosition(this.startPoi);
+      }
+      if (this.endMarker != null) {
+        this.searchRoad();
+      }
+    },
+    //设为终点
+    setEnd(e) {
+      let endPoi = new BMap.Point(e.lng, e.lat);
+      if (this.endMarker == null) {
+        var myIcon = new BMap.Icon(endpic, new BMap.Size(32, 32));
+        this.endMarker = new BMap.Marker(endPoi, {
+          icon: myIcon
+        });
+        this.endMarker.enableDragging();
+        this.map.addOverlay(this.endMarker);
+      } else {
+        this.transit.clearResults();
+        this.map.removeOverlay(this.endMarker);
+        this.endMarker = null;
+        this.endPoi = endPoi;
+        var myIcon = new BMap.Icon(endpic, new BMap.Size(32, 32));
+        this.endMarker = new BMap.Marker(endPoi, {
+          icon: myIcon
+        });
+        this.endMarker.enableDragging();
+        this.map.addOverlay(this.endMarker);
+        this.endMarker.setPosition(this.endPoi);
+      }
+      if (this.startMarker != null) {
+        this.searchRoad();
+      }
     },
     Search() {
       let that = this;
@@ -382,25 +421,26 @@ export default {
           enableDragging: true //起终点可进行拖拽
         },
         onSearchComplete: function(results) {
-          console.log(results);
-          // if (that.transit.getStatus()) {
-          //   var a = results.getStart();
-          //   that.startPoi = results.getStart().point;
-          //   that.endPoi = results.getEnd().point;
-          //   var pos = results.getPlan(0).getDragPois();
-          //   that.dragPois = [];
-          //   for (var i = 0; i < pos.length; i++) {
-          //     that.dragPois.push(pos[i].point);
-          //   }
-          // }
+          if (that.transit.getStatus() == BMAP_STATUS_SUCCESS) {
+            var a = results.getStart();
+            that.startPoi = results.getStart().point;
+            that.endPoi = results.getEnd().point;
+            var pos = results.getPlan(0).getDragPois();
+            that.dragPois = [];
+            for (var i = 0; i < pos.length; i++) {
+              that.dragPois.push(pos[i].point);
+            }
+          }
         }
       });
     },
     searchRoad() {
+      this.map.removeOverlay(this.startMarker);
+      this.map.removeOverlay(this.endMarker);
       this.startPoi = null;
       this.endPoi = null;
       this.dragPois = null;
-      // this.Search();
+      this.Search();
       this.transit.search(
         this.startMarker.getPosition(),
         this.endMarker.getPosition()
@@ -409,10 +449,54 @@ export default {
       this.map.removeOverlay(this.endMarker);
     },
     addsubmit() {
-      this.dialogData.outerVisible = false;
+      this.$refs.ruleForm.validate(valid => {
+        if (valid) {
+          if (this.startMarker == null || this.endMarker == null) {
+            this.$message({
+              message: "尚无可保存路线",
+              type: "error",
+              showClose: true,
+              offset: 300
+            });
+          } else {
+            var myDate = new Date();
+            var mytime = formatWithSeparator(myDate, "-", ":"); //获取当前时间
+            let data = {
+              Route: this.ruleForm.name,
+              startPoint: this.startPoi.lng + "," + this.startPoi.lat,
+              entdPoint: this.endPoi.lng + "," + this.endPoi.lat,
+              Creationtime: mytime
+            };
+            this.table.tableData.unshift(data);
+            this.dialogData.outerVisible = false;
+          }
+        }
+      });
     },
     editsubmit() {
-      this.dialogData.outerVisible = false;
+      this.$refs.ruleForm.validate(valid => {
+        if (valid) {
+          if (this.startMarker == null || this.endMarker == null) {
+            this.$message({
+              message: "尚无可保存路线",
+              type: "error",
+              showClose: true,
+              offset: 300
+            });
+          } else {
+            var myDate = new Date();
+            var mytime = formatWithSeparator(myDate, "-", ":"); //获取当前时间
+            let data = {
+              Route: this.ruleForm.name,
+              startPoint: this.startPoi.lng + "," + this.startPoi.lat,
+              entdPoint: this.endPoi.lng + "," + this.endPoi.lat,
+              Creationtime: mytime
+            };
+            this.table.tableData.splice(this.index, 1, data);
+            this.dialogData.outerVisible = false;
+          }
+        }
+      });
     }
   }
 };
@@ -442,7 +526,17 @@ export default {
     font-weight: 600;
   }
   .drivingTrackmap {
-    height: 420px;
+    height: 360px;
+  }
+}
+</style>
+<style lang="scss">
+.drivingTrack {
+  .el-input.is-disabled .el-input__inner {
+    background-color: #f5f7fa;
+    border-color: #e4e7ed;
+    color: #303133;
+    cursor: not-allowed;
   }
 }
 </style>

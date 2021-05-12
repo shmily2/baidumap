@@ -11,7 +11,7 @@
         :key="index"
         :label="item.label"
         :prop="item.prop"
-        :class="[{ slotclass: item.type == 'slot' }]"
+        :class="[{ slotclass: item.type == 'slot' && item.class }]"
         :required="item.required"
       >
         <!-- input框只读点击事件 -->
