@@ -48,6 +48,7 @@ export default {
     let that = this;
     return {
       type: "",
+      row: "",
       tadatabox: [
         {
           id: 1,
@@ -220,6 +221,7 @@ export default {
                 click: (index, row) => {
                   this.type = "edit";
                   this.index = index;
+                  this.row = row;
                   this.dialogData.outertitle = "巡更排班管理编辑";
                   this.dialogData.footshow = true;
                   this.dialogData.outerVisible = true;
@@ -449,7 +451,8 @@ export default {
   methods: {
     paging() {
       if (this.table.tableData.length < 2) {
-        this.table.currentPage = this.table.currentPage> 1 ? this.table.currentPage - 1:1;
+        this.table.currentPage =
+          this.table.currentPage > 1 ? this.table.currentPage - 1 : 1;
       }
       if (
         this.tadatabox.length <
@@ -508,7 +511,13 @@ export default {
     editsubmit() {
       if (this.$refs.fromedit.submitForm()) {
         let data = Object.assign({}, this.editruleForm);
-        this.table.tableData.splice(this.index, 1, data);
+        for (var i = 0; i < this.tadatabox.length; i++) {
+          if (this.tadatabox[i].id == this.row.id) {
+            this.editruleForm.id = new Date();
+            let data = Object.assign({}, this.editruleForm);
+            this.tadatabox.splice(i, 1, data);
+          }
+        }
         this.dialogData.outerVisible = false;
       }
     },

@@ -57,7 +57,75 @@ import smallend from "../../assets/smallend.png";
 export default {
   name: "drivingTrack",
   data() {
+    let that = this;
     return {
+      row:'',
+      tadatabox: [
+        {
+          id: 1,
+          Route: "线路名称77778844877",
+          time: "2021-05-08",
+          startPoint: "118.304903,34.339782",
+          entdPoint: "118.489248,34.283806",
+          Creationtime: "2021-05-07 13:35:27"
+        },
+        {
+          id: 2,
+          Route: "414141",
+          time: "2021-05-06",
+          startPoint: "118.315983,34.307073",
+          entdPoint: "118.316271,34.303882",
+          Creationtime: "2021-05-06 15:30:17"
+        },
+        {
+          id: 3,
+          Route: "1412223",
+          time: "2021-05-06",
+          startPoint: "118.3176,34.306804",
+          entdPoint: "118.357659,34.303693",
+          Creationtime: "2021-04-30 08:53:47"
+        },
+        {
+          id: 4,
+          Route: "12",
+          time: "2021-04-29",
+          startPoint: "118.318247,34.306417",
+          entdPoint: "118.317852,34.30424",
+          Creationtime: "2021-05-07 14:04:31"
+        },
+        {
+          id: 5,
+          Route: "测试112",
+          time: "2021-04-29",
+          startPoint: "118.316235,34.30755",
+          entdPoint: "118.317097,34.305522",
+          Creationtime: "2021-04-29 14:29:11"
+        },
+        {
+          id: 6,
+          Route: "66666",
+          time: "2021-04-01",
+          startPoint: "118.317025,34.306894",
+          entdPoint: "118.327913,34.304926",
+          Creationtime: "2021-04-29 14:13:26"
+        },
+        {
+          id: 7,
+          Route: "3442133123",
+          time: "2021-04-29",
+          startPoint: "118.316343,34.308265",
+          entdPoint: "118.334129,34.30591",
+          Creationtime: "2021-04-29 13:09:26"
+        },
+        {
+          id: 8,
+          Route: "TTTT46778443",
+          time: "2021-04-29",
+          startPoint: "118.322164,34.307251",
+          entdPoint: "118.331147,34.299945",
+          Creationtime: "2021-04-29 13:07:23"
+        }
+      ],
       ruleForm: {
         name: "",
         disabled: false
@@ -146,6 +214,7 @@ export default {
                 disabled: false,
                 click: (index, row) => {
                   this.type = "edit";
+                  this.row = row;
                   this.dialogData.outertitle = "巡更路线管理编辑";
                   this.dialogData.outerVisible = true;
                   this.dialogData.footshow = true;
@@ -177,78 +246,29 @@ export default {
                 type: "danger",
                 disabled: false,
                 click: (index, row) => {
-                  this.table.tableData.splice(index, 1);
+                  for (var i = 0; i < that.tadatabox.length; i++) {
+                    if (this.tadatabox[i].id == row.id) {
+                      this.tadatabox.splice(i, 1);
+                    }
+                  }
                 }
               }
             ]
           }
         ],
-        tableData: [
-          {
-            Route: "线路名称77778844877",
-            time: "2021-05-08",
-            startPoint: "118.304903,34.339782",
-            entdPoint: "118.489248,34.283806",
-            Creationtime: "2021-05-07 13:35:27"
-          },
-          {
-            Route: "414141",
-            time: "2021-05-06",
-            startPoint: "118.315983,34.307073",
-            entdPoint: "118.316271,34.303882",
-            Creationtime: "2021-05-06 15:30:17"
-          },
-          {
-            Route: "1412223",
-            time: "2021-05-06",
-            startPoint: "118.3176,34.306804",
-            entdPoint: "118.357659,34.303693",
-            Creationtime: "2021-04-30 08:53:47"
-          },
-          {
-            Route: "12",
-            time: "2021-04-29",
-            startPoint: "118.318247,34.306417",
-            entdPoint: "118.317852,34.30424",
-            Creationtime: "2021-05-07 14:04:31"
-          },
-          {
-            Route: "测试112",
-            time: "2021-04-29",
-            startPoint: "118.316235,34.30755",
-            entdPoint: "118.317097,34.305522",
-            Creationtime: "2021-04-29 14:29:11"
-          },
-          {
-            Route: "66666",
-            time: "2021-04-01",
-            startPoint: "118.317025,34.306894",
-            entdPoint: "118.327913,34.304926",
-            Creationtime: "2021-04-29 14:13:26"
-          },
-          {
-            Route: "3442133123",
-            time: "2021-04-29",
-            startPoint: "118.316343,34.308265",
-            entdPoint: "118.334129,34.30591",
-            Creationtime: "2021-04-29 13:09:26"
-          },
-          {
-            Route: "TTTT46778443",
-            time: "2021-04-29",
-            startPoint: "118.322164,34.307251",
-            entdPoint: "118.331147,34.299945",
-            Creationtime: "2021-04-29 13:07:23"
-          }
-        ],
+        tableData: [],
         handleSizeChange(val) {
           console.log(`每页 ${val} 条`);
+          that.table.pageSize = val;
+          that.paging();
         },
         handleCurrentChange(val) {
           console.log(`当前页: ${val}`);
+          that.table.currentPage = Number(val);
+          that.paging();
         },
-        currentChange(row){
-          console.log(row)
+        currentChange(row) {
+          console.log(row);
         },
         handleSelectionChange(val) {
           console.log(val);
@@ -285,13 +305,42 @@ export default {
       }
     };
   },
+  watch: {
+    tadatabox: {
+      handler(newValue, oldValue) {
+        this.paging();
+      },
+      deep: true
+    }
+  },
   created() {
-    this.table.total = this.table.tableData.length;
+    this.paging();
     this.$nextTick(() => {
       this.maxheight = this.$refs.table.clientHeight - 120;
     });
   },
   methods: {
+    paging() {
+      if (this.table.tableData.length < 2) {
+        this.table.currentPage =
+          this.table.currentPage > 1 ? this.table.currentPage - 1 : 1;
+      }
+      if (
+        this.tadatabox.length <
+        this.table.currentPage * this.table.pageSize
+      ) {
+        this.table.tableData = this.tadatabox.slice(
+          (this.table.currentPage - 1) * this.table.pageSize,
+          this.tadatabox.length
+        );
+      } else {
+        this.table.tableData = this.tadatabox.slice(
+          (this.table.currentPage - 1) * this.table.pageSize,
+          this.table.currentPage * this.table.pageSize
+        );
+      }
+      this.table.total = this.tadatabox.length;
+    },
     //查看
     baiduMap(index, row) {
       let that = this;
@@ -466,13 +515,16 @@ export default {
           } else {
             var myDate = new Date();
             var mytime = formatWithSeparator(myDate, "-", ":"); //获取当前时间
-            let data = {
+            let value = {
               Route: this.ruleForm.name,
               startPoint: this.startPoi.lng + "," + this.startPoi.lat,
               entdPoint: this.endPoi.lng + "," + this.endPoi.lat,
-              Creationtime: mytime
+              Creationtime: mytime,
+              id: new Date()
             };
-            this.table.tableData.unshift(data);
+            let data = Object.assign({}, value);
+            this.tadatabox.unshift(data);
+            // this.table.tableData.unshift(data);
             this.dialogData.outerVisible = false;
           }
         }
@@ -495,9 +547,14 @@ export default {
               Route: this.ruleForm.name,
               startPoint: this.startPoi.lng + "," + this.startPoi.lat,
               entdPoint: this.endPoi.lng + "," + this.endPoi.lat,
-              Creationtime: mytime
+              Creationtime: mytime,
+              id:myDate,
             };
-            this.table.tableData.splice(this.index, 1, data);
+            for (var i = 0; i < this.tadatabox.length; i++) {
+              if (this.tadatabox[i].id == this.row.id) {
+                   this.tadatabox.splice(i, 1, data);
+              }
+            }
             this.dialogData.outerVisible = false;
           }
         }

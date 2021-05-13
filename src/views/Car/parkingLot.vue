@@ -56,8 +56,48 @@ export default {
         callback();
       }
     };
+    let that = this;
     return {
       type: "",
+      row:'',
+      tadatabox: [
+        {
+          id: 1,
+          NAME: "巡更标准名称3",
+          VARSNAME: "巡更测试类型",
+          IP: "经发局",
+          renshu: "6",
+          cishu: "4",
+          haoshi: "180",
+          yjzztx: "早晚各二次",
+          CONTENT: "pm001",
+          time: "2021-05-07 13:36:39"
+        },
+        {
+          id: 2,
+          renshu: "4",
+          cishu: "4",
+          haoshi: "120",
+          yjzztx: "早晚各一次",
+          NAME: "巡更标准名称2",
+          VARSNAME: "巡更测试类型",
+          IP: "经发局",
+          CONTENT: "pm001",
+          time: "2021-05-06 14:53:28"
+        },
+        {
+          id: 3,
+          NAME: "巡更标准名称1",
+          VARSNAME: "巡更测试类型",
+          IP: "经发局",
+          CONTENT: "pm001",
+          renshu: "6",
+          cishu: "3",
+          yjzztx: "早中晚各一次",
+          haoshi: "360",
+          time: "2021-05-06 14:53:20"
+        }
+      ],
       searchConfig: {
         fromdata: [
           {
@@ -133,6 +173,7 @@ export default {
                 click: (index, row) => {
                   this.type = "edit";
                   this.index = index;
+                  this.row=row
                   this.dialogData.outertitle = "巡更标准管理编辑";
                   this.dialogData.footshow = true;
                   this.dialogData.outerVisible = true;
@@ -155,55 +196,27 @@ export default {
                 type: "danger",
                 disabled: false,
                 click: (index, row) => {
-                  this.table.tableData.splice(index, 1);
+                  for (var i = 0; i < that.tadatabox.length; i++) {
+                    if (this.tadatabox[i].id == row.id) {
+                      this.tadatabox.splice(i, 1);
+                    }
+                  }
                 }
               }
             ]
           }
         ],
-        tableData: [
-          {
-            id: 1,
-            NAME: "巡更标准名称3",
-            VARSNAME: "巡更测试类型",
-            IP: "经发局",
-            renshu: "6",
-            cishu: "4",
-            haoshi: "180",
-            yjzztx: "早晚各二次",
-            CONTENT: "pm001",
-            time: "2021-05-07 13:36:39"
-          },
-          {
-            id: 2,
-            renshu: "4",
-            cishu: "4",
-            haoshi: "120",
-            yjzztx: "早晚各一次",
-            NAME: "巡更标准名称2",
-            VARSNAME: "巡更测试类型",
-            IP: "经发局",
-            CONTENT: "pm001",
-            time: "2021-05-06 14:53:28"
-          },
-          {
-            id: 3,
-            NAME: "巡更标准名称1",
-            VARSNAME: "巡更测试类型",
-            IP: "经发局",
-            CONTENT: "pm001",
-            renshu: "6",
-            cishu: "3",
-            yjzztx: "早中晚各一次",
-            haoshi: "360",
-            time: "2021-05-06 14:53:20"
-          }
-        ],
+        tableData: [],
+
         handleSizeChange(val) {
           console.log(`每页 ${val} 条`);
+          that.table.pageSize = val;
+          that.paging();
         },
         handleCurrentChange(val) {
           console.log(`当前页: ${val}`);
+          that.table.currentPage = Number(val);
+          that.paging();
         },
         currentChange(row) {
           console.log(row);
@@ -335,14 +348,43 @@ export default {
       editformName: "editfrom"
     };
   },
+  watch: {
+    tadatabox: {
+      handler(newValue, oldValue) {
+        this.paging();
+      },
+      deep: true
+    }
+  },
   created() {
-    this.table.total = this.table.tableData.length;
+    this.paging();
     this.$nextTick(() => {
       this.maxheight = this.$refs.table.clientHeight - 120;
       console.log(this.maxheight);
     });
   },
   methods: {
+    paging() {
+      if (this.table.tableData.length < 2) {
+        this.table.currentPage =
+          this.table.currentPage > 1 ? this.table.currentPage - 1 : 1;
+      }
+      if (
+        this.tadatabox.length <
+        this.table.currentPage * this.table.pageSize
+      ) {
+        this.table.tableData = this.tadatabox.slice(
+          (this.table.currentPage - 1) * this.table.pageSize,
+          this.tadatabox.length
+        );
+      } else {
+        this.table.tableData = this.tadatabox.slice(
+          (this.table.currentPage - 1) * this.table.pageSize,
+          this.table.currentPage * this.table.pageSize
+        );
+      }
+      this.table.total = this.tadatabox.length;
+    },
     onSubmit() {
       this.$refs.fromdemo.submitForm();
     },
@@ -373,15 +415,21 @@ export default {
         var myDate = new Date();
         var mytime = formatWithSeparator(myDate, "-", ":"); //获取当前时间
         this.editruleForm.time = mytime;
+        this.editruleForm.id = myDate;
         let data = Object.assign({}, this.editruleForm);
-        this.table.tableData.unshift(data);
+        this.tadatabox.unshift(data);
         this.dialogData.outerVisible = false;
       }
     },
     editsubmit() {
       if (this.$refs.fromedit.submitForm()) {
-        let data = Object.assign({}, this.editruleForm);
-        this.table.tableData.splice(this.index, 1, data);
+        for (var i = 0; i < this.tadatabox.length; i++) {
+          if (this.tadatabox[i].id == this.row.id) {
+            this.editruleForm.id =new Date()
+            let data = Object.assign({}, this.editruleForm);
+            this.tadatabox.splice(i, 1,data);
+          }
+        }
         this.dialogData.outerVisible = false;
       }
     },

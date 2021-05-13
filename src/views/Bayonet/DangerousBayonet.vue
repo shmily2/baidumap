@@ -48,8 +48,36 @@ import { formatWithSeparator } from "../../utils/datetime";
 export default {
   name: "parkingLot",
   data() {
+    let that = this;
     return {
       type: "",
+      row: "",
+      tadatabox: [
+        {
+          id: 1,
+          NAME: "园区入侵",
+          VARSNAME: "一般",
+          STATUS: "短信内容短信内容短信内容",
+          CONTENT: "黄总",
+          time: "2021-05-07 14:00:18"
+        },
+        {
+          id: 2,
+          NAME: "园区入侵",
+          VARSNAME: "一般",
+          STATUS: "23",
+          CONTENT: "xyadmin,dataAdmin",
+          time: "2021-04-29 15:09:20"
+        },
+        {
+          id: 3,
+          NAME: "园区入侵",
+          VARSNAME: "一般",
+          STATUS: "短信内容短信内容短信内容短信内容短信内容1",
+          CONTENT: "王默,黄总,陈昶睿,卡口值班员, 佟雨泽,陈烁,王一",
+          time: "2021-04-29 15:08:53"
+        }
+      ],
       searchConfig: {
         fromdata: [
           {
@@ -124,6 +152,7 @@ export default {
                 click: (index, row) => {
                   this.type = "edit";
                   this.index = index;
+                  this.row = row;
                   this.dialogData.footshow = true;
                   this.dialogData.outertitle = "预警通知管理编辑";
                   this.dialogData.outerVisible = true;
@@ -146,43 +175,26 @@ export default {
                 type: "danger",
                 disabled: false,
                 click: (index, row) => {
-                  this.table.tableData.splice(index, 1);
+                  for (var i = 0; i < that.tadatabox.length; i++) {
+                    if (this.tadatabox[i].id == row.id) {
+                      this.tadatabox.splice(i, 1);
+                    }
+                  }
                 }
               }
             ]
           }
         ],
-        tableData: [
-          {
-            id: 1,
-            NAME: "园区入侵",
-            VARSNAME: "一般",
-            STATUS: "短信内容短信内容短信内容",
-            CONTENT: "黄总",
-            time: "2021-05-07 14:00:18"
-          },
-          {
-            id: 2,
-            NAME: "园区入侵",
-            VARSNAME: "一般",
-            STATUS: "23",
-            CONTENT: "xyadmin,dataAdmin",
-            time: "2021-04-29 15:09:20"
-          },
-          {
-            id: 3,
-            NAME: "园区入侵",
-            VARSNAME: "一般",
-            STATUS: "短信内容短信内容短信内容短信内容短信内容1",
-            CONTENT: "王默,黄总,陈昶睿,卡口值班员, 佟雨泽,陈烁,王一",
-            time: "2021-04-29 15:08:53"
-          }
-        ],
+        tableData: [],
         handleSizeChange(val) {
           console.log(`每页 ${val} 条`);
+          that.table.pageSize = val;
+          that.paging();
         },
         handleCurrentChange(val) {
           console.log(`当前页: ${val}`);
+          that.table.currentPage = Number(val);
+          that.paging();
         },
         currentChange(row) {
           console.log(row);
@@ -560,14 +572,43 @@ export default {
       editformName: "editfrom"
     };
   },
+  watch: {
+    tadatabox: {
+      handler(newValue, oldValue) {
+        this.paging();
+      },
+      deep: true
+    }
+  },
   created() {
-    this.table.total = this.table.tableData.length;
+    this.paging();
     this.$nextTick(() => {
       this.maxheight = this.$refs.table.clientHeight - 120;
       console.log(this.maxheight);
     });
   },
   methods: {
+    paging() {
+      if (this.table.tableData.length < 2) {
+        this.table.currentPage =
+          this.table.currentPage > 1 ? this.table.currentPage - 1 : 1;
+      }
+      if (
+        this.tadatabox.length <
+        this.table.currentPage * this.table.pageSize
+      ) {
+        this.table.tableData = this.tadatabox.slice(
+          (this.table.currentPage - 1) * this.table.pageSize,
+          this.tadatabox.length
+        );
+      } else {
+        this.table.tableData = this.tadatabox.slice(
+          (this.table.currentPage - 1) * this.table.pageSize,
+          this.table.currentPage * this.table.pageSize
+        );
+      }
+      this.table.total = this.tadatabox.length;
+    },
     onSubmit() {
       this.$refs.fromdemo.submitForm();
     },
@@ -598,6 +639,7 @@ export default {
         var myDate = new Date();
         var mytime = formatWithSeparator(myDate, "-", ":"); //获取当前时间
         this.editruleForm.time = mytime;
+        this.editruleForm.id = myDate;
         this.editruleForm.CONTENT = "";
         if (this.editruleForm.CONTENTVALUE.length > 0) {
           for (let i = 0; i < this.editruleForm.CONTENTVALUE.length; i++) {
@@ -607,7 +649,7 @@ export default {
           }
         }
         let data = Object.assign({}, this.editruleForm);
-        this.table.tableData.unshift(data);
+        this.tadatabox.unshift(data);
         this.dialogData.outerVisible = false;
       }
     },
@@ -621,7 +663,13 @@ export default {
         }
       }
       let data = Object.assign({}, this.editruleForm);
-      this.table.tableData.splice(this.index, 1, data);
+      for (var i = 0; i < this.tadatabox.length; i++) {
+        if (this.tadatabox[i].id == this.row.id) {
+          this.editruleForm.id = new Date();
+          let data = Object.assign({}, this.editruleForm);
+          this.tadatabox.splice(i, 1, data);
+        }
+      }
       this.dialogData.outerVisible = false;
     },
     seesubmit() {}

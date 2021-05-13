@@ -62,8 +62,80 @@ export default {
         }
       }
     };
+    let that = this;
     return {
       type: "",
+      row: "",
+      tadatabox: [
+        {
+          id: 1,
+          STATUS: "园区入侵",
+          NAME: "50",
+          VARSNAME: "红外摄像头",
+          IP: "118.304903,34.339782",
+          CONTENT: "192.168.3.12",
+          time: "2021-05-07 16:27:08",
+          yleftvalue: 51,
+          yrightvalue: 70,
+          eleftvalue: 71,
+          erightvalue: 100,
+          sleftvalue: 101,
+          srightvalue: 120,
+          fleftvalue: 121,
+          frightvalue: 140
+        },
+        {
+          id: 2,
+          STATUS: "人员信息异常",
+          NAME: "20",
+          VARSNAME: "AI摄像头",
+          IP: "118.315983,34.307073",
+          CONTENT: "192.168.1.14",
+          time: "2021-05-08 13:55:57",
+          yleftvalue: 21,
+          yrightvalue: 40,
+          eleftvalue: 41,
+          erightvalue: 60,
+          sleftvalue: 61,
+          srightvalue: 80,
+          fleftvalue: 81,
+          frightvalue: 100
+        },
+        {
+          id: 3,
+          STATUS: "人员行为异常",
+          NAME: "30",
+          VARSNAME: "湿度感应器",
+          IP: "118.3176,34.306804",
+          CONTENT: "192.160.0.27",
+          time: "2021-04-29 15:11:40",
+          yleftvalue: 31,
+          yrightvalue: 50,
+          eleftvalue: 51,
+          erightvalue: 70,
+          sleftvalue: 71,
+          srightvalue: 90,
+          fleftvalue: 91,
+          frightvalue: 110
+        },
+        {
+          id: 4,
+          STATUS: "车辆行为异常",
+          NAME: "40",
+          VARSNAME: "气压感应器",
+          IP: "118.318247,34.306417",
+          CONTENT: "192.0.0.167",
+          time: "2021-04-29 13:56:24",
+          yleftvalue: 41,
+          yrightvalue: 60,
+          eleftvalue: 61,
+          erightvalue: 80,
+          sleftvalue: 81,
+          srightvalue: 100,
+          fleftvalue: 101,
+          frightvalue: 120
+        }
+      ],
       searchConfig: {
         fromdata: [
           {
@@ -157,6 +229,7 @@ export default {
                 click: (index, row) => {
                   this.type = "edit";
                   this.index = index;
+                  this.row = row;
                   this.dialogData.outertitle = "预警数值管理编辑";
                   this.dialogData.footshow = true;
                   this.dialogData.outerVisible = true;
@@ -179,86 +252,25 @@ export default {
                 type: "danger",
                 disabled: false,
                 click: (index, row) => {
-                  this.table.tableData.splice(index, 1);
+                  for (var i = 0; i < that.tadatabox.length; i++) {
+                    if (this.tadatabox[i].id == row.id) {
+                      this.tadatabox.splice(i, 1);
+                    }
+                  }
                 }
               }
             ]
           }
         ],
-        tableData: [
-          {
-            id: 1,
-            STATUS: "园区入侵",
-            NAME: "50",
-            VARSNAME: "红外摄像头",
-            IP: "118.304903,34.339782",
-            CONTENT: "192.168.3.12",
-            time: "2021-05-07 16:27:08",
-            yleftvalue: 51,
-            yrightvalue: 70,
-            eleftvalue: 71,
-            erightvalue: 100,
-            sleftvalue: 101,
-            srightvalue: 120,
-            fleftvalue: 121,
-            frightvalue: 140
-          },
-          {
-            id: 2,
-            STATUS: "人员信息异常",
-            NAME: "20",
-            VARSNAME: "AI摄像头",
-            IP: "118.315983,34.307073",
-            CONTENT: "192.168.1.14",
-            time: "2021-05-08 13:55:57",
-            yleftvalue: 21,
-            yrightvalue: 40,
-            eleftvalue: 41,
-            erightvalue: 60,
-            sleftvalue: 61,
-            srightvalue: 80,
-            fleftvalue: 81,
-            frightvalue: 100
-          },
-          {
-            id: 3,
-            STATUS: "人员行为异常",
-            NAME: "30",
-            VARSNAME: "湿度感应器",
-            IP: "118.3176,34.306804",
-            CONTENT: "192.160.0.27",
-            time: "2021-04-29 15:11:40",
-            yleftvalue: 31,
-            yrightvalue: 50,
-            eleftvalue: 51,
-            erightvalue: 70,
-            sleftvalue: 71,
-            srightvalue: 90,
-            fleftvalue: 91,
-            frightvalue: 110
-          },
-          {
-            id: 4,
-            STATUS: "车辆行为异常",
-            NAME: "40",
-            VARSNAME: "气压感应器",
-            IP: "118.318247,34.306417",
-            CONTENT: "192.0.0.167",
-            time: "2021-04-29 13:56:24",
-            yleftvalue: 41,
-            yrightvalue: 60,
-            eleftvalue: 61,
-            erightvalue: 80,
-            sleftvalue: 81,
-            srightvalue: 100,
-            fleftvalue: 101,
-            frightvalue: 120
-          }
-        ],
+        tableData: [],
         handleSizeChange(val) {
           console.log(`每页 ${val} 条`);
+          that.table.pageSize = val;
+          that.paging();
         },
         handleCurrentChange(val) {
+          that.table.currentPage = Number(val);
+          that.paging();
           console.log(`当前页: ${val}`);
         },
         currentChange(row) {
@@ -503,14 +515,43 @@ export default {
       editformName: "editfrom"
     };
   },
+  watch: {
+    tadatabox: {
+      handler(newValue, oldValue) {
+        this.paging();
+      },
+      deep: true
+    }
+  },
   created() {
-    this.table.total = this.table.tableData.length;
+    this.paging();
     this.$nextTick(() => {
       this.maxheight = this.$refs.table.clientHeight - 120;
       console.log(this.maxheight);
     });
   },
   methods: {
+    paging() {
+      if (this.table.tableData.length < 2) {
+        this.table.currentPage =
+          this.table.currentPage > 1 ? this.table.currentPage - 1 : 1;
+      }
+      if (
+        this.tadatabox.length <
+        this.table.currentPage * this.table.pageSize
+      ) {
+        this.table.tableData = this.tadatabox.slice(
+          (this.table.currentPage - 1) * this.table.pageSize,
+          this.tadatabox.length
+        );
+      } else {
+        this.table.tableData = this.tadatabox.slice(
+          (this.table.currentPage - 1) * this.table.pageSize,
+          this.table.currentPage * this.table.pageSize
+        );
+      }
+      this.table.total = this.tadatabox.length;
+    },
     onSubmit() {
       this.$refs.fromdemo.submitForm();
     },
@@ -539,13 +580,20 @@ export default {
     addsubmit() {
       if (this.$refs.fromedit.submitForm()) {
         let data = Object.assign({}, this.editruleForm);
-        this.table.tableData.unshift(data);
+        data.id = new Date();
+        this.tadatabox.unshift(data);
         this.dialogData.outerVisible = false;
       }
     },
     editsubmit() {
       let data = Object.assign({}, this.editruleForm);
-      this.table.tableData.splice(this.index, 1, data);
+      for (var i = 0; i < this.tadatabox.length; i++) {
+        if (this.tadatabox[i].id == this.row.id) {
+          this.editruleForm.id = new Date();
+          let data = Object.assign({}, this.editruleForm);
+          this.tadatabox.splice(i, 1, data);
+        }
+      }
       this.dialogData.outerVisible = false;
     },
     seesubmit() {}
