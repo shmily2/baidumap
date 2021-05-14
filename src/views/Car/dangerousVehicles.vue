@@ -112,7 +112,7 @@ export default {
             typeclick: true,
             style: "color:#409eff;cursor: pointer;",
             prop: "NAME",
-            minWidth: "200",
+            width: "200",
             click: (item, row) => {
               console.log(item);
               console.log(row);
@@ -130,11 +130,11 @@ export default {
               });
             }
           },
-          { label: "性别", prop: "sex", minWidth: "180" },
-          { label: "企业", prop: "park", minWidth: "180" },
-          { label: "电话", prop: "phone", minWidth: "180" },
-          { label: "地址", prop: "address", minWidth: "180" },
-          { label: "是否为巡更人员", prop: "whether", minWidth: "180" }
+          { label: "性别", prop: "sex", width: "180" },
+          { label: "企业", prop: "park", width: "180" },
+          { label: "电话", prop: "phone", width: "180" },
+          { label: "地址", prop: "address", width: "180" },
+          { label: "是否为巡更人员", prop: "whether", width: "180" }
         ],
         tableData: [
           {

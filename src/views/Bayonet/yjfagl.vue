@@ -193,11 +193,11 @@ export default {
         total: 0,
         tableLabel: [
           { label: "序号", type: "index", prop: "index" },
-          { label: "设备类型", prop: "VARSNAME", minWidth: "180" },
-          { label: "设备IP", prop: "CONTENT", minWidth: "180" },
-          { label: "设备位置", prop: "IP", minWidth: "180" },
-          { label: "预警名称", prop: "STATUS", minWidth: "180" },
-          { label: "预警阈值", prop: "NAME", minWidth: "180" },
+          { label: "设备类型", prop: "VARSNAME", width: "180" },
+          { label: "设备IP", prop: "CONTENT", width: "180" },
+          { label: "设备位置", prop: "IP", width: "180" },
+          { label: "预警名称", prop: "STATUS", width: "180" },
+          { label: "预警阈值", prop: "NAME", width: "180" },
           {
             type: "button",
             label: "操作",

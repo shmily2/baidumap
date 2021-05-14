@@ -183,12 +183,12 @@ export default {
           {
             label: "路线名称",
             prop: "Route",
-            minWidth: "200",
+            width: "200",
             click: true
           },
-          { label: "起点", prop: "startPoint", minWidth: "180" },
-          { label: "终点", prop: "entdPoint", minWidth: "180" },
-          { label: "创建时间", prop: "Creationtime", minWidth: "180" },
+          { label: "起点", prop: "startPoint", width: "180" },
+          { label: "终点", prop: "entdPoint", width: "180" },
+          { label: "创建时间", prop: "Creationtime", width: "180" },
           {
             type: "button",
             label: "操作",
@@ -200,6 +200,7 @@ export default {
                 disabled: false,
                 click: (index, row) => {
                   this.type = "see";
+                  mapmenu = new BMap.ContextMenu();
                   this.dialogData.footshow = false;
                   this.dialogData.outerVisible = true;
                   (this.ruleForm.disabled = true),
@@ -418,7 +419,7 @@ export default {
     //设为起点
     setStarting(e) {
       let startPoi = new BMap.Point(e.lng, e.lat);
-      var myIcon = new BMap.Icon(shartpic, new BMap.Size(32, 32));
+      var myIcon = new BMap.Icon(shartpic, new BMap.Size(42, 34));
       if (this.startMarker == null) {
         this.startMarker = new BMap.Marker(startPoi, {
           icon: myIcon
@@ -445,7 +446,7 @@ export default {
     setEnd(e) {
       let endPoi = new BMap.Point(e.lng, e.lat);
       if (this.endMarker == null) {
-        var myIcon = new BMap.Icon(endpic, new BMap.Size(32, 32));
+        var myIcon = new BMap.Icon(endpic, new BMap.Size(42, 34));
         this.endMarker = new BMap.Marker(endPoi, {
           icon: myIcon
         });
@@ -456,7 +457,7 @@ export default {
         this.map.removeOverlay(this.endMarker);
         this.endMarker = null;
         this.endPoi = endPoi;
-        var myIcon = new BMap.Icon(endpic, new BMap.Size(32, 32));
+        var myIcon = new BMap.Icon(endpic, new BMap.Size(42, 34));
         this.endMarker = new BMap.Marker(endPoi, {
           icon: myIcon
         });

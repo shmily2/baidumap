@@ -69,11 +69,11 @@ export default {
           {
             label: "钮号",
             prop: "NAME",
-            minWidth: "200",
+            width: "200",
             click: true
           },
-          { label: "地址", prop: "VARSNAME", minWidth: "180" },
-          { label: "安装位置", prop: "CONTENT", minWidth: "180" },
+          { label: "地址", prop: "VARSNAME", width: "180" },
+          { label: "安装位置", prop: "CONTENT", width: "180" },
           {
             type: "button",
             label: "操作",

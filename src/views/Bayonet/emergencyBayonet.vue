@@ -115,17 +115,17 @@ export default {
           {
             label: "设备名称",
             prop: "NAME",
-            minWidth: "200",
+            width: "200",
             click: true
           },
-          { label: "设备类型", prop: "VARSNAME", minWidth: "180" },
-          { label: "所属控制区", prop: "CONTENT", minWidth: "180" },
-          { label: "设备ip", prop: "IP", minWidth: "180" },
-          { label: "状态", prop: "STATUS", minWidth: "180" },
+          { label: "设备类型", prop: "VARSNAME", width: "180" },
+          { label: "所属控制区", prop: "CONTENT", width: "180" },
+          { label: "设备ip", prop: "IP", width: "180" },
+          { label: "状态", prop: "STATUS", width: "180" },
           {
             type: "button",
             label: "操作",
-            minWidth: "200",
+            width: "200",
             options: [
               {
                 label: "编辑",

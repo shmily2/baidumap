@@ -183,12 +183,12 @@ export default {
           {
             label: "排班名称",
             prop: "name",
-            minWidth: "200",
+            width: "200",
             click: true
           },
-          { label: "巡更时间", prop: "time", minWidth: "180" },
-          { label: "创建人", prop: "CONTENT", minWidth: "180" },
-          { label: "创建时间", prop: "Creationtime", minWidth: "180" },
+          { label: "巡更时间", prop: "time", width: "180" },
+          { label: "创建人", prop: "CONTENT", width: "180" },
+          { label: "创建时间", prop: "Creationtime", width: "180" },
           {
             type: "button",
             label: "操作",

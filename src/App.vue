@@ -47,4 +47,7 @@ export default {
 [v-cloak] {
   display: none;
 }
+.anchorBL{
+  display:none;
+}
 </style>

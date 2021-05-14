@@ -135,13 +135,13 @@ export default {
           {
             label: "巡更标准名称",
             prop: "NAME",
-            minWidth: "200",
+            width: "200",
             click: true
           },
-          { label: "类型", prop: "VARSNAME", minWidth: "180" },
-          { label: "创建人", prop: "CONTENT", minWidth: "180" },
-          { label: "创建单位", prop: "IP", minWidth: "180" },
-          { label: "创建时间", prop: "time", minWidth: "180" },
+          { label: "类型", prop: "VARSNAME", width: "180" },
+          { label: "创建人", prop: "CONTENT", width: "180" },
+          { label: "创建单位", prop: "IP", width: "180" },
+          { label: "创建时间", prop: "time", width: "180" },
           {
             type: "button",
             label: "操作",
