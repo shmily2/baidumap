@@ -192,7 +192,7 @@ export default {
           {
             type: "button",
             label: "操作",
-            width: "100",
+            width: "200",
             options: [
               {
                 label: "查看",

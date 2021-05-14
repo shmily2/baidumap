@@ -59,7 +59,7 @@ export default {
   data() {
     let that = this;
     return {
-      row:'',
+      row: "",
       tadatabox: [
         {
           id: 1,
@@ -192,7 +192,7 @@ export default {
           {
             type: "button",
             label: "操作",
-            width: "100",
+            width: "200",
             options: [
               {
                 label: "查看",
@@ -200,12 +200,12 @@ export default {
                 disabled: false,
                 click: (index, row) => {
                   this.type = "see";
-                  mapmenu = new BMap.ContextMenu();
                   this.dialogData.footshow = false;
                   this.dialogData.outerVisible = true;
-                  (this.ruleForm.disabled = true),
-                    (this.ruleForm.name = row.Route);
+                  this.ruleForm.disabled = true;
+                  this.ruleForm.name = row.Route;
                   this.dialogData.outertitle = "巡更路线管理详情";
+                  this.map.removeEventListener("rightclick", that.rightmenu);
                   this.baiduMap(index, row);
                 }
               },
@@ -235,7 +235,6 @@ export default {
                     let endlat = Number(row.entdPoint.split(",")[1]);
                     var myP1 = new BMap.Point(startlng, startlat); //起点
                     var myP2 = new BMap.Point(endlng, endlat); //终点
-                    this.map.removeEventListener("rightclick", that.mapmenu);
                     this.Search();
                     this.setStarting(myP1);
                     this.setEnd(myP2);
@@ -356,7 +355,7 @@ export default {
         var myP1 = new BMap.Point(startlng, startlat); //起点
         var myP2 = new BMap.Point(endlng, endlat); //终点
         this.map.centerAndZoom(this.point, 13); // 初始化地图，设置中心点坐标和地图级别
-        this.map.removeEventListener("rightclick", that.mapmenu);
+        this.map.removeEventListener("rightclick", that.rightmenu);
         var driving = new BMap.DrivingRoute(this.map, {
           renderOptions: { map: this.map, autoViewport: true }
         });
@@ -386,13 +385,13 @@ export default {
         this.map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
         this.Search();
         let that = this;
-        this.map.addEventListener("rightclick", that.mapmenu);
+        this.map.addEventListener("rightclick", that.rightmenu);
       });
     },
     //右击菜单
-    mapmenu(e) {
-      var mapmenu = new BMap.ContextMenu();
-      mapmenu.addItem(
+    rightmenu(e) {
+      this.mapmenu = new BMap.ContextMenu();
+      this.mapmenu.addItem(
         new BMap.MenuItem(
           "设为起点",
           e => {
@@ -403,7 +402,7 @@ export default {
           }
         )
       );
-      mapmenu.addItem(
+      this.mapmenu.addItem(
         new BMap.MenuItem(
           "设为终点",
           e => {
@@ -414,7 +413,7 @@ export default {
           }
         )
       );
-      this.map.addContextMenu(mapmenu);
+      this.map.addContextMenu(this.mapmenu);
     },
     //设为起点
     setStarting(e) {
@@ -549,11 +548,11 @@ export default {
               startPoint: this.startPoi.lng + "," + this.startPoi.lat,
               entdPoint: this.endPoi.lng + "," + this.endPoi.lat,
               Creationtime: mytime,
-              id:myDate,
+              id: myDate
             };
             for (var i = 0; i < this.tadatabox.length; i++) {
               if (this.tadatabox[i].id == this.row.id) {
-                   this.tadatabox.splice(i, 1, data);
+                this.tadatabox.splice(i, 1, data);
               }
             }
             this.dialogData.outerVisible = false;
