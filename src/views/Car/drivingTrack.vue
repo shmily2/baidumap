@@ -320,6 +320,7 @@ export default {
     });
   },
   methods: {
+    //假分页
     paging() {
       if (this.table.tableData.length < 2) {
         this.table.currentPage =
@@ -524,7 +525,6 @@ export default {
             };
             let data = Object.assign({}, value);
             this.tadatabox.unshift(data);
-            // this.table.tableData.unshift(data);
             this.dialogData.outerVisible = false;
           }
         }
