@@ -33,6 +33,7 @@
           :ruleForm="editruleForm"
           :rules="editrules"
           :formName="editformName"
+          @casva="casva"
           ref="fromedit"
         >
           <div slot="Basics" class="title">
@@ -58,7 +59,7 @@ export default {
           NAME: "园区入侵",
           VARSNAME: "一般",
           STATUS: "短信内容短信内容短信内容",
-          CONTENT: "黄总",
+          CONTENT: "王庆猛",
           time: "2021-05-07 14:00:18"
         },
         {
@@ -66,7 +67,7 @@ export default {
           NAME: "园区入侵",
           VARSNAME: "一般",
           STATUS: "23",
-          CONTENT: "xyadmin,dataAdmin",
+          CONTENT: "王东升,牛佳",
           time: "2021-04-29 15:09:20"
         },
         {
@@ -74,7 +75,7 @@ export default {
           NAME: "园区入侵",
           VARSNAME: "一般",
           STATUS: "短信内容短信内容短信内容短信内容短信内容1",
-          CONTENT: "王默,黄总,陈昶睿,卡口值班员, 佟雨泽,陈烁,王一",
+          CONTENT: "李南昌,章学辉,陈东,程小亮,梁尊,晏鹏,潘伟,杨学龙,薛飞,邓振",
           time: "2021-04-29 15:08:53"
         }
       ],
@@ -158,6 +159,7 @@ export default {
                   this.dialogData.outerVisible = true;
                   this.$nextTick(() => {
                     Object.assign(this.editruleForm, row);
+                    console.log(this.editruleForm);
                     for (var i = 0; i < this.editConfig.fromdata.length; i++) {
                       if (
                         this.editConfig.fromdata[i].options &&
@@ -553,8 +555,8 @@ export default {
       editruleForm: {
         NAME: "",
         VARSNAME: "",
-        CONTENT: "",
-        CONTENTVALUE: "",
+        CONTENT: [],
+        CONTENTVALUE: [["苏化片区", "江苏蓝丰化工股份公司", "王庆猛"]],
         STATUS: ""
       },
       editrules: {
@@ -672,7 +674,9 @@ export default {
       }
       this.dialogData.outerVisible = false;
     },
-    seesubmit() {}
+    casva(val) {
+      console.log(val)
+    }
   }
 };
 </script>

@@ -355,7 +355,7 @@ export default {
 
     //级联选择
     handleChange(value) {
-      console.log(value);
+      this.$emit("casva",value)
     },
     //按钮事件
     buttonclick(val) {

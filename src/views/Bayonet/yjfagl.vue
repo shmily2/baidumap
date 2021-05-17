@@ -333,7 +333,7 @@ export default {
           },
           {
             type: "input",
-            prop: "STATUS",
+            prop: "IP",
             disabled: false,
             placeholder: "请输入设备位置",
             label: "设备位置",
@@ -341,7 +341,7 @@ export default {
           },
           {
             type: "input",
-            prop: "IP",
+            prop: "STATUS",
             disabled: false,
             placeholder: "请输入预警名称",
             label: "预警名称",

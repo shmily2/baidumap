@@ -205,7 +205,7 @@ export default {
                   this.ruleForm.disabled = true;
                   this.ruleForm.name = row.Route;
                   this.dialogData.outertitle = "巡更路线管理详情";
-                  this.map.removeEventListener("rightclick", that.rightmenu);
+                   //this.map.removeEventListener("rightclick",this.rightmenu);
                   this.baiduMap(index, row);
                 }
               },
@@ -355,7 +355,6 @@ export default {
         var myP1 = new BMap.Point(startlng, startlat); //起点
         var myP2 = new BMap.Point(endlng, endlat); //终点
         this.map.centerAndZoom(this.point, 13); // 初始化地图，设置中心点坐标和地图级别
-        this.map.removeEventListener("rightclick", that.rightmenu);
         var driving = new BMap.DrivingRoute(this.map, {
           renderOptions: { map: this.map, autoViewport: true }
         });
@@ -385,7 +384,7 @@ export default {
         this.map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
         this.Search();
         let that = this;
-        this.map.addEventListener("rightclick", that.rightmenu);
+        this.map.addEventListener("rightclick",that.rightmenu);
       });
     },
     //右击菜单
