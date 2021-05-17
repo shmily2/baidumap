@@ -60,6 +60,7 @@ export default {
           VARSNAME: "一般",
           STATUS: "短信内容短信内容短信内容",
           CONTENT: "王庆猛",
+          CONTENTVALUE: [["苏化片区", "江苏蓝丰化工股份公司", "王庆猛"]],
           time: "2021-05-07 14:00:18"
         },
         {
@@ -68,6 +69,10 @@ export default {
           VARSNAME: "一般",
           STATUS: "23",
           CONTENT: "王东升,牛佳",
+          CONTENTVALUE: [
+            ["苏化片区", "江苏晋煤恒盛化工股份有限公司", "王东升"],
+            ["苏化片区", "江苏晋煤恒盛化工股份有限公司", "牛佳"]
+          ],
           time: "2021-04-29 15:09:20"
         },
         {
@@ -75,6 +80,18 @@ export default {
           NAME: "园区入侵",
           VARSNAME: "一般",
           STATUS: "短信内容短信内容短信内容短信内容短信内容1",
+          CONTENTVALUE: [
+            ["管委会", "李南昌"],
+            ["管委会", "章学辉"],
+            ["管委会", "陈东"],
+            ["管委会", "程小亮"],
+            ["管委会", "梁尊"],
+            ["管委会", "晏鹏"],
+            ["管委会", "潘伟"],
+            ["管委会", "杨学龙"],
+            ["管委会", "薛飞"],
+            ["管委会", "邓振"]
+          ],
           CONTENT: "李南昌,章学辉,陈东,程小亮,梁尊,晏鹏,潘伟,杨学龙,薛飞,邓振",
           time: "2021-04-29 15:08:53"
         }
@@ -159,7 +176,6 @@ export default {
                   this.dialogData.outerVisible = true;
                   this.$nextTick(() => {
                     Object.assign(this.editruleForm, row);
-                    console.log(this.editruleForm);
                     for (var i = 0; i < this.editConfig.fromdata.length; i++) {
                       if (
                         this.editConfig.fromdata[i].options &&
@@ -556,7 +572,7 @@ export default {
         NAME: "",
         VARSNAME: "",
         CONTENT: [],
-        CONTENTVALUE: [["苏化片区", "江苏蓝丰化工股份公司", "王庆猛"]],
+        CONTENTVALUE: [],
         STATUS: ""
       },
       editrules: {
@@ -675,7 +691,7 @@ export default {
       this.dialogData.outerVisible = false;
     },
     casva(val) {
-      console.log(val)
+      console.log(val);
     }
   }
 };

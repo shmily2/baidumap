@@ -147,7 +147,6 @@
         </div>
         <!-- 照片 -->
         <div v-else-if="item.type == 'Photo'">
-
           <el-image
             :src="ruleForm[item.prop]"
             fit="cover"
@@ -355,7 +354,7 @@ export default {
 
     //级联选择
     handleChange(value) {
-      this.$emit("casva",value)
+      this.$emit("casva", value);
     },
     //按钮事件
     buttonclick(val) {
@@ -482,10 +481,13 @@ export default {
   .el-form-item__content > .singledate {
     width: 300px;
   }
-  .el-icon-circle-close:before {
-    content: "\e78d";
-    color: #000;
+  .el-image-viewer__btn {
+    .el-icon-circle-close:before {
+      content: "\e78d";
+      color: #fff;
+    }
   }
+
   .upshowbut {
     display: flex;
     justify-content: space-between;
