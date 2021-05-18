@@ -487,6 +487,10 @@ export default {
       color: #fff;
     }
   }
+  .el-input__suffix-inner {
+    pointer-events: all;
+    color: #888585;
+  } 
 
   .upshowbut {
     display: flex;

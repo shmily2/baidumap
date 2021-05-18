@@ -309,7 +309,7 @@ export default {
             placeholder: "请输入巡更耗时(单次)",
             label: "巡更耗时(单次)",
             click: () => {},
-            suffix: "分钟" //input框尾部的文字
+            suffix: "/分钟" //input框尾部的文字
           },
           {
             type: "textarea",
