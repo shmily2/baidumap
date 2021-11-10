@@ -1,5 +1,6 @@
 //饼图
 export function Doughnut(data) {
+
     let option = {
         // tooltip: {
         //     trigger: 'item',
@@ -13,50 +14,48 @@ export function Doughnut(data) {
             bottom: 20,
             icon: "circle",
             textStyle: {
-                fontSize: 14,//字体大小
-                color: '#ffffff'//字体颜色
+                fontSize: 14, //字体大小
+                color: '#ffffff' //字体颜色
             },
             data: data.legend
         },
-        series: [
-            {
-                name: '人员入园管理',
-                type: 'pie',
-                radius: ['60%', '70%'],
-                center: ['70%', '40%'],
-                avoidLabelOverlap: false,
+        series: [{
+            name: '人员入园管理',
+            type: 'pie',
+            radius: ['60%', '70%'],
+            center: ['70%', '40%'],
+            avoidLabelOverlap: false,
+            label: {
+                show: false,
+                position: 'center'
+            },
+            itemStyle: {
+                borderWidth: 5, //设置border的宽度有多大
+                borderColor: '#161622',
+            },
+            emphasis: {
                 label: {
-                    show: false,
-                    position: 'center'
-                },
-                itemStyle: {
-                    borderWidth: 5, //设置border的宽度有多大
-                    borderColor: '#161622',
-                },
-                emphasis: {
-                    label: {
-                        show: true,
-                        fontSize: '16',
-                        fontWeight: 'bold',
-                        formatter: function (val) {   //让series 中的文字进行换行
-                            return val.data.name + "\n" + "{b|" + val.data.value + "(" + val.percent + "%" + ")" + "}";
-                        },
-                        rich: {
-                            b: {
-                                fontSize: 14,
-                                fontFamily: "微软雅黑",
-                                color: "#fff",
-                                lineHeight: 30
-                            }
+                    show: true,
+                    fontSize: '16',
+                    fontWeight: 'bold',
+                    formatter: function(val) { //让series 中的文字进行换行
+                        return val.data.name + "\n" + "{b|" + val.data.value + "(" + val.percent + "%" + ")" + "}";
+                    },
+                    rich: {
+                        b: {
+                            fontSize: 14,
+                            fontFamily: "微软雅黑",
+                            color: "#fff",
+                            lineHeight: 30
                         }
                     }
-                },
-                labelLine: {
-                    show: false
-                },
-                data: data.information,
-            }
-        ]
+                }
+            },
+            labelLine: {
+                show: false
+            },
+            data: data.information,
+        }]
     };
     data.EChart.setOption(option);
 }
@@ -68,8 +67,8 @@ export function Columnarvar(data) {
             data: [data.nameO, data.nameT],
             icon: "circle",
             textStyle: {
-                fontSize: 14,//字体大小
-                color: '#ffffff'//字体颜色
+                fontSize: 14, //字体大小
+                color: '#ffffff' //字体颜色
             },
         },
         barGap: "0%",
@@ -85,10 +84,10 @@ export function Columnarvar(data) {
                     color: '#fff'
                 }
             },
-            axisLine: {       //x轴
+            axisLine: { //x轴
                 show: false
             },
-            axisTick: {       //x轴刻度线
+            axisTick: { //x轴刻度线
                 show: false
             },
             splitLine: {
@@ -118,19 +117,19 @@ export function Columnarvar(data) {
             itemStyle: {
                 normal: { color: '#72b201' }
             },
-            animationDelay: function (idx) {
+            animationDelay: function(idx) {
                 return idx * 7;
             }
         }, {
             name: data.nameT,
             type: 'bar',
             data: data.dataT,
-            animationDelay: function (idx) {
+            animationDelay: function(idx) {
                 return idx * 6 + 100;
             },
         }],
         animationEasing: 'elasticOut',
-        animationDelayUpdate: function (idx) {
+        animationDelayUpdate: function(idx) {
             return idx * 5;
         }
     };
@@ -152,19 +151,18 @@ export function Rose(data) {
             trigger: 'item',
             formatter: '{a} <br/>{b} : {c} ({d}%)'
         },
-        series: [
-            {
+        series: [{
                 name: data.name,
                 type: 'pie',
                 radius: '60%',
                 center: ['50%', '50%'],
-                data: data.data.sort(function (a, b) { return a.value - b.value; }),
+                data: data.data.sort(function(a, b) { return a.value - b.value; }),
                 roseType: 'radius',
                 label: {
                     // color: '#fff'
                     fontSize: 16,
-                    formatter: function (val) {   //让series 中的文字进行换行
-                        return val.data.name + "\n" + "{b|" + val.data.value +"件}"+"{c|"+ "(" + val.percent + "%" + ")" + "}";
+                    formatter: function(val) { //让series 中的文字进行换行
+                        return val.data.name + "\n" + "{b|" + val.data.value + "件}" + "{c|" + "(" + val.percent + "%" + ")" + "}";
                     },
                     rich: {
                         b: {
@@ -173,7 +171,7 @@ export function Rose(data) {
                             // color: "#fff",
                             lineHeight: 30
                         },
-                        c:{
+                        c: {
                             fontSize: 12,
                             fontFamily: "微软雅黑",
                             // color: "#fff",
@@ -197,7 +195,7 @@ export function Rose(data) {
 
                 animationType: 'scale',
                 animationEasing: 'elasticOut',
-                animationDelay: function (idx) {
+                animationDelay: function(idx) {
                     return Math.random() * 200;
                 }
             }
